@@ -1,0 +1,35 @@
+<template>
+    <div class="col-12 row">
+        <div class="col-lg-12 col-md-12 col-sm-12 pl-0 pr-0">
+            <v-select v-validate="'required|min:4'"
+                        :class="{'input': true, 'is-invalid': errors.has('categoria') }"
+                        name="categoria"
+                        @input="setCategoryPos"
+                        :options="optionsCategory"
+                        :value="selectedCategory"></v-select>
+            <p v-show="errors.has('categoria')" class="text-danger">{{ errors.first('categoria') }}</p>
+        </div>
+    </div>
+</template>
+
+<script>
+
+import { mapState, mapGetters, mapActions } from 'vuex'
+
+export default {
+    computed:{
+        ...mapState(['optionsCategory', 'selectedCategory']),
+        ...mapGetters(['getItem'])
+    },
+    methods:{
+        ...mapActions(['setCategoryPos'])
+    },
+    created(){
+        this.$store.dispatch('allCategories')
+    }
+}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,93 @@
+<template>
+
+    <form action="POST" v-on:submit.prevent="createPromotion">
+        <div id="create" class="modal fade ">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Nueva Promoción</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <label for="nombre">Nombre</label>
+                        <input v-validate="'required|min:4|max:190'"
+                                :class="{'input': true, 'is-invalid': errors.has('nombre') }"
+                                type="text"
+                                name="nombre"
+                                class="form-control" v-model="newPromotion.name">
+                        <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
+                        
+                        <label for="servicio">Seleccionar servicio en promocion</label>
+                        <ServicePromotionSelect></ServicePromotionSelect>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-block btn-primary btn-lg" @click="addServicePromotion">
+                                    Agregar servicio en promoción
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-danger btn-block btn-lg" @click="deleteServicePromotion">
+                                    <i class="far fa-trash-alt"></i> Eliminar
+                                </button>
+                            </div>
+                        </div>
+                        <table  class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h5>Servicio</h5>
+                                    </th>
+                                    <th>
+                                        <h5>Valor</h5>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="servicepromotionLocal in listServicepromotions" :key="servicepromotionLocal.id">
+                                    <td><h5>{{ servicepromotionLocal.nombre }}</h5></td>
+                                    <td><h5>{{ servicepromotionLocal.precio }}</h5></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2>Valor de Promoción:$ {{ totalPromotion }} </h2>
+
+                        <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
+                            <p>{{ error.name }}</p>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" :disabled="!completePromotionCreate">
+                            <i class="fas fa-plus-square"></i> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</template>
+
+<script>
+
+import SelectCategory from '../Category/SelectCategoryPos'
+import ServicePromotionSelect from '../Service/SelectServicePromotion'
+
+import { mapState, mapGetters, mapActions } from 'vuex'
+
+export default {
+    components: { ServicePromotionSelect, SelectCategory },
+    computed:{
+        ...mapState(['newPromotion','selectedServicepromotions','listServicepromotions','totalPromotion', 'errorsLaravel']),
+        ...mapGetters(['completePromotionCreate'])
+    },
+    methods:{
+        ...mapActions(['createPromotion','addServicePromotion','totalServicePromotion','deleteServicePromotion'])
+    },
+}
+</script>

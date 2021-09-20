@@ -1,0 +1,50 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "axios": "^0.21.1",
+        "bootstrap": "^4.0.0",
+        "cross-env": "^5.1",
+        "jquery": "^3.2",
+        "laravel-elixir-vue-2": "^0.3.0",
+        "laravel-mix": "^6.0.25",
+        "lodash": "^4.17.4",
+        "popper.js": "^1.14.3",
+        "resolve-url-loader": "^4.0.0",
+        "sass": "^1.35.2",
+        "sass-loader": "^12.1.0",
+        "vue": "^2.6.14",
+        "vue-loader": "^15.9.7",
+        "vue-template-compiler": "^2.6.14",
+        "webpack-cli": "^4.7.2"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.1.0",
+        "axios-progress-bar": "^1.2.0",
+        "bootstrap4-fullscreen-modal": "^1.0.5",
+        "chart.js": "^2.7.2",
+        "toastr": "^2.1.4",
+        "trim-newlines": "^4.0.0",
+        "v-tooltip": "^2.0.0-rc.33",
+        "validate.js": "^0.12.0",
+        "vee-validate": "^2.1.0-beta.6",
+        "vue-authenticate": "^1.3.4",
+        "vue-chartjs": "^3.3.2",
+        "vue-currency-filter": "^3.4.2",
+        "vue-moment": "^4.0.0",
+        "vue-router": "^3.0.1",
+        "vue-search-select": "^2.6.1",
+        "vue-select": "^2.6.4",
+        "vue2-filters": "^0.4.1",
+        "vuejs-datepicker": "^1.5.4",
+        "vuex": "^3.6.2"
+    }
+}
