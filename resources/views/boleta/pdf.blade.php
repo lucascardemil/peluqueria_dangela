@@ -38,13 +38,17 @@
                     <?php $descuento = $service->descuento; ?>
             </tr>
                 @endforeach
-            <tr>
+            <!-- <tr>
                 <td>SUBTOTAL</td>
                 <td><b>${{ number_format($voucher->total*100/(100-$descuento), 0, ',', '.') }}</b></td>
-            </tr>
+            </tr> -->
             <tr>
                 <td>DESCUENTO</td>
                 <td><b>{{$descuento}}%</b></td>
+            </tr>
+            <tr>
+                <td>METODO DE PAGO</td>
+                <td><b>{{$voucher->payment}}</b></td>
             </tr>
             <tr>
                 <td>TOTAL</td>

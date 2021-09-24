@@ -1362,10 +1362,12 @@ export default { //used for changing the state
             data.forEach(voucher => {
                 var descuento=0
                 var personal=""
+                var service=""
                 voucher.serviceposts.forEach(s => {
-                    descuento=s.descuento
+                    //descuento = s.descuento
+                    service = s.service.name
                     s.personalposts.forEach(p => {
-                        personal=p.personal.name
+                        personal = p.personal.name
                     })
                 })
 
@@ -1374,6 +1376,7 @@ export default { //used for changing the state
                     name: voucher.name,
                     aditional: voucher.aditional,
                     //descuento: descuento,
+                    service: service, 
                     created_at: voucher.created_at,
                     total: voucher.total,
                     personal: personal,
@@ -1731,8 +1734,8 @@ export default { //used for changing the state
                 sucursal_id: state.selectedSucursal.value,
                 user_id: state.selectedClient.value,
                 name: 'Voucher ' + state.selectedClient.nombre,
-                aditional: state.newVoucherSession.aditional,
-                payment: state.selectedPayment.label,
+                // aditional: state.newVoucherSession.aditional,
+                // payment: state.selectedPayment.label,
                 is_paid: 0,
                 total: total,
             }).then(response => {
@@ -1766,7 +1769,7 @@ export default { //used for changing the state
                             state.selectedSucursal = { id: null, name: null }
                             state.selectedClient = null
                             state.selectedCategory = null
-                            state.selectedPayment= null
+                            // state.selectedPayment= null
                             state.selectedServiceposts= null
                         }).catch(error => {
                             //state.errorsLaravel = error.response.data
@@ -1781,13 +1784,13 @@ export default { //used for changing the state
                 //state.errorsLaravel = error.response.data
             })
         }
-        state.newVoucherSession= { aditional: '', quantity: 1, price: 0}
+        state.newVoucherSession= { quantity: 1, price: 0}
     },
     editVoucher(state, voucher){
 
         state.fillVoucher.id = voucher.id
         state.fillVoucher.name = voucher.name
-        state.fillVoucher.aditional = voucher.aditional
+        // state.fillVoucher.aditional = voucher.aditional
         state.fillVoucher.total = voucher.total
         state.fillVoucher.payment = voucher.payment
         state.fillVoucher.personal = voucher.personal

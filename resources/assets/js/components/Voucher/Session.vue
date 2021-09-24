@@ -40,24 +40,24 @@
                 class="form-control" v-model="newVoucherSession.price">
         </div>
 
-        <div class="col-4">
+        <!-- <div class="col-4">
             <label for="">Detalle de los vouchers*</label>
             <input v-validate="'min:4|max:190'"
                 :class="{'input': true, 'is-invalid': errors.has('adicional') }"
                 type="text"
                 name="adicional"
                 class="form-control" v-model="newVoucherSession.aditional">
-        </div>
+        </div> -->
 
         <div class="col-4">
             <label>Seleccionar Personal</label>
             <PersonalService></PersonalService>
         </div>
 
-        <div class="col-4">
+        <!-- <div class="col-4">
             <label>Seleccionar Método de Pago</label>
             <Payment></Payment>
-        </div>
+        </div> -->
 
         <div class="col-2">
             <label for="" style="color:transparent">.</label>

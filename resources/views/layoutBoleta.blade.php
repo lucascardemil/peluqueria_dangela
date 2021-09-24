@@ -4,10 +4,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style>
-            @page { size: 80mm 10mm } /* output size */
-            body.receipt .sheet { width: 80mm; height: 10mm } /* sheet size */
-            @media print { body.receipt { width: 80mm } } /* fix for Chrome */
-            @media print { div.page-break { display: block; page-break-before: always; } }
+            @page { margin: 10px 10px 10px 10px;  }
+            table{
+                width: 100%;
+                font-size: 9px;
+                text-transform: uppercase;
+            }  
         </style>
         <title>Dangela Voucher</title>
 

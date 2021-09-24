@@ -161,7 +161,7 @@ export default { //data
     cajaZData: [],
     cajaServices: [],
     totalCajaZ: 0,
-    fillVoucher : { id: '', personal: '', name: '', total: '', aditional: '',payment: '', is_paid: 0 },
+    fillVoucher : { id: '', personal: '', name: '', total: '', is_paid: 0 },
 
     detailPersonalServices: [],
     sucursalId: 0,
@@ -232,7 +232,7 @@ export default { //data
 
     //Sección de filtros
     sucursalsSelect: [],
-    newVoucherSession: { aditional: '', quantity: 1, price: 0},
+    newVoucherSession: { quantity: 1, price: 0},
     selectedSucursal: { name: '' },
     vouchersFilter: [],
     serviciosPersonal: [],

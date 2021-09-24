@@ -125,12 +125,11 @@ class VoucherController extends Controller
         Voucher::find($id)->update([
             'aditional' => $request['aditional'],
             'payment' => $request['payment'],
-            'total' => $request['total']
+            'total' => $request['total'],
+            'is_paid' => 1
         ]);
 
-        $vouchers = Voucher::where('is_paid', '=', 0)
-                            ->where('id', '=', $id)
-                            ->get();
+        $vouchers = Voucher::where('id', '=', $id)->get();
          
         foreach($vouchers as $voucher){
 
@@ -313,7 +312,7 @@ class VoucherController extends Controller
 
         $services = $services;
 
-        $pdf = PDF::loadView('boleta.pdf', compact(['voucher', 'services']) );
+        $pdf = PDF::loadView('boleta.pdf', compact(['voucher', 'services']) )->setPaper([ 0 , 0 , 226.772 , 141.732 ], 'landscape');
 
         return $pdf->download('Voucher N° '.$id.'.pdf');
     }
@@ -364,9 +363,15 @@ class VoucherController extends Controller
             $serviceposts = $voucher->serviceposts;
             
             foreach ($serviceposts as $servicepost) {
+
+
+
                 ServicePost::with('service')->find($servicepost->id);
+                $s=$servicepost->service;
+
+
                 
-                $personals=$servicepost->personalposts;
+                $personals = $servicepost->personalposts;
                 foreach ($personals as $ps) {
                     Personalpost::with('personal')->find($ps->id);
                     $p=$ps->personal;

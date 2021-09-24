@@ -11326,6 +11326,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -14316,8 +14319,10 @@ var urlConsumeProduct = 'consumeProduct';
       data.forEach(function (voucher) {
         var descuento = 0;
         var personal = "";
+        var service = "";
         voucher.serviceposts.forEach(function (s) {
-          descuento = s.descuento;
+          //descuento = s.descuento
+          service = s.service.name;
           s.personalposts.forEach(function (p) {
             personal = p.personal.name;
           });
@@ -14327,6 +14332,7 @@ var urlConsumeProduct = 'consumeProduct';
           name: voucher.name,
           aditional: voucher.aditional,
           //descuento: descuento,
+          service: service,
           created_at: voucher.created_at,
           total: voucher.total,
           personal: personal,
@@ -14604,8 +14610,8 @@ var urlConsumeProduct = 'consumeProduct';
         sucursal_id: state.selectedSucursal.value,
         user_id: state.selectedClient.value,
         name: 'Voucher ' + state.selectedClient.nombre,
-        aditional: state.newVoucherSession.aditional,
-        payment: state.selectedPayment.label,
+        // aditional: state.newVoucherSession.aditional,
+        // payment: state.selectedPayment.label,
         is_paid: 0,
         total: total
       }).then(function (response) {
@@ -14637,8 +14643,8 @@ var urlConsumeProduct = 'consumeProduct';
                 name: null
               };
               state.selectedClient = null;
-              state.selectedCategory = null;
-              state.selectedPayment = null;
+              state.selectedCategory = null; // state.selectedPayment= null
+
               state.selectedServiceposts = null;
             })["catch"](function (error) {//state.errorsLaravel = error.response.data
             });
@@ -14650,15 +14656,14 @@ var urlConsumeProduct = 'consumeProduct';
     }
 
     state.newVoucherSession = {
-      aditional: '',
       quantity: 1,
       price: 0
     };
   },
   editVoucher: function editVoucher(state, voucher) {
     state.fillVoucher.id = voucher.id;
-    state.fillVoucher.name = voucher.name;
-    state.fillVoucher.aditional = voucher.aditional;
+    state.fillVoucher.name = voucher.name; // state.fillVoucher.aditional = voucher.aditional
+
     state.fillVoucher.total = voucher.total;
     state.fillVoucher.payment = voucher.payment;
     state.fillVoucher.personal = voucher.personal;
@@ -15708,8 +15713,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   personal: '',
   name: '',
   total: '',
-  aditional: '',
-  payment: '',
   is_paid: 0
 }), _defineProperty(_data$options$options, "detailPersonalServices", []), _defineProperty(_data$options$options, "sucursalId", 0), _defineProperty(_data$options$options, "totalPersonalServices", []), _defineProperty(_data$options$options, "totalPriceService", 0), _defineProperty(_data$options$options, "personalId", 0), _defineProperty(_data$options$options, "personalName", ''), _defineProperty(_data$options$options, "detailPersonalName", ''), _defineProperty(_data$options$options, "brands", []), _defineProperty(_data$options$options, "newBrand", {
   name: ''
@@ -15796,7 +15799,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   laboratory: '',
   brand: ''
 }), _defineProperty(_data$options$options, "sucursalsSelect", []), _defineProperty(_data$options$options, "newVoucherSession", {
-  aditional: '',
   quantity: 1,
   price: 0
 }), _defineProperty(_data$options$options, "selectedSucursal", {
@@ -94801,11 +94803,11 @@ var render = function() {
               "tbody",
               _vm._l(_vm.vouchers, function(voucherLocal) {
                 return _c("tr", { key: voucherLocal.id }, [
-                  _c("td", { attrs: { width: "10px" } }, [
-                    _vm._v(_vm._s(voucherLocal.id))
-                  ]),
+                  _c("td", [_vm._v(_vm._s(voucherLocal.id))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(voucherLocal.aditional))]),
+                  voucherLocal.payment == null
+                    ? _c("td", [_vm._v("No pagado")])
+                    : _c("td", [_vm._v(_vm._s(voucherLocal.payment))]),
                   _vm._v(" "),
                   _c("td", [
                     _vm._v(
@@ -94815,6 +94817,8 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(voucherLocal.service))]),
+                  _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(voucherLocal.total))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(voucherLocal.personal))]),
@@ -94823,7 +94827,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn btn-secondary btn-rounded btn-sm",
+                        staticClass: "btn btn-secondary btn-rounded",
                         attrs: {
                           "data-toggle": "tooltip",
                           "data-placement": "top",
@@ -94863,9 +94867,11 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Detalle Sesion")]),
+        _c("th", [_vm._v("Pago")]),
         _vm._v(" "),
         _c("th", [_vm._v("Fecha")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Servicio")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total")]),
         _vm._v(" "),
@@ -95432,39 +95438,6 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-4" }, [
-      _c("label", { attrs: { for: "" } }, [_vm._v("Detalle de los vouchers*")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "validate",
-            rawName: "v-validate",
-            value: "min:4|max:190",
-            expression: "'min:4|max:190'"
-          },
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.newVoucherSession.aditional,
-            expression: "newVoucherSession.aditional"
-          }
-        ],
-        staticClass: "form-control",
-        class: { input: true, "is-invalid": _vm.errors.has("adicional") },
-        attrs: { type: "text", name: "adicional" },
-        domProps: { value: _vm.newVoucherSession.aditional },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.newVoucherSession, "aditional", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
     _c(
       "div",
       { staticClass: "col-4" },
@@ -95472,17 +95445,6 @@ var render = function() {
         _c("label", [_vm._v("Seleccionar Personal")]),
         _vm._v(" "),
         _c("PersonalService")
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-4" },
-      [
-        _c("label", [_vm._v("Seleccionar Método de Pago")]),
-        _vm._v(" "),
-        _c("Payment")
       ],
       1
     ),

@@ -20,9 +20,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Detalle Sesion</th>
+                        <th>Pago</th>
                     <!--<th>Descuento</th>-->
                         <th>Fecha</th>
+                        <th>Servicio</th>
                         <th>Total</th>
                         <th>Personal</th>
                         <th>PAGAR</th>
@@ -30,15 +31,17 @@
                 </thead>
                 <tbody>
                     <tr v-for="voucherLocal in vouchers" :key="voucherLocal.id">
-                        <td width="10px">{{ voucherLocal.id }}</td>
-                        <td>{{ voucherLocal.aditional }}</td>
+                        <td >{{ voucherLocal.id }}</td>
+                        <td v-if="voucherLocal.payment == null">No pagado</td>
+                        <td v-else>{{ voucherLocal.payment }}</td>
                     <!--<td>{{ voucherLocal.descuento }}</td>-->
                         <td>{{ voucherLocal.created_at |  moment('DD/MM/YYYY') }}</td>
+                        <td>{{ voucherLocal.service }}</td>
                         <td>{{ voucherLocal.total }}</td>
                         <td>{{ voucherLocal.personal }}</td>
                         
                         <td>
-                            <button class="btn btn-secondary btn-rounded btn-sm"
+                            <button class="btn btn-secondary btn-rounded"
                                     @click.prevent="editVoucher({voucherLocal})"
                                     data-toggle="tooltip"
                                     data-placement="top"
