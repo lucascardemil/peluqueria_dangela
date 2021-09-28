@@ -71,7 +71,7 @@ class User extends Authenticatable /*implements JWTSubject*/
     {
         $keyword = request('barcode');
         if ($query) {
-            $query->where('users.barcode', 'LIKE', $keyword . '%');
+            $query->where('barcode', 'LIKE', $keyword . '%');
         }
 
         return $query;

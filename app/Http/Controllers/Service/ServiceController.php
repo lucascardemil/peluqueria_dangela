@@ -172,4 +172,12 @@ class ServiceController extends Controller
         return $services[0];
         
     }
+
+
+
+    public function SelectServicesVoucher($category)
+    {
+        $services = Service::orderBy('id', 'DESC')->where('category_id', '=', $category)->get();
+        return $services;
+    }
 }

@@ -36,11 +36,16 @@ export default { //computed propeties
         return state.fillProfession.id && state.fillProfession.name.length >= 4
     },
     completeUserCreate(state, getters){
+        return state.newUser.name.length >= 6
+                && state.newUser.email.length >= 6
+                && state.newUser.password.length >= 6
+    },
+    completeClientCreate(state, getters){
         return state.selectedItem
                 && state.selectedProfession
-                && state.newUser.rut.length >= 7
-                && state.newUser.name.length >= 6
-                && state.newUser.email.length >= 6
+                && state.newClient.rut.length >= 7
+                && state.newClient.name.length >= 6
+                && state.newClient.email.length >= 6
                 /*&& state.newUser.address.length >= 6
                 && state.newUser.birthdate
                 && state.newUser.sex
@@ -50,11 +55,16 @@ export default { //computed propeties
                 && state.newUser.barcode.length >= 4*/
     },
     completeUserUpdate(state, getters){
+        return state.fillUser.name.length >= 6
+                && state.fillUser.email.length >= 6
+                && state.fillUser.password.length >= 6
+    },
+    completeClientUpdate(state, getters){
         return state.selectedItem
                 && state.selectedProfession
-                && state.fillUser.rut.length >= 7
-                && state.fillUser.name.length >= 6
-                && state.fillUser.email.length >= 6
+                && state.fillClient.rut.length >= 7
+                && state.fillClient.name.length >= 6
+                && state.fillClient.email.length >= 6
                 /*&& state.fillUser.address.length >= 6
                 && state.fillUser.birthdate
                 && state.fillUser.sex

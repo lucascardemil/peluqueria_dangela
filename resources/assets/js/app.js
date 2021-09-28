@@ -23,7 +23,7 @@ Vue.component('select-profession', require('./components/Profession/SelectProfes
 Vue.component('select-service', require('./components/Service/SelectServiceComponent.vue').default)
 Vue.component('select-category', require('./components/Category/SelectCategory.vue').default)
 Vue.component('select-personal', require('./components/Personal/SelectPersonal.vue').default)
-Vue.component('select-user', require('./components/User/SelectSimple.vue').default)
+Vue.component('select-user', require('./components/Client/SelectSimple.vue').default)
 Vue.component('select-brand', require('./components/Inventory/Brand/Select.vue').default)
 Vue.component('select-laboratory', require('./components/Inventory/Laboratory/Select.vue').default)
 Vue.component('select-unit', require('./components/Inventory/UnitOfMesaurent/Select.vue').default)
@@ -43,6 +43,7 @@ Vue.component('personal-component', require('./components/Personal/PersonalsComp
 Vue.component('company-component', require('./components/Company/CompaniesComponent.vue').default)
 Vue.component('profession-component', require('./components/Profession/ProfessionsComponent.vue').default)
 Vue.component('user-component', require('./components/User/UsersComponent.vue').default)
+Vue.component('client-component', require('./components/Client/ClientsComponent.vue').default)
 Vue.component('service-component', require('./components/Service/ServicesComponent.vue').default)
 Vue.component('promotion-component', require('./components/Promotion/PromotionsComponent.vue').default)
 
@@ -61,7 +62,7 @@ Vue.component('roles-component', require('./components/Roles/Roles.vue').default
 /******************************************************************** */
 /******************************************************************** */
 /******************************************************************** */
-Vue.component('select-client', require('./components/User/Select.vue').default)
+Vue.component('select-client', require('./components/Client/Select.vue').default)
 Vue.component('post-component', require('./components/POST/Principal/Index.vue').default)
 
 Vue.component('voucher-component', require('./components/Voucher/Admin.vue').default)

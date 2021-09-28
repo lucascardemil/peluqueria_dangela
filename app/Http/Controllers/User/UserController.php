@@ -26,28 +26,17 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexUsers()
     {
-        $user_id = \Auth::user()->id;
-        if($user_id == 1)
-            $users = User::with('profession')
-                            ->with('roles')
-                            ->barcode()
-                            ->rut()
-                            ->name()
-                            ->orderBy('id', 'DESC')
-                            ->paginate(10);
-        else
-            $users = User::doesnthave('roles')
-            ->with('profession')
-            ->with('roles')
-            ->barcode()
-            ->rut()
-            ->name()
-           //->where('id', '!=', 1)
-            //->where('id', '!=', 2)
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
+        
+        $users = User::with('profession', 'roles')
+                        ->whereHas('roles', function ($query) {
+                            $query->where('roles.name', '<>' ,'cliente');
+                        })
+                        ->name()
+                        ->orderBy('id', 'DESC')
+                        ->paginate(10);
+        
 
         return [
             'pagination' => [
@@ -63,12 +52,44 @@ class UserController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexClients()
+    {
+        
+        $clients = User::with('profession', 'roles')
+                        ->whereHas('roles', function ($query) {
+                            $query->where('roles.name','=','Cliente');
+                        })
+                        ->barcode()
+                        ->rut()
+                        ->name()
+                        ->orderBy('id', 'DESC')
+                        ->paginate(10);
+        
+
+        return [
+            'pagination' => [
+                'total'         => $clients->total(),
+                'current_page'  => $clients->currentPage(),
+                'per_page'      => $clients->perPage(),
+                'last_page'     => $clients->lastPage(),
+                'from'          => $clients->firstItem(),
+                'to'            => $clients->lastItem(),
+            ],
+            'clients' => $clients
+        ];
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeClient(Request $request)
     {
         $this->validate($request, [
             'company_id' => 'required',
@@ -118,7 +139,58 @@ class UserController extends Controller
         $data['email'] = strtolower($data['email']);
         $data['address'] = ucwords($data['address']);
 
-        User::create($data);
+        $user = User::create($data);
+        $user->assignRole('cliente');
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeUser(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:6|max:190',
+            'email' => 'required|email|unique:users,email|min:6|max:150',
+            'password' => 'required|min:6|max:190'
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'name.min' => 'El campo nombre debe tener al menos 6 caracteres',
+            'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
+            'email.required' => 'El campo correo electrónico es obligatorio',
+            'email.unique' => 'El correo electrónico ya existe',
+            'email.min' => 'El campo de correo electrónico debe tener al menos 6 caracteres',
+            'email.max' => 'El campo de correo electrónico debe tener a lo más 150 caracteres',
+            'password.required' => 'El campo constraseña es obligatorio',
+            'password.min' => 'El campo constraseña debe tener al menos 6 caracteres',
+            'password.max' => 'El campo constraseña debe tener a lo más 190 caracteres',
+        ]);
+
+        $data = $request->all();
+
+        $data['profession_id'] = 1;
+        $data['address'] = 0;
+        $data['phone'] = 0;
+        $data['birthdate'] = 0;
+        $data['sex'] = 0;
+        $data['civil'] = 0;
+        $data['children'] = 0;
+        $data['barcode'] = 0;
+        $data['remember_token'] = str_random(10);
+
+        
+
+        $data['rut'] = Rut::parse($data['rut'])->format();
+        $data['name'] = strtoupper($data['name']);
+        $data['email'] = strtolower($data['email']);
+        $data['password'] = bcrypt($data['password']);
+        
+
+        $user = User::create($data);
+        $user->assignRole('admin');
     }
 
     /**
@@ -143,7 +215,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateClient(Request $request, $id)
     {
         $this->validate($request, [
             'company_id' => 'required',
@@ -188,6 +260,47 @@ class UserController extends Controller
         $data['email'] = strtolower($data['email']);
         $data['address'] = ucwords($data['address']);
         
+        
+        User::find($id)->update($data);
+
+        $user = User::find($id);
+
+        return $user;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUser(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:6|max:190',
+            'email' => ['required', 'email', 'min:6', 'max:150',
+                        \Illuminate\Validation\Rule::unique('users')->ignore(User::find($id))],
+            'password' => 'required|min:6|max:190'
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'name.min' => 'El campo nombre debe tener al menos 6 caracteres',
+            'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
+            'email.required' => 'El campo correo electrónico es obligatorio',
+            'email.min' => 'El campo de correo electrónico debe tener al menos 6 caracteres',
+            'email.max' => 'El campo de correo electrónico debe tener a lo más 150 caracteres',
+            'password.required' => 'El campo constraseña es obligatorio',
+            'password.min' => 'El campo constraseña debe tener al menos 6 caracteres',
+            'password.max' => 'El campo constraseña debe tener a lo más 190 caracteres'
+        ]);
+
+        
+
+        $data = $request->all();
+
+        $data['name'] = strtoupper($data['name']);
+        $data['email'] = strtolower($data['email']);
+        $data['password'] = bcrypt($data['password']);        
         
         User::find($id)->update($data);
 
@@ -288,5 +401,14 @@ class UserController extends Controller
         }
 
         return "Códigos de barra generados con éxito";
+    }
+
+
+
+    public function detailClients($id)
+    {
+        $users = User::with('profession', 'roles')->where('id', '=' , $id);
+
+        return $users;
     }
 }

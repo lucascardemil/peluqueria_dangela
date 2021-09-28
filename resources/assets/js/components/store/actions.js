@@ -248,6 +248,35 @@ export default { //methods
         context.commit('getProfessions', data.page)
     },
     /******************************************** */
+    getClients(context, data){
+        context.commit('getClients', data.page)
+    },
+    showClient(context, data){
+        context.commit('showClient', data.id)
+    },
+    createClient(context){
+        context.commit('createClient')
+        setTimeout(function(){
+            context.commit('getClients', 1)
+        }, 1000)
+    },
+    editClient(context, data){
+        context.commit('editClient', data.clientLocal)
+    },
+    updateClient(context, data){
+        context.commit('updateClient', data.id)
+        setTimeout(function(){
+            context.commit('getClients', 1)
+        }, 1000)
+    },
+    deleteClient(context, data){
+        context.commit('deleteClient', data.id)
+        setTimeout(function(){
+            context.commit('getClients', 1)
+        }, 1000)
+    },
+    
+    
     getUsers(context, data){
         context.commit('getUsers', data.page)
     },

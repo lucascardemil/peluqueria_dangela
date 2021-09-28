@@ -12,11 +12,28 @@
         <link rel="stylesheet" href="{{ asset('css/app-principal.css') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-        
+        <style>
+            .bg-navbar{
+                background-color: #cf32cf !important;
+            }
+
+            .toast {
+                flex-basis: 350px;
+                max-width: 350px;
+                font-size: 0.875rem;
+                background-color: green;
+                background-clip: padding-box;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                border-radius: 0.25rem;
+            }
+        </style>
+
 
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+        <nav class="navbar navbar-expand-lg bg-navbar">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{-- config('app.name', 'Laravel') --}}
@@ -90,6 +107,18 @@
                             </li> --}}
                         @else
                             <li class="nav-item dropdown">
+
+                            <div class="dropdown show">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown link
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+  </div>
+</div>
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
                                     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} 
@@ -115,7 +144,7 @@
 
         <div class="page-content d-flex align-items-stretch">
 
-            <nav class="side-navbar pt-3 bg-secondary text-white">
+            <nav class="side-navbar pt-3 bg-navbar text-white">
                 <span class="heading">Menú</span>
                 <ul class="list-unstyled">
                         <li>
@@ -175,6 +204,11 @@
                     @can('usuarios')
                         <li>
                             <a href="{{ route('usuarios') }}"><i class="fas fa-users"></i> Usuarios</a>
+                        </li>
+                    @endcan
+                    @can('clientes')
+                        <li>
+                            <a href="{{ route('clientes') }}"><i class="fas fa-users"></i> Clientes</a>
                         </li>
                     @endcan
                     @can('score.admin')

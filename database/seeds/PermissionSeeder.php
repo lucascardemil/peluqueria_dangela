@@ -75,6 +75,37 @@ class PermissionSeeder extends Seeder
             'description'   => 'Permiso para acceder a la eliminación de un usuario',
         ]);
 
+        //Permisos Clientes
+        Permission::create([
+            'name'          => 'Visualizar Clientes',
+            'slug'          => 'clientes',
+            'description'   => 'Permiso para acceder a la lista de clientes',
+        ]);
+
+        Permission::create([
+            'name'          => 'Visualizar Clientes',
+            'slug'          => 'clients.index',
+            'description'   => 'Permiso para acceder a la lista de clientes',
+        ]);
+
+        Permission::create([
+            'name'          => 'Crear Clientes',
+            'slug'          => 'clients.store',
+            'description'   => 'Permiso para acceder a la creación de clientes',
+        ]);
+
+        Permission::create([
+            'name'          => 'Editar Clientes',
+            'slug'          => 'clients.update',
+            'description'   => 'Permiso para acceder a la actualización de un cliente',
+        ]);
+
+        Permission::create([
+            'name'          => 'Eliminar Clientes',
+            'slug'          => 'clients.destroy',
+            'description'   => 'Permiso para acceder a la eliminación de un cliente',
+        ]);
+
         //Permisos Servicios
         Permission::create([
             'name'          => 'Visualizar Servicios',

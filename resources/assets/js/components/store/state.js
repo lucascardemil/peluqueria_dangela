@@ -60,16 +60,24 @@ export default { //data
     /************************************ */
     /*** sección componentes de usuarios */
     users: [],
-    user: { company_id: '', company: { name: '' },profession_id: '', profession: { name: '' }, rut: '', name : '', email: '', address: '',
+    user: { name : '', email: '',password: ''},
+    newUser : { name : '', rut: '', email: '',password: ''},
+    fillUser: { id: '', name : '', email: '',password: ''},
+    searchUser: { email: '', name: '' },
+    /********************************* */
+    /************************************ */
+    /*** sección componentes de clientes */
+    clients: [],
+    client: { company_id: '', company: { name: '' },profession_id: '', profession: { name: '' }, rut: '', name : '', email: '', address: '',
              phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', score: 0, password: '',
             is_convenio: 0 },
-    newUser : { company_id: '',profession_id: '', rut: '', name : '', email: '', address: '',
+    newClient : { company_id: '',profession_id: '', rut: '', name : '', email: '', address: '',
                 phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', score: 0, password: '',
                 is_convenio: 0 },
-    fillUser: { id: '', company_id: '', profession_id: '', rut: '', name : '', email: '', address: '',
+    fillClient: { id: '', company_id: '', profession_id: '', rut: '', name : '', email: '', address: '',
                 phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', score: '', password: '',
                 is_convenio: 0 },
-    searchUser: { barcode: '', rut: '', name: '' },
+    searchClient: { barcode: '', rut: '', name: '' },
     /********************************** */
     /****sección de componentes de servicios */
     services: [],
@@ -110,11 +118,8 @@ export default { //data
     /*************************************** */
 
     /*** sección componentes de clientes */
-    clients: [],
     selectedClient: null, //captura el elemento seleccionado
-    newClient : { name : '' },
-    fillClient: { id: '', name: '' },
-    searchClient: {  name: '' },
+
 
     /*** sección componentes de sucursales */
     sucursals: [],

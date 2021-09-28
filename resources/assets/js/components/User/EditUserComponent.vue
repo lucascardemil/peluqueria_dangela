@@ -10,138 +10,48 @@
                             <span>&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body pt-0">
-                    
-                    <label for="empresa">Empresa*</label>
-                    <select-company></select-company>
+                    <div class="modal-body">
 
-
-                    <label for="profesion">Profesión*</label>
-                    <select-profession></select-profession>
-
-                    <label for="rut">Rut*</label>
-                    <input v-validate="'required|min:7|max:25'"
-                            :class="{'input': true, 'is-invalid': errors.has('rut') }"
-                            type="text"
-                            name="rut"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.rut">
-                    <p v-show="errors.has('rut')" class="text-danger">{{ errors.first('rut') }}</p>
-
-                    <label for="nombre">Nombre*</label>
-                    <input v-validate="'required|min:6|max:190'"
-                            :class="{'input': true, 'is-invalid': errors.has('nombre') }"
-                            type="text"
-                            name="nombre"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.name">
-                    <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
-
-                    <label for="email">Email*</label>
-                    <input v-validate="'required|min:6|max:150|email'"
-                            :class="{'input': true, 'is-invalid': errors.has('email') }"
-                            type="text"
-                            name="email"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.email">
-                    <p v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</p>
-
-                    <label for="dirección">Dirección*</label>
-                    <input v-validate="'min:6|max:300|'"
-                            :class="{'input': true, 'is-invalid': errors.has('dirección') }"
-                            type="text"
-                            name="dirección"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.address">
-                    <p v-show="errors.has('dirección')" class="text-danger">{{ errors.first('dirección') }}</p>
-
-                    <label for="teléfono">Teléfono (+569)</label>
-                    <input v-validate="'min:8'"
-                            :class="{'input': true, 'is-invalid': errors.has('teléfono') }"
-                            type="number"
-                            name="teléfono"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.phone">
-                    <p v-show="errors.has('teléfono')" class="text-danger">{{ errors.first('teléfono') }}</p>
-
-                    <label for="fecha">Fecha de Nacimiento*</label>
-                    <input v-validate=""
-                            :class="{'input': true, 'is-invalid': errors.has('fecha') }"
-                            type="date"
-                            name="fecha"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.birthdate">
-                    <p v-show="errors.has('fecha')" class="text-danger">{{ errors.first('fecha') }}</p>
-
-                    <label for="sexo">Sexo*</label>
-                    <select  v-validate=""
-                            :class="{'input': true, 'is-invalid': errors.has('sexo') }"
-                            name="sexo"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.sex">
-                        <option value="1">Masculino</option>
-                        <option value="2">Femenino</option>
-                    </select>
-                    <p v-show="errors.has('sexo')" class="text-danger">{{ errors.first('sexo') }}</p>
-
-                    <label for="estado civil">Estado Civil*</label>
-                    <select v-validate=""
-                            :class="{'input': true, 'is-invalid': errors.has('estado civil') }"
-                            name="estado civil"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.civil">
-                        <option value="1">Soltero(a)</option>
-                        <option value="2">Casado(a)</option>
-                        <option value="3">Comprometido(a)</option>
-                        <option value="4">Divorciado(a)</option>
-                    </select>
-                    <p v-show="errors.has('estado civil')" class="text-danger">{{ errors.first('estado civil') }}</p>
-
-                    <label for="hijos">Hijos*</label>
-                    <select v-validate=""
-                            :class="{'input': false, 'is-invalid': errors.has('hijos') }"
-                            name="hijos"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.children">
-                        <option value=0>No</option>
-                        <option value=1>Si</option>
-                        
-                    </select>
-                    <p v-show="errors.has('hijos')" class="text-danger">{{ errors.first('hijos') }}</p>
-
-                    <label for="puntaje">Puntaje</label>
-                    <input v-validate=""
-                            :class="{'input': true, 'is-invalid': errors.has('puntaje') }"
-                            type="number"
-                            name="puntaje"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.score">
-                    <p v-show="errors.has('puntaje')" class="text-danger">{{ errors.first('puntaje') }}</p>
-
-                    <label for="código de barra">Código de barra*</label>
-                    <input v-validate="'min:4'"
-                            :class="{'input': true, 'is-invalid': errors.has('código de barra') }"
-                            type="text"
-                            name="código de barra"
-                            class="form-control form-control-sm"
-                            v-model="fillUser.barcode">
-                    <p v-show="errors.has('código de barra')" class="text-danger">{{ errors.first('código de barra') }}</p>
-
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="is_convenio" v-model="fillUser.is_convenio">
-                        <label class="form-check-label" for="is_convenio">Convenio con Empresa</label>
+                    <div class="form-group">
+                        <label for="nombre">Nombre*</label>
+                        <input v-validate="'required|min:6|max:190'"
+                                :class="{'input': true, 'is-invalid': errors.has('nombre') }"
+                                type="text"
+                                name="nombre"
+                                class="form-control form-control-sm"
+                                v-model="fillUser.name">
+                        <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
                     </div>
 
+                    <div class="form-group">
+
+                        <label for="email">Email*</label>
+                        <input v-validate="'required|min:6|max:150|email'"
+                                :class="{'input': true, 'is-invalid': errors.has('email') }"
+                                type="text"
+                                name="email"
+                                class="form-control form-control-sm"
+                                v-model="fillUser.email">
+                        <p v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</p>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="password">Contraseña*</label>
+                        <input v-validate="'required|min:6|max:150|'"
+                                :class="{'input': true, 'is-invalid': errors.has('password') }"
+                                type="password"
+                                name="password"
+                                class="form-control form-control-sm"
+                                v-model="fillUser.password">
+                        <p v-show="errors.has('password')" class="text-danger">{{ errors.first('password') }}</p>
+                    </div>
+
+
                     <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
-                        <p class="mb-0">{{ error.rut }}</p>
                         <p class="mb-0">{{ error.name }}</p>
                         <p class="mb-0">{{ error.email }}</p>
-                        <p class="mb-0">{{ error.address }}</p>
-                        <p class="mb-0">{{ error.phone }}</p>
-                        <p class="mb-0">{{ error.birthdate }}</p>
-                        <p class="mb-0">{{ error.sex }}</p>
-                        <p class="mb-0">{{ error.civil }}</p>
-                        <p class="mb-0">{{ error.barcode }}</p>
+                        <p class="mb-0">{{ error.password }}</p>
                     </div>
 
                 </div>
@@ -162,15 +72,11 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
     computed:{
-        ...mapState(['fillUser', 'errorsLaravel', 'options', 'optionsProfession']),
+        ...mapState(['fillUser', 'errorsLaravel']),
         ...mapGetters(['completeUserUpdate'])
     },
     methods:{
         ...mapActions(['updateUser'])
-    },
-    created(){
-        this.$store.dispatch('allCompanies')
-        this.$store.dispatch('allProfessions')
     }
 }
 </script>

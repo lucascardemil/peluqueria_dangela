@@ -26,6 +26,8 @@ var urlCompany = 'companies'
 var urlProfession = 'professions'
 
 var urlUser = 'users'
+var urlCreateUser = 'create-user'
+var urlUpdateUser = 'update-user'
 var urlService = 'services'
 var urlServiceTotal = 'services-total'
 var urlServiceTotalByMonth = 'services-total-month'
@@ -33,7 +35,10 @@ var urlUserTotal = 'users-total'
 var urlUserTotalByServices = 'users-total-services'
 var urlUserAvailableService = 'users-available-service'
 
+var urlClientPos = 'clients-pos'
 var urlClient = 'clients'
+var urlCreateClient = 'create-client'
+var urlUpdateClient = 'update-client'
 
 
 
@@ -623,65 +628,57 @@ export default { //used for changing the state
             toastr.success('Profesión eliminada con éxito');
         })
     },
-    /****** sección usuarios **** */
+    /****** sección clientes **** */
     /******************************* */
-    getUsers(state, page){
-        var url = urlUser + '?page=' + page + '&barcode=' + state.searchUser.barcode
-                + '&rut=' + state.searchUser.rut + '&name=' + state.searchUser.name
+    getClients(state, page){
+        
+        var url = urlClient + '?page=' + page + '&barcode=' + state.searchClient.barcode
+                + '&rut=' + state.searchClient.rut + '&name=' + state.searchClient.name
         axios.get(url).then(response => {
-            state.users = response.data.users.data
-
-            if(state.users.length == 1 ){
-                state.users.forEach((user) => {
-                    state.user = user;
-                })
-            }
-            else{
-                state.user = { name: null, score: null, company: { name: null } ,profession:{ name: null } }
-            }
+            state.clients = response.data.clients.data
             state.pagination = response.data.pagination
         });
     },
-    showUser(state, id){
+    showClient(state, id){
         var url = urlUser + '/' + id
         axios.get(url).then(response => {
             state.user = response.data
         });
     },
-    createUser(state){
+    createClient(state){
         //alert(state.selectedItem.value)
         var company_id = state.selectedItem.value
         var profession_id = state.selectedProfession.value
 
-        var url = urlUser
+        var url = urlCreateClient
 
         axios.post(url, {
             company_id: company_id,
             profession_id: profession_id,
-            rut: state.newUser.rut,
-            name: state.newUser.name,
-            email: state.newUser.email,
-            address: state.newUser.address,
-            phone: state.newUser.phone,
-            birthdate: state.newUser.birthdate,
-            sex: state.newUser.sex,
-            civil: state.newUser.civil,
-            children: state.newUser.children,
-            barcode: state.newUser.barcode,
-            score: state.newUser.score,
+            rut: state.newClient.rut,
+            name: state.newClient.name,
+            email: state.newClient.email,
+            address: state.newClient.address,
+            phone: state.newClient.phone,
+            birthdate: state.newClient.birthdate,
+            sex: state.newClient.sex,
+            civil: state.newClient.civil,
+            children: state.newClient.children,
+            barcode: state.newClient.barcode,
+            score: state.newClient.score,
             password: '',
-            is_convenio: state.newUser.is_convenio
+            is_convenio: state.newClient.is_convenio
         }).then(response => {
-            state.newUser = { company_id: '',profession_id: '', rut: '', name : '', email: '', address: '',
+            state.newClient = { company_id: '',profession_id: '', rut: '', name : '', email: '', address: '',
                             phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', password: '',is_convenio:0 };
             state.errorsLaravel = [];
             $('#create').modal('hide');
-            toastr.success('Usuario generado con éxito');
+            toastr.success('Cliente generado con éxito');
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
     },
-    editUser(state, user){
+    editClient(state, user){
         state.options.forEach((company) => {
             if(company.value === user.company_id)
                 state.selectedItem=company
@@ -691,29 +688,93 @@ export default { //used for changing the state
                  state.selectedProfession=profession
         })
 
+        state.fillClient.id = user.id
+        state.fillClient.company_id = user.company_id
+        state.fillClient.profession_id = user.profession_id
+        state.fillClient.rut = user.rut
+        state.fillClient.name = user.name
+        state.fillClient.email = user.email
+        state.fillClient.address = user.address
+        state.fillClient.phone = user.phone
+        state.fillClient.birthdate = user.birthdate
+        state.fillClient.sex = user.sex
+        state.fillClient.civil = user.civil
+        state.fillClient.children = user.children
+        state.fillClient.barcode = user.barcode
+        state.fillClient.score = user.score
+        state.fillClient.password = user.password
+        state.fillClient.is_convenio = user.is_convenio
+        $("#edit").modal('show')
+    },
+    updateClient(state, id){
+        var url = urlUpdateClient + '/' + id;
+        axios.put(url, {
+            id: state.fillClient.id,
+            company_id: state.selectedItem.value,
+            profession_id: state.selectedProfession.value,
+            rut: state.fillClient.rut,
+            name: state.fillClient.name,
+            email: state.fillClient.email,
+            address: state.fillClient.address,
+            phone: state.fillClient.phone,
+            birthdate: state.fillClient.birthdate,
+            sex: state.fillClient.sex,
+            civil: state.fillClient.civil,
+            children: state.fillClient.children,
+            barcode: state.fillClient.barcode,
+            score: state.fillClient.score,
+            is_convenio: state.fillClient.is_convenio
+        }).then(response => {
+            state.fillClient = { id: '', company_id: '', profession_id: '', rut: '', name : '', email: '', address: '',
+            phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', password: '' ,is_convenio: 0};
+            state.errorsLaravel = [];
+            $('#edit').modal('hide');
+            toastr.success('Cliente actualizado con éxito')
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+    deleteClient(state, id){
+        var url = urlUser + '/' +  id;
+        axios.delete(url).then(response => {
+            toastr.success('Cliente eliminado con éxito');
+        });
+    },
+    /****** sección usuarios **** */
+    /******************************* */
+    getUsers(state, page){
+        var url = urlUser + '?page=' + page + '&email=' + state.searchUser.email + '&name=' + state.searchUser.name
+        axios.get(url).then(response => {
+            state.users = response.data.users.data
+            state.pagination = response.data.pagination
+        });
+    },
+    createUser(state){
+        var url = urlCreateUser
+        axios.post(url, {
+            name: state.newUser.name,
+            rut: state.newUser.rut,
+            email: state.newUser.email,
+            password: state.newUser.password,
+        }).then(response => {
+            state.newUser = { name : '', rut: '', email: '', password: ''};
+            state.errorsLaravel = [];
+            $('#create').modal('hide');
+            toastr.success('Usuario generado con éxito');
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+    editUser(state, user){
         state.fillUser.id = user.id
-        state.fillUser.company_id = user.company_id
-        state.fillUser.profession_id = user.profession_id
-        state.fillUser.rut = user.rut
         state.fillUser.name = user.name
         state.fillUser.email = user.email
-        state.fillUser.address = user.address
-        state.fillUser.phone = user.phone
-        state.fillUser.birthdate = user.birthdate
-        state.fillUser.sex = user.sex
-        state.fillUser.civil = user.civil
-        state.fillUser.children = user.children
-        state.fillUser.barcode = user.barcode
-        state.fillUser.score = user.score
-        state.fillUser.password = user.password
-        state.fillUser.is_convenio = user.is_convenio
         $("#edit").modal('show')
     },
     updateUser(state, id){
-        var url = urlUser + '/' + id;
+        var url = urlUpdateUser + '/' + id;
         axios.put(url, state.fillUser).then(response => {
-            state.fillUser = { id: '', company_id: '', profession_id: '', rut: '', name : '', email: '', address: '',
-            phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', password: '' ,is_convenio: 0};
+            state.fillUser = { id: '', name : '', email: '', password: ''};
             state.errorsLaravel = [];
             $('#edit').modal('hide');
             toastr.success('Usuario actualizado con éxito')
@@ -1045,48 +1106,48 @@ export default { //used for changing the state
     /******************************* */
     /****** sección clientes **** */
     /******************************* */
-    getClients(state, page){
-        var url = urlClient + '?page=' + page
-        axios.get(url).then(response => {
-            state.clients = response.data.clients.data
-            state.pagination = response.data.pagination
-        });
-    },
-    createClient(state){
-        var url = urlClient
-        axios.post(url, {
-            name: state.newClient.name,
-        }).then(response => {
-            state.newClient.name = ''
-            state.errorsLaravel = []
-            $('#createclient').modal('hide')
-            toastr.success('Cliente generado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editClient(state, client){
-        state.fillClient.id = client.id
-        state.fillClient.name = client.name
-        $("#editClient").modal('show')
-    },
-    updateClient(state, id){
-        var url = urlClient + '/' + id
-        axios.put(url, state.fillClient).then(response => {
-            state.fillClient = { id: '', name: '' }
-            state.errorsLaravel = [];
-            $('#editClient').modal('hide')
-            toastr.success('Cliente actualizado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    deleteClient(state, id){
-        var url = urlClient + '/' +  id
-        axios.delete(url).then(response => {
-            toastr.success('Cliente eliminado con éxito')
-        })
-    },
+    // getClients(state, page){
+    //     var url = urlClient + '?page=' + page
+    //     axios.get(url).then(response => {
+    //         state.clients = response.data.clients.data
+    //         state.pagination = response.data.pagination
+    //     });
+    // },
+    // createClient(state){
+    //     var url = urlClient
+    //     axios.post(url, {
+    //         name: state.newClient.name,
+    //     }).then(response => {
+    //         state.newClient.name = ''
+    //         state.errorsLaravel = []
+    //         $('#createclient').modal('hide')
+    //         toastr.success('Cliente generado con éxito')
+    //     }).catch(error => {
+    //         state.errorsLaravel = error.response.data
+    //     })
+    // },
+    // editClient(state, client){
+    //     state.fillClient.id = client.id
+    //     state.fillClient.name = client.name
+    //     $("#editClient").modal('show')
+    // },
+    // updateClient(state, id){
+    //     var url = urlClient + '/' + id
+    //     axios.put(url, state.fillClient).then(response => {
+    //         state.fillClient = { id: '', name: '' }
+    //         state.errorsLaravel = [];
+    //         $('#editClient').modal('hide')
+    //         toastr.success('Cliente actualizado con éxito')
+    //     }).catch(error => {
+    //         state.errorsLaravel = error.response.data
+    //     })
+    // },
+    // deleteClient(state, id){
+    //     var url = urlClient + '/' +  id
+    //     axios.delete(url).then(response => {
+    //         toastr.success('Cliente eliminado con éxito')
+    //     })
+    // },
     /*************************POST********************** */
     /**************************************************** */
     /**************************************************** */
@@ -1204,16 +1265,23 @@ export default { //used for changing the state
     },
     /********* servicios *************/
     allServiceposts(state){
-        var url = urlAllService
-        axios.get(url).then(response => {
-            state.serviceposts = []
-            response.data.forEach((service) => {
-                state.serviceposts.push( { label: service.name, value: service.id, precio: service.price } )
+        if(state.selectedIsSession != null){
+            var url = urlAllService + '/' + state.selectedIsSession.value
+            axios.get(url).then(response => {
+                state.serviceposts = []
+                if (response.data != null) {
+                    response.data.forEach((service) => {
+                        state.serviceposts.push( { label: service.name, value: service.id, precio: service.price } )
+                    });
+                }
             });
-        });
+        }
     },
     setServicepost(state, service) {
         state.selectedServiceposts = service
+        if (state.selectedServiceposts != null) {
+            state.newVoucherSession.price = state.selectedServiceposts.precio
+        }
     },
     setServicepromotion(state, service) {
         state.selectedServicepromotions = service
@@ -1765,12 +1833,6 @@ export default { //used for changing the state
                                 servicepost_id: response.data,
                                 personal_id: service.personal.value,
                             })
-                            //toastr.success('Personal asociado al servicio con éxito')
-                            state.selectedSucursal = { id: null, name: null }
-                            state.selectedClient = null
-                            state.selectedCategory = null
-                            // state.selectedPayment= null
-                            state.selectedServiceposts= null
                         }).catch(error => {
                             //state.errorsLaravel = error.response.data
                         })

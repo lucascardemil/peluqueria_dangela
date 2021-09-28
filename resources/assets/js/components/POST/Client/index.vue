@@ -28,7 +28,7 @@
 
 <script>
 
-import selectClient from '../../User/Select'
+import selectClient from '../../Client/Select'
 import { loadProgressBar } from 'axios-progress-bar'
 import { mapState, mapActions, mapGetters } from 'vuex'
 

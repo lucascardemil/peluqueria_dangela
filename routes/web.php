@@ -46,7 +46,8 @@ Route::ApiResource('professions.users', 'Profession\ProfessionUserController')->
 //administrador de recursos para los servicios
 Route::ApiResource('services', 'Service\ServiceController');
 //ruta para obtener todos los servicios
-Route::get('services-all', 'Service\ServiceController@all');
+//Route::get('services-all', 'Service\ServiceController@all');
+Route::get('services-all/{category}', 'Service\ServiceController@SelectServicesVoucher');
 //ruta para obtener la cantidad total de servicios
 Route::get('services-total', 'Service\ServiceController@total');
 //ruta para obtener todos los servicios por mes
@@ -60,6 +61,9 @@ Route::ApiResource('servicepromotions', 'Promotion\ServicepromotionController');
 
 //administrador de recursos para los usuarios
 Route::ApiResource('users', 'User\UserController');
+Route::get('users', 'User\UserController@indexUsers');
+Route::post('create-user', 'User\UserController@storeUser');
+Route::put('update-user/{id}', 'User\UserController@updateUser');
 Route::ApiResource('users-all', 'User\UserController@all');
 Route::get('users-available-service/{user}', 'User\UserController@listServicePoint');
 //ruta para obtener la cantidad total de usuarios
@@ -82,7 +86,11 @@ Route::ApiResource('users.personals.services', 'UserPersonalServiceController')-
 //Route::ApiResource('user-offers', 'User\UserOfferController');
 
 /**************** recursos para clientes ***************************/
-Route::ApiResource('clients', 'Post\ClientpostController');
+Route::ApiResource('clients-pos', 'Post\ClientpostController');
+Route::get('clients', 'User\UserController@indexClients');
+Route::post('create-client', 'User\UserController@storeClient');
+Route::put('update-client/{id}', 'User\UserController@updateClient');
+Route::post('clients-pos', 'User\UserController@storeUser');
 
 /********************* Sistema POS **************** */
 /**************************************************** */
@@ -174,6 +182,12 @@ Route::middleware(['auth'])->group( function(){
             return view('admin.user');
         })->name('usuarios')
         ->middleware('permission:usuarios');
+
+    //Clientes
+    Route::get('clientes', function () {
+        return view('admin.client');
+    })->name('clientes')
+    ->middleware('permission:clientes');
 
     //Servicios
     Route::get('servicios', function () {
@@ -281,5 +295,17 @@ Route::middleware(['auth'])->group( function(){
 
 });
 
+
+Route::get('storage-link', function(){
+    if(file_exists(public_path('storage'))){
+        return 'El directorio"public/storage" ya existe.';
+    }
+
+    app('files')->link(
+        storage_path('app/public'), public_path('storage')
+    );
+
+    return 'El directorio "public/storage" ha sido vinculado';
+});
 
 

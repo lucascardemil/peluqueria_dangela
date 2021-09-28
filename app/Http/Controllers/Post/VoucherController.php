@@ -36,7 +36,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Voucher::orderBy('id', 'DESC')->id()->where('is_paid', '=', 1)->paginate(10);
+        $vouchers = Voucher::orderBy('id', 'DESC')->id()->where('is_paid', '=', 0)->paginate(10);
 
         return [
             'pagination' => [
@@ -273,7 +273,7 @@ class VoucherController extends Controller
 
         //return $pdf->download('Voucher N° '.$id.'.pdf');
 
-        return view('boleta.pdf', compact(['voucher', 'services']) );
+        return view('boleta.boleta', compact(['voucher', 'services']) );
     }
 
     public function pdf($id)
@@ -312,7 +312,7 @@ class VoucherController extends Controller
 
         $services = $services;
 
-        $pdf = PDF::loadView('boleta.pdf', compact(['voucher', 'services']) )->setPaper([ 0 , 0 , 226.772 , 141.732 ], 'landscape');
+        $pdf = PDF::loadView('boleta.boletaPDF', compact(['voucher', 'services']) )->setPaper([ 0 , 0 , 226.772 , 141.732 ], 'landscape');
 
         return $pdf->download('Voucher N° '.$id.'.pdf');
     }
@@ -346,8 +346,7 @@ class VoucherController extends Controller
    
     public function vouchersImpagos($id)
     {
-        $vouchers = Voucher::where('is_paid', '=', 0)
-                            ->where('user_id', '=', $id)
+        $vouchers = Voucher::where('user_id', '=', $id)
                             ->get();
          
         foreach($vouchers as $voucher){

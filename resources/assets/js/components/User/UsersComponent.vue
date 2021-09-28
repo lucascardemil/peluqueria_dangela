@@ -14,88 +14,34 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Profesión</th>
-                    <th>Rut</th>
                     <th>Nombre</th>
                     <th>Email</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <!--<th>Fecha Nacimiento</th>
-                    <th>Sexo</th>
-                    <th>Estado Civil</th>
-                    <th>Hijos</th>-->
-                    <th>Código de barra</th>
-                    <th>Puntaje</th>
-                    <th>Enviar Correo</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
+                    <th>Rol</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td></td>
-                    <td></td>
-                    <td>
-                        <input type="text" class="form-control form-control-sm"
-                                v-model="searchUser.rut" @keyup="getUsers">
-                    </td>
                     <td>
                         <input type="text" class="form-control form-control-sm"
                                 v-model="searchUser.name" @keyup="getUsers">
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <!--<td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>-->
                     <td>
                         <input type="text" class="form-control form-control-sm"
-                                v-model="searchUser.barcode" @keyup="getUsers">
+                                v-model="searchUser.email" @keyup="getUsers">
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr v-for="userLocal in users" :key="userLocal.id">
                     <td width="10px">{{ userLocal.id }}</td>
-                    <td>{{ userLocal.profession.name }}</td>
-                    <td>{{ userLocal.rut }}</td>
                     <td>{{ userLocal.name }}</td>
                     <td>{{ userLocal.email }}</td>
-                    <td>{{ userLocal.address }}</td>
-                    <td>{{ userLocal.phone }}</td>
-                    <!--<td>{{ userLocal.birthdate | moment('L') }}</td>
+                    <td v-if="!userLocal.roles.length">No Asignado</td>
+                    <td v-else>{{ userLocal.roles[0].name }}</td>
+                    <td class="text-right">
 
-                    <td v-if="userLocal.sex == 0">M</td>
-                    <td v-if="userLocal.sex == 1">F</td>
-
-                    <td v-if="userLocal.civil == 1">Soltero(a)</td>
-                    <td v-if="userLocal.civil == 2">Casado(a)</td>
-                    <td v-if="userLocal.civil == 3">Comprometido(a)</td>
-                    <td v-if="userLocal.civil == 4">Divorciado(a)</td>
-
-                    <td v-if="userLocal.children == 100">No</td>
-                    <td v-else>{{ userLocal.children }}</td>-->
-
-                    <td>{{ userLocal.barcode }}</td>
-                    <td>{{ userLocal.score }}</td>
-                    <td>
-                        <input type="checkbox" class="mt-2" v-model="userLocal.is_sendmail"
-                            @change="canSendMail({ user:userLocal, send: userLocal.is_sendmail })">
-                    </td>
-                    <td>
-                        <button class="btn btn-secondary btn-rounded btn-sm"  data-toggle="modal" data-target="#detail"
-                                @click.prevent="showUser({ id: userLocal.id})"
-                                title="Detalle">
-                                <i class="fas fa-info"></i>
-                        </button>
-                    </td>
-                    <td>
                         <button class="btn btn-warning btn-rounded btn-sm"
                                 @click.prevent="editUser({userLocal})"
                                 data-toggle="tooltip"
@@ -103,13 +49,11 @@
                                 title="Editar">
                                 <i class="far fa-edit"></i>
                         </button>
-                    </td>
-                    <td>
+                    
                         <button class="btn btn-danger btn-rounded btn-sm"
                                 @click.prevent="deleteUser({ id: userLocal.id })"
                                 data-toggle="tooltip"
                                 data-placement="top"
-                                :disabled="true"
                                 title="Eliminar">
                             <i class="fas fa-ban"></i>
                         </button>
@@ -155,7 +99,6 @@
 
         <CreateUserComponent></CreateUserComponent>
         <EditUserComponent></EditUserComponent>
-        <DetailUserComponent></DetailUserComponent>
     </div>
 
 </template>
@@ -166,22 +109,19 @@
 import { loadProgressBar } from 'axios-progress-bar';
 import CreateUserComponent from './CreateUserComponent';
 import EditUserComponent from './EditUserComponent';
-import DetailUserComponent from './DetailUserComponent';
-//import EditProfessionComponent from './EditProfessionComponent';
 import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
-    components: { CreateUserComponent, EditUserComponent, DetailUserComponent },
+    components: { CreateUserComponent, EditUserComponent },
     computed:{
         ...mapState(['users', 'searchUser', 'pagination', 'offset']),
         ...mapGetters(['isActived', 'pagesNumber'])
     },
     methods:{
-        ...mapActions(['getUsers','editUser', 'showUser', 'deleteUser', 'canSendMail', 'changePageUser'])
+        ...mapActions(['getUsers','editUser', 'deleteUser', 'changePageUser'])
     },
     created(){
         loadProgressBar()
-        //this.$store.dispatch('allProfessions'),
         this.$store.dispatch('getUsers', { page: 1 })
     },
 }

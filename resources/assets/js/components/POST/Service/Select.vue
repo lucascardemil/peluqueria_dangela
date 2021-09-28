@@ -36,28 +36,3 @@ export default {
 }
 </script>
 
-<style>
-.v-select .selected-tag {
-    height: auto; 
-    line-height: 1.42857143;
-    font-size: 1em;
-}
-
-.v-select input[type=search] {
-    height: auto;
-}
-
-.v-select .dropdown-toggle .clear {
-    font-size: 23px;
-}
-
-.v-select .open-indicator {
-    bottom: auto; 
-    right: auto;
-    height: auto;
-}
-
-.v-select .open-indicator, .v-select .open-indicator:before {
-    width: 10px;
-}
-</style>
