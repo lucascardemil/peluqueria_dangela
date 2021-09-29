@@ -544,8 +544,15 @@ export default { //methods
         context.commit('selectedDate', data)
     },
     createVoucherSession(context, data){
-            context.commit('addService')
-            context.commit('createVoucherSession', data)
+        context.commit('addService')
+        context.commit('createVoucherSession', data)
+    },
+
+    addToCart(context, data) {
+        context.commit('addToCart', data)
+    },
+    removeFromCart(context, data) {
+        context.commit('removeFromCart', data)
     },
     createMail(context){
         context.commit('createMail')

@@ -1225,7 +1225,6 @@ export default { //used for changing the state
         state.sucursalsSelect = []
         axios.get(url).then(response => {
             state.sucursals = response.data
-            console.log(response.data)
             response.data.forEach((sucursal) => {
                 state.sucursalsSelect.push( { label: sucursal.name, value: sucursal.id } )
             })
@@ -1790,64 +1789,120 @@ export default { //used for changing the state
 
         })
     },
+
+    addToCart(state) {
+        state.cart.push({
+            // service: {
+            //     label: state.selectedServiceposts.label,
+            //     value: state.selectedServiceposts.value,
+            //     price: state.selectedServiceposts.precio
+            // },
+            service_name: state.selectedServiceposts.label,
+            service_id: state.selectedServiceposts.value,
+            service_price: state.selectedServiceposts.precio,
+            client_name: 'Voucher ' + state.selectedClient.nombre,
+            client_id: state.selectedClient.value,
+            personal_name: state.selectedPersonalposts.label,
+            personal_id: state.selectedPersonalposts.value,
+            sucursal_name: state.selectedSucursal.label,
+            sucursal_id: state.selectedSucursal.value,
+            quantity: parseInt(state.newVoucherSession.quantity)
+        })
+        state.cartTotal += state.newVoucherSession.price
+    },
+
+    removeFromCart(state, data) {
+        let service = state.cart.find(s => s.service_name == data.id)
+
+        state.cartTotal = state.cartTotal - service.service_price
+
+        state.cart.splice(state.cart.indexOf(data.id))
+    },
+
+    // createVoucherSession(state){
+    //     var url = urlVoucher
+    //     state.idVoucher = 0
+    //     var total =  state.newVoucherSession.price
+    //     var cantidad = state.newVoucherSession.quantity
+
+    //     for (let index = 0; index < cantidad; index++) {
+
+    //         axios.post(url, {
+    //             sucursal_id: state.selectedSucursal.value,
+    //             user_id: state.selectedClient.value,
+    //             name: 'Voucher ' + state.selectedClient.nombre,
+    //             is_paid: 0,
+    //             total: total,
+    //         }).then(response => {
+    //             var idVoucher = response.data
+    //             state.idVoucher = idVoucher
+
+    //             toastr.success('Voucher generado con éxito')
+
+    //             var url = urlClientpost
+    //             axios.post(url, {
+    //                 voucher_id: idVoucher,
+    //                 user_id: state.selectedClient.value,
+    //             }).then(response => {
+    //                 //toastr.success('Cliente agregado al voucher con éxito')
+    //                 var url = urlServicepost
+
+    //                 state.listServiceposts.forEach(service => {
+    //                     axios.post(url, {
+    //                         voucher_id: idVoucher,
+    //                         service_id: service.id,
+    //                         price: total,
+    //                     }).then(response => {
+    //                         //toastr.success('Servicio agregado con éxito')
+
+    //                         var url = urlPersonalpost
+    //                         axios.post(url, {
+    //                             servicepost_id: response.data,
+    //                             personal_id: service.personal.value,
+    //                         })
+    //                     }).catch(error => {
+    //                         //state.errorsLaravel = error.response.data
+    //                     })
+    //                 })
+    //             })
+    //             .catch(error => {
+    //                 //state.errorsLaravel = error.response.data
+    //             })
+
+    //         }).catch(error => {
+    //             //state.errorsLaravel = error.response.data
+    //         })
+    //     }
+    //     state.newVoucherSession= { quantity: 1, price: 0}
+    // },
+
     createVoucherSession(state){
         var url = urlVoucher
-        state.idVoucher = 0
-        var total =  state.newVoucherSession.price
-        var cantidad = state.newVoucherSession.quantity
 
-        for (let index = 0; index < cantidad; index++) {
+        let session = {
+            total: state.cartTotal,
+            service: state.cart
+        }
 
-            axios.post(url, {
-                sucursal_id: state.selectedSucursal.value,
-                user_id: state.selectedClient.value,
-                name: 'Voucher ' + state.selectedClient.nombre,
-                // aditional: state.newVoucherSession.aditional,
-                // payment: state.selectedPayment.label,
-                is_paid: 0,
-                total: total,
-            }).then(response => {
-                var idVoucher = response.data
-                state.idVoucher = idVoucher
-
-                toastr.success('Voucher generado con éxito')
-
-                var url = urlClientpost
-                axios.post(url, {
-                    voucher_id: idVoucher,
-                    user_id: state.selectedClient.value,
-                }).then(response => {
-                    //toastr.success('Cliente agregado al voucher con éxito')
-                    var url = urlServicepost
-
-                    state.listServiceposts.forEach(service => {
-                        axios.post(url, {
-                            voucher_id: idVoucher,
-                            service_id: service.id,
-                            price: total,
-                        }).then(response => {
-                            //toastr.success('Servicio agregado con éxito')
-
-                            var url = urlPersonalpost
-                            axios.post(url, {
-                                servicepost_id: response.data,
-                                personal_id: service.personal.value,
-                            })
-                        }).catch(error => {
-                            //state.errorsLaravel = error.response.data
-                        })
-                    })
+        if (state.cartTotal > 0) {
+            axios.post(url, session)
+                .then(response => {
+                    state.cart = []
+                    state.cartTotal = 0
+                    toastr.success('Venta generada con exito!')
+                    $('#create').modal('hide')
                 })
                 .catch(error => {
-                    //state.errorsLaravel = error.response.data
+                    toastr.error(error.response.data)
                 })
-
-            }).catch(error => {
-                //state.errorsLaravel = error.response.data
-            })
         }
-        state.newVoucherSession= { quantity: 1, price: 0}
     },
+
+
+
+
+
+
     editVoucher(state, voucher){
 
         state.fillVoucher.id = voucher.id

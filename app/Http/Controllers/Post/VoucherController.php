@@ -59,9 +59,40 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
-        $voucher = Voucher::create($request->all());
+        // $voucher = Voucher::create($request->all());
 
-        return $voucher->id;
+        // return $voucher->id;
+
+        $data = $request->service;
+
+        for ($i=0; $i < count($data); $i++){
+            for ($z=0; $z < $data[$i]['quantity']; $z++){
+                $voucher = Voucher::create([
+                    'sucursal_id' => $data[$i]['sucursal_id'],
+                    'user_id' => $data[$i]['client_id'],
+                    'name' => $data[$i]['client_name'],
+                    'total' => $data[$i]['service_price'],
+                    'is_paid' => 0
+                ])->id;
+
+                Clientpost::create([
+                    'voucher_id' => $voucher,
+                    'user_id' => $data[$i]['client_id']
+                ]);
+
+
+                $servicepost = Servicepost::create([
+                    'voucher_id' => $voucher,
+                    'service_id' => $data[$i]['service_id'],
+                    'price' => $data[$i]['service_price']
+                ])->id;
+
+                Personalpost::create([
+                    'servicepost_id' => $servicepost,
+                    'personal_id' => $data[$i]['personal_id']
+                ]);
+            }
+        }
     }
 
     /**

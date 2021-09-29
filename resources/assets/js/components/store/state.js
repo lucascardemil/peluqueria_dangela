@@ -167,6 +167,9 @@ export default { //data
     cajaServices: [],
     totalCajaZ: 0,
     fillVoucher : { id: '', personal: '', name: '', total: '', is_paid: 0 },
+    cart:[],
+    cartTotal: 0,
+    index: 0,
 
     detailPersonalServices: [],
     sucursalId: 0,

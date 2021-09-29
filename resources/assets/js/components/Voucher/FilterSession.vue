@@ -2,21 +2,29 @@
     <div>
         <div class="row justify-content-md-center">
             <div class="col-6">
-                <label>Seleccionar Cliente</label>    
-                <select-user></select-user>
+                <div class="row">
+                    <div class="col-6">
+                        <label>Seleccionar Cliente</label>
+                        <select-user></select-user>
+                    </div>
+                    <div class="col-6 pt-4 mt-1">
+                    
+                            
+                                <button class="btn btn-primary btn-block form-control"
+                                        @click.prevent="getVouchersImpagos()"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Buscar">
+                                        <i class="fas fa-search"></i>
+                                </button>
+                        
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row justify-content-md-center">
-            <div class="col-6">
-                <button class="btn btn-primary btn-block form-control"
-                        @click.prevent="getVouchersImpagos()"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Buscar">
-                        <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
+        
+
+        
         <div class="row">
             <div class="col-12" >
                 <table class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
@@ -35,7 +43,7 @@
                     <tbody>
                         <tr v-for="voucherLocal in vouchers" :key="voucherLocal.id">
                             <td >{{ voucherLocal.id }}</td>
-                            <td v-if="voucherLocal.payment == null">No </td>
+                            <td v-if="voucherLocal.payment == null">No Seleccionado</td>
                             <td v-else>{{ voucherLocal.payment }}</td>
                             <td v-if="voucherLocal.is_paid == 1">Realizado</td>
                             <td v-else>No pagado</td>
