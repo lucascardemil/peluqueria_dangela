@@ -56,7 +56,7 @@ export default { //methods
 
     },
     editPromotion(context, data){
-        context.commit('editPromotion', data.categoryLocal)
+        context.commit('editPromotion', data.id)
     },
     updatePromotion(context, data){
         context.commit('updatePromotion', data.id)
@@ -69,6 +69,11 @@ export default { //methods
         setTimeout(function(){
             context.commit('getPromotions', 1)
         }, 1000)
+    },
+    deletePromotionEdit(context, data){
+        context.commit('deletePromotionEdit', data.id)
+        context.commit('editPromotion', data.id_promo)
+        
     },
     changePagePromotion(context, data){
         context.commit('paginate', data.page)

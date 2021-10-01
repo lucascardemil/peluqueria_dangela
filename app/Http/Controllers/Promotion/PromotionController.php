@@ -80,14 +80,11 @@ class PromotionController extends Controller
 
         foreach ($services as $value) {
             $service = Servicepromotion::with('service')->find($value->id);
-            array_push($arrayService, $service->service);
+            array_push($arrayService, $service);
         }
 
-        $services = $services;
-
         return [
-            'promotion' => $promotion,
-            'services' => $arrayService
+            'servicespromotions' => $arrayService
         ];
     }
 
@@ -100,14 +97,6 @@ class PromotionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => ['required', 'min:4', 'max:190',
-                        \Illuminate\Validation\Rule::unique('promotions')->ignore(Promotion::find($id))],
-        ], [
-            'name.min' => 'El campo nombre debe tener al menos 4 caracteres',
-            'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
-        ]);
-
         Promotion::find($id)->update($request->all());
 
         return;
@@ -132,6 +121,15 @@ class PromotionController extends Controller
         $promotions = Promotion::orderBy('id', 'DESC')->get();
 
         return $promotions;
+    }
+
+    public function eliminarProSerEdit($id)
+    {
+
+        $servicepromotion = Servicepromotion::findOrFail($id);
+        $servicepromotion->delete();
+
+        return;
     }
 
 

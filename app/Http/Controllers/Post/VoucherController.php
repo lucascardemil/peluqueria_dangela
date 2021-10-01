@@ -36,7 +36,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Voucher::orderBy('id', 'DESC')->id()->where('is_paid', '=', 0)->paginate(10);
+        $vouchers = Voucher::orderBy('id', 'DESC')->id()->where('is_paid', '=', 1)->paginate(10);
 
         return [
             'pagination' => [

@@ -11,30 +11,32 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <form action="POST" v-on:submit.prevent="addServicePromotion">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input v-validate="'required|min:4|max:190'"
+                                        :class="{'input': true, 'is-invalid': errors.has('nombre') }"
+                                        type="text"
+                                        name="nombre"
+                                        class="form-control" v-model="newPromotion.name">
+                                <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="servicio">Seleccionar servicio en promocion</label>
+                                <ServicePromotionSelect></ServicePromotionSelect>
+                            </div>
 
-                        <label for="nombre">Nombre</label>
-                        <input v-validate="'required|min:4|max:190'"
-                                :class="{'input': true, 'is-invalid': errors.has('nombre') }"
-                                type="text"
-                                name="nombre"
-                                class="form-control" v-model="newPromotion.name">
-                        <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
-                        
-                        <label for="servicio">Seleccionar servicio en promocion</label>
-                        <ServicePromotionSelect></ServicePromotionSelect>
-                        <br>
-                        <div class="row">
-                            <div class="col">
-                                <button type="button" class="btn btn-block btn-primary btn-lg" @click="addServicePromotion">
-                                    Agregar servicio en promoción
-                                </button>
+                            <div class="row">
+                                <div class="col">
+                                    <button  :disabled="!newPromotion.name" type="submit" class="btn btn-block btn-primary btn-lg">Agregar servicio en promoción</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-danger btn-block btn-lg" @click="deleteServicePromotion">
+                                        <i class="far fa-trash-alt"></i> Eliminar
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-3">
-                                <button class="btn btn-danger btn-block btn-lg" @click="deleteServicePromotion">
-                                    <i class="far fa-trash-alt"></i> Eliminar
-                                </button>
-                            </div>
-                        </div>
+                        </form>
                         <table  class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
                             <thead>
                                 <tr>

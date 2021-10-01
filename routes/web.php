@@ -46,8 +46,8 @@ Route::ApiResource('professions.users', 'Profession\ProfessionUserController')->
 //administrador de recursos para los servicios
 Route::ApiResource('services', 'Service\ServiceController');
 //ruta para obtener todos los servicios
-//Route::get('services-all', 'Service\ServiceController@all');
-Route::get('services-all/{category}', 'Service\ServiceController@SelectServicesVoucher');
+Route::get('services-all', 'Service\ServiceController@all');
+Route::get('services-all-category/{category}', 'Service\ServiceController@SelectServicesVoucher');
 //ruta para obtener la cantidad total de servicios
 Route::get('services-total', 'Service\ServiceController@total');
 //ruta para obtener todos los servicios por mes
@@ -58,6 +58,7 @@ Route::ApiResource('services.users', 'Service\ServiceUserController')->only(['in
 Route::ApiResource('promotions', 'Promotion\PromotionController');
 Route::get('promotions-all', 'Promotion\PromotionController@all');
 Route::ApiResource('servicepromotions', 'Promotion\ServicepromotionController');
+Route::delete('promotions-services-edit/{id}', 'Promotion\PromotionController@eliminarProSerEdit');
 
 //administrador de recursos para los usuarios
 Route::ApiResource('users', 'User\UserController');

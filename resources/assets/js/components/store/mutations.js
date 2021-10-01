@@ -16,10 +16,12 @@ var urlAllPersonal = 'personals-all'
 var urlAllCompany = 'companies-all'
 var urlAllProfession = 'professions-all'
 var urlAllService = 'services-all'
+var urlAllServiceCategory = 'services-all-category'
 var urlAllUser = 'users-all'
 
 var urlCategory = 'categories'
 var urlPromotion = 'promotions'
+var urlPromotionServicesEdit = 'promotions-services-edit'
 var urlServicepromotion = 'servicepromotions'
 var urlPersonal = 'personals'
 var urlCompany = 'companies'
@@ -460,17 +462,40 @@ export default { //used for changing the state
     showPromotion(state, promotion){
         
     },
-    editPromotion(state, promotion){
-        state.fillPromotion.id = promotion.id
-        state.fillPromotion.name = promotion.name
-        state.fillPromotion.total = promotion.total
-        $("#edit").modal('show')
+    editPromotion(state, id){
+        var url = urlPromotion + '/' + id
+        state.fillPromotion.id = id
+        axios.get(url).then(response => {
+            state.servicespromotions = response.data.servicespromotions
+        });
     },
     updatePromotion(state, id){
         var url = urlPromotion + '/' + id
-        axios.put(url, state.fillPromotion).then(response => {
-            state.fillPromotion = { id: '', name: '', total: 0 }
-            state.errorsLaravel = [];
+        axios.put(url, {
+            total: state.totalPromotion,
+        }).then(response => {
+            var url = urlServicepromotion
+
+            state.listServicepromotions.forEach(service => {
+                axios.post(url, {
+                    promotion_id: id,
+                    service_id: service.id,
+                    price: service.precio,
+                }).then(response => {
+                    toastr.success('Servicio agregado con éxito')
+                }).catch(error => {
+                    //state.errorsLaravel = error.response.data
+                })
+            })
+
+            state.listServicepromotions = []
+            state.totalPromotion = 0
+            state.newPromotion.total = 0
+            state.errorsLaravel = []
+
+
+            // state.fillPromotion = { id: '', name: '', total: 0 }
+            // state.errorsLaravel = [];
             $('#edit').modal('hide')
             toastr.success('Promoción actualizado con éxito')
         }).catch(error => {
@@ -481,6 +506,12 @@ export default { //used for changing the state
         var url = urlPromotion + '/' +  id
         axios.delete(url).then(response => {
             toastr.success('Promoción eliminada con éxito')
+        })
+    },
+    deletePromotionEdit(state, id){
+        var url = urlPromotionServicesEdit + '/' +  id
+        axios.delete(url).then(response => {
+            toastr.success('Servicio eliminada con éxito')
         })
     },
     /******************************* */
@@ -1264,8 +1295,8 @@ export default { //used for changing the state
     },
     /********* servicios *************/
     allServiceposts(state){
-        if(state.selectedIsSession != null){
-            var url = urlAllService + '/' + state.selectedIsSession.value
+        if(state.selectedCategory != null){
+            var url = urlAllServiceCategory + '/' + state.selectedCategory.value
             axios.get(url).then(response => {
                 state.serviceposts = []
                 if (response.data != null) {
@@ -1368,21 +1399,25 @@ export default { //used for changing the state
     },
     addServicePromotion(state){
 
-        state.selectedServicepromotions.forEach(service => {
+        if(state.selectedServicepromotions != null){
 
-            state.listServicepromotions.push({
-                id: service.value,
-                nombre: service.label,
-                precio: service.precio,
+            state.selectedServicepromotions.forEach(service => {
+
+                state.listServicepromotions.push({
+                    id: service.value,
+                    nombre: service.label,
+                    precio: service.precio,
+                })
             })
-        })
-
-        //toastr.success('Servicio Agregado con Éxito')
-        state.selectedServicepromotions = null
+        
+            state.selectedServicepromotions = null
+        }
     },
     deleteServicePromotion(state){
         state.listServicepromotions.pop()
     },
+
+
     /****** suma total */
     totalServicePromotion(state){
         var total = 0
@@ -1791,24 +1826,38 @@ export default { //used for changing the state
     },
 
     addToCart(state) {
-        state.cart.push({
-            // service: {
-            //     label: state.selectedServiceposts.label,
-            //     value: state.selectedServiceposts.value,
-            //     price: state.selectedServiceposts.precio
-            // },
-            service_name: state.selectedServiceposts.label,
-            service_id: state.selectedServiceposts.value,
-            service_price: state.selectedServiceposts.precio,
-            client_name: 'Voucher ' + state.selectedClient.nombre,
-            client_id: state.selectedClient.value,
-            personal_name: state.selectedPersonalposts.label,
-            personal_id: state.selectedPersonalposts.value,
-            sucursal_name: state.selectedSucursal.label,
-            sucursal_id: state.selectedSucursal.value,
-            quantity: parseInt(state.newVoucherSession.quantity)
-        })
-        state.cartTotal += state.newVoucherSession.price
+        if(state.selectedClient != null && 
+            state.selectedCategory != null && 
+            state.selectedPersonalposts != null && 
+            state.selectedServiceposts != null &&
+            state.selectedSucursal != null){
+
+            state.cart.push({
+                // service: {
+                //     label: state.selectedServiceposts.label,
+                //     value: state.selectedServiceposts.value,
+                //     price: state.selectedServiceposts.precio
+                // },
+                service_name: state.selectedServiceposts.label,
+                service_id: state.selectedServiceposts.value,
+                service_price: state.selectedServiceposts.precio,
+                client_name: 'Voucher ' + state.selectedClient.nombre,
+                client_id: state.selectedClient.value,
+                personal_name: state.selectedPersonalposts.label,
+                personal_id: state.selectedPersonalposts.label,
+                sucursal_name: state.selectedSucursal.label,
+                sucursal_id: state.selectedSucursal.value,
+                quantity: parseInt(state.newVoucherSession.quantity)
+            })
+            state.cartTotal += state.newVoucherSession.price * parseInt(state.newVoucherSession.quantity)
+
+
+            state.newVoucherSession.price = 0;
+            state.newVoucherSession.quantity = 1;
+            state.selectedCategory = null;
+            state.selectedPersonalposts = null;
+            state.selectedServiceposts = null;
+        }
     },
 
     removeFromCart(state, data) {
@@ -1923,6 +1972,8 @@ export default { //used for changing the state
         state.payments.forEach(payment => {
             if (payment.label == state.fillVoucher.payment) {
                 state.selectedPayment = payment
+            }else{
+                state.selectedPayment = null
             }
         })
 

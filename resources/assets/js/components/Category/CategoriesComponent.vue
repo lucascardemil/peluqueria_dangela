@@ -15,7 +15,7 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Fecha</th>
-                    <th>Agregar</th>
+                    <th>Plan de sesión</th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -27,6 +27,7 @@
                         <input type="text" class="form-control form-control-sm"
                                 v-model="searchCategory.name" @keyup="getCategories">
                     </td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

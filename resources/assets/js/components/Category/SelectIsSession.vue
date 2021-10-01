@@ -5,7 +5,7 @@
                         name="categoria"
                         @input="setCategoryPos"
                         :options="optionsIsSession"
-                        :value="selectedIsSession"></v-select>
+                        :value="selectedCategory"></v-select>
             <p v-show="errors.has('categoria')" class="text-danger">{{ errors.first('categoria') }}</p>
         
     </div>
@@ -17,7 +17,7 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
     computed:{
-        ...mapState(['optionsIsSession', 'selectedIsSession']),
+        ...mapState(['optionsIsSession', 'selectedCategory']),
         ...mapGetters(['getItem'])
     },
     methods:{

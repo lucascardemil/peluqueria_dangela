@@ -16,13 +16,14 @@
                     <label for="">Selecciona Categoría*</label>
                     <SelectIsSession></SelectIsSession>
                 </div>
-
-                <div class="col-5">
+            </div>
+            <div class="form-row align-items-center">
+                <div class="col-6">
                     <label for="">Selecciona Servicio*</label>
                     <SelectService></SelectService>
                 </div>
 
-                <div class="col-1">
+                <div class="col-2">
                     <label for="">Cantidad*</label>
                     <input
                         :class="{'input': true, 'is-invalid': errors.has('cantidad') }"
@@ -31,7 +32,7 @@
                         class="form-control" v-model="newVoucherSession.quantity">
                 </div>
 
-                <div class="col-1">
+                <div class="col-2">
                     <label for="">Valor Sesión*</label>
                     <input
                         :class="{'input': true, 'is-invalid': errors.has('valor') }"
@@ -49,16 +50,17 @@
                         class="form-control" v-model="newVoucherSession.aditional">
                 </div> -->
 
-                <div class="col-3">
+                <div class="col-2">
                     <label>Seleccionar Personal</label>
                     <PersonalService></PersonalService>
                 </div>
-
+            </div>
+            <div class="row justify-content-end">
                 <!-- <div class="col-4">
                     <label>Seleccionar Método de Pago</label>
                     <Payment></Payment>
                 </div> -->
-                <div class="col-2 pt-4">
+                <div class="col-4 mt-2">
                     <button  :disabled="!newVoucherSession.price" type="submit" class="btn btn-info form-control">Agregar</button>
                 </div>
             </div>
@@ -105,9 +107,11 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="text-right">
-                    <a href="#" :disabled="cartTotal===0" class="btn btn-primary form-control btn-sm col-4" v-on:click="createVoucherSession">Generar Vouchers</a>
-                </div>
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-4">
+                <a href="#" :disabled="cartTotal===0" class="btn btn-primary form-control btn-sm" v-on:click="createVoucherSession">Generar Vouchers</a>
             </div>
         </div>
         <hr>

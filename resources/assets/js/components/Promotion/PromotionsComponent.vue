@@ -30,6 +30,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
 
                 <tr v-for="promotionLocal in promotions" :key="promotionLocal.id">
@@ -37,16 +38,14 @@
                     <td>{{ promotionLocal.name }}</td>
                     <td>{{ promotionLocal.total | currency }}</td>
                     <td>{{ promotionLocal.created_at |  moment('DD/MM/YYYY') }}</td>
-                <!--<td width="10px">
-                        <a href="#" class="btn btn-warning btn-sm"
-                            @click.prevent="editPromotion( { promotionLocal } )"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Editar">
-                            <i class="far fa-edit"></i>
-                        </a>
+                    <td width="10px">
+                        <button class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#edit"
+                                @click.prevent="editPromotion({ id: promotionLocal.id})"
+                                title="Editar">
+                                <i class="far fa-edit"></i>
+                        </button>
                     </td>
-                -->                    
+                             
                     <td width="10px">
                         <a href="#" class="btn btn-danger btn-sm"
                             @click.prevent="deletePromotion( { id: promotionLocal.id } )"
@@ -96,7 +95,7 @@
         </nav>
 
         <CreatePromotion></CreatePromotion>
-        <EditPromotion></EditPromotion>
+        <EditPromotionComponent></EditPromotionComponent>
     </div>
 
 </template>
@@ -106,11 +105,11 @@
 
 import { loadProgressBar } from 'axios-progress-bar'
 import CreatePromotion from './CreatePromotionComponent'
-import EditPromotion from './EditPromotionComponent'
+import EditPromotionComponent from './EditPromotionComponent'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
-    components: { CreatePromotion, EditPromotion },
+    components: { CreatePromotion, EditPromotionComponent },
     computed:{
         ...mapState(['promotions', 'pagination', 'offset','searchPromotion']),
         ...mapGetters(['isActived', 'pagesNumber'])
