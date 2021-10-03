@@ -430,7 +430,7 @@ export default { //used for changing the state
 
         axios.post(url, {
             name: state.newPromotion.name,
-            total: state.totalPromotion,
+            total: state.newPromotion.total,
         }).then(response => {
 
             idPromotion = response.data
@@ -462,9 +462,10 @@ export default { //used for changing the state
     showPromotion(state, promotion){
         
     },
-    editPromotion(state, id){
-        var url = urlPromotion + '/' + id
-        state.fillPromotion.id = id
+    editPromotion(state, promotion){
+        var url = urlPromotion + '/' + promotion.id
+        state.fillPromotion.id = promotion.id
+        // state.fillPromotion.total = promotion.total
         axios.get(url).then(response => {
             state.servicespromotions = response.data.servicespromotions
         });
@@ -695,7 +696,7 @@ export default { //used for changing the state
             sex: state.newClient.sex,
             civil: state.newClient.civil,
             children: state.newClient.children,
-            barcode: state.newClient.barcode,
+            barcode: 0,
             score: state.newClient.score,
             password: '',
             is_convenio: state.newClient.is_convenio
@@ -707,6 +708,7 @@ export default { //used for changing the state
             toastr.success('Cliente generado con éxito');
         }).catch(error => {
             state.errorsLaravel = error.response.data
+            //toastr.error(error.response.data)
         })
     },
     editClient(state, user){
@@ -731,7 +733,7 @@ export default { //used for changing the state
         state.fillClient.sex = user.sex
         state.fillClient.civil = user.civil
         state.fillClient.children = user.children
-        state.fillClient.barcode = user.barcode
+        // state.fillClient.barcode = user.barcode
         state.fillClient.score = user.score
         state.fillClient.password = user.password
         state.fillClient.is_convenio = user.is_convenio
@@ -752,7 +754,7 @@ export default { //used for changing the state
             sex: state.fillClient.sex,
             civil: state.fillClient.civil,
             children: state.fillClient.children,
-            barcode: state.fillClient.barcode,
+            barcode: 0,
             score: state.fillClient.score,
             is_convenio: state.fillClient.is_convenio
         }).then(response => {
@@ -1425,6 +1427,7 @@ export default { //used for changing the state
         state.listServicepromotions.forEach(service => {
             total += parseInt(service.precio)
         })
+        //state.newPromotion.total = total
         state.totalPromotion = total
     },
 
@@ -1844,7 +1847,7 @@ export default { //used for changing the state
                 client_name: 'Voucher ' + state.selectedClient.nombre,
                 client_id: state.selectedClient.value,
                 personal_name: state.selectedPersonalposts.label,
-                personal_id: state.selectedPersonalposts.label,
+                personal_id: state.selectedPersonalposts.value,
                 sucursal_name: state.selectedSucursal.label,
                 sucursal_id: state.selectedSucursal.value,
                 quantity: parseInt(state.newVoucherSession.quantity)
@@ -1928,12 +1931,11 @@ export default { //used for changing the state
     createVoucherSession(state){
         var url = urlVoucher
 
-        let session = {
-            total: state.cartTotal,
-            service: state.cart
-        }
-
         if (state.cartTotal > 0) {
+            let session = {
+                total: state.cartTotal,
+                service: state.cart
+            }
             axios.post(url, session)
                 .then(response => {
                     state.cart = []

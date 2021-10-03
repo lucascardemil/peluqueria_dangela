@@ -40,7 +40,7 @@
                     <td>{{ promotionLocal.created_at |  moment('DD/MM/YYYY') }}</td>
                     <td width="10px">
                         <button class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#edit"
-                                @click.prevent="editPromotion({ id: promotionLocal.id})"
+                                @click.prevent="editPromotion({ promotionLocal })"
                                 title="Editar">
                                 <i class="far fa-edit"></i>
                         </button>

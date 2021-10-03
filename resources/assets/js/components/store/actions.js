@@ -56,7 +56,7 @@ export default { //methods
 
     },
     editPromotion(context, data){
-        context.commit('editPromotion', data.id)
+        context.commit('editPromotion', data.promotionLocal)
     },
     updatePromotion(context, data){
         context.commit('updatePromotion', data.id)
@@ -549,7 +549,7 @@ export default { //methods
         context.commit('selectedDate', data)
     },
     createVoucherSession(context, data){
-        context.commit('addService')
+        // context.commit('addService')
         context.commit('createVoucherSession', data)
     },
 

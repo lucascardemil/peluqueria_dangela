@@ -51,11 +51,13 @@ class PromotionController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:promotions|min:4|max:190',
+            'total' => 'required'
         ], [
             'name.required' => 'El campo nombre es obligatorio',
             'name.unique' => 'El nombre de la promocion ya existe',
             'name.min' => 'El campo nombre debe tener al menos 4 caracteres',
             'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
+            'total.required' => 'El campo total es obligatorio',
         ]);
 
         $promotion= Promotion::create($request->all());
@@ -97,6 +99,17 @@ class PromotionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name' => 'required|unique:promotions|min:4|max:190',
+            'total' => 'required'
+        ], [
+            'name.required' => 'El campo nombre es obligatorio',
+            'name.unique' => 'El nombre de la promocion ya existe',
+            'name.min' => 'El campo nombre debe tener al menos 4 caracteres',
+            'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
+            'total.required' => 'El campo total es obligatorio',
+        ]);
+
         Promotion::find($id)->update($request->all());
 
         return;

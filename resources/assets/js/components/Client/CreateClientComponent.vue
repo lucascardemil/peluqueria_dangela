@@ -133,7 +133,7 @@
                                 v-model="newClient.score">
                         <p v-show="errors.has('puntaje')" class="text-danger">{{ errors.first('puntaje') }}</p>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="codigobarra">Código de barra*</label>
                         <input v-validate="'min:4'"
                                 :class="{'input': true, 'is-invalid': errors.has('codigobarra') }"
@@ -141,7 +141,7 @@
                                 name="codigobarra"
                                 class="form-control form-control-sm" v-model="newClient.barcode">
                         <p v-show="errors.has('codigobarra')" class="text-danger">{{ errors.first('codigobarra') }}</p>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="is_convenio" v-model="newClient.is_convenio">

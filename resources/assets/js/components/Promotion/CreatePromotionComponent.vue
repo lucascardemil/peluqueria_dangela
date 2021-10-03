@@ -55,10 +55,25 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <h2>Valor de Promoción:$ {{ totalPromotion }} </h2>
-
+                        <!-- <h2>Valor de Promoción:$ {{ totalPromotion }} </h2> -->
+                        <h2>Valor de Promoción: $ {{ totalPromotion }}</h2>
+                        <hr>
+                        <label>Valor Manual</label>
+                        <div class="mt-2">
+                            <input v-validate="'required'"
+                                :class="{'input': true, 'is-invalid': errors.has('total') }"
+                                type="text"
+                                name="total"
+                                class="form-control" v-model="newPromotion.total" >
+                            <p v-show="errors.has('total')" class="text-danger">{{ errors.first('total') }}</p>
+                        </div>
+                        
+                                
+            
+                            
                         <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
                             <p>{{ error.name }}</p>
+                            <p>{{ error.total }}</p>
                         </div>
 
 

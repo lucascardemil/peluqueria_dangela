@@ -94,7 +94,7 @@ class UserController extends Controller
         $this->validate($request, [
             'company_id' => 'required',
             'profession_id' => 'required',
-            'rut' => 'required|unique:users,rut|cl_rut|min:7',
+            'rut' => 'required|unique:users|cl_rut|min:7',
             'name' => 'required|min:6|max:190',
             'email' => 'required|email|unique:users,email|min:6|max:150',
             'address' => 'required|min:6|max:300',
@@ -103,7 +103,7 @@ class UserController extends Controller
             'sex' => 'required',
             'civil' => 'required',
             'children' => 'required',
-            'barcode' => 'required|min:4',
+            // 'barcode' => 'required|min:4',
         ], [
             'company_id.required' => 'El campo empresa es obligatorio',
             'profession_id.required' => 'El campo profesion es obligatorio',
@@ -231,7 +231,7 @@ class UserController extends Controller
             //'sex' => 'required',
             //'civil' => 'required',
             //'children' => 'required',
-            'barcode' => 'required',
+            // 'barcode' => 'required',
         ], [
             'rut.cl_rut' => 'El campo rut no tiene el formato correcto',
             'rut.required' => 'El campo rut es obligatorio',

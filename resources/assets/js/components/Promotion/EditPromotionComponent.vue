@@ -79,7 +79,17 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <h2>Valor de Promoción:$ {{ totalPromotion }} </h2>
+                        <h2>Valor de Promoción: $ {{ totalPromotion }}</h2>
+                        <hr>
+                        <label>Valor Manual</label>
+                        <div class="mt-2">
+                            <input v-validate="'required'"
+                                :class="{'input': true, 'is-invalid': errors.has('total') }"
+                                type="text"
+                                name="total"
+                                class="form-control" v-model="fillPromotion.total" >
+                            <p v-show="errors.has('total')" class="text-danger">{{ errors.first('total') }}</p>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button  :disabled="!totalPromotion" type="submit" class="btn btn-warning" >
