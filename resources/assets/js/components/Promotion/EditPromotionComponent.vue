@@ -28,10 +28,10 @@
                                 <tr v-for="servicepromotionEdit in servicespromotions" :key="servicepromotionEdit.id">
                                     
                                     <td><h5>{{ servicepromotionEdit.service.name }}</h5></td>
-                                    <td><h5>{{ servicepromotionEdit.service.price }}</h5></td>
+                                    <td><h5>$ {{ servicepromotionEdit.service.price }}</h5></td>
                                     <td width="10px">
                                         <a href="#" class="btn btn-danger btn-sm"
-                                            @click.prevent="deletePromotionEdit( { id: servicepromotionEdit.id,  id_promo: servicepromotionEdit.promotion_id} )"
+                                            @click.prevent="deletePromotionEdit( { id: servicepromotionEdit.id, id_promo: fillPromotion.id} )"
                                             data-toggle="tooltip"
                                             data-placement="top"
                                             title="Eliminar">
@@ -53,7 +53,7 @@
                                     <button type="submit" class="btn btn-block btn-primary btn-lg">Agregar servicio en promoción</button>
                                 </div>
                                 <div class="col-3">
-                                    <button class="btn btn-danger btn-block btn-lg" @click="deleteServicePromotion">
+                                    <button class="btn btn-danger btn-block btn-lg" type="button" @click="deleteServicePromotion">
                                         <i class="far fa-trash-alt"></i> Eliminar
                                     </button>
                                 </div>
@@ -74,14 +74,17 @@
                                 <tr v-for="servicepromotionLocal in listServicepromotions" :key="servicepromotionLocal.id">
                                     
                                     <td><h5>{{ servicepromotionLocal.nombre }}</h5></td>
-                                    <td><h5>{{ servicepromotionLocal.precio }}</h5></td>
+                                    <td><h5>$ {{ servicepromotionLocal.precio }}</h5></td>
     
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><h5>Total:</h5></td>
+                                    <td><h5>$ {{ totalPromotion }}</h5></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <h2>Valor de Promoción: $ {{ totalPromotion }}</h2>
                         <hr>
-                        <label>Valor Manual</label>
+                        <h4>Valor de Promoción</h4>
                         <div class="mt-2">
                             <input v-validate="'required'"
                                 :class="{'input': true, 'is-invalid': errors.has('total') }"
@@ -92,7 +95,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button  :disabled="!totalPromotion" type="submit" class="btn btn-warning" >
+                        <button type="submit" class="btn btn-warning" >
                             <i class="fas fa-edit"></i> Editar
                         </button>
                     </div>

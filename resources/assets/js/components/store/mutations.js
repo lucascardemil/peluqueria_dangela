@@ -308,14 +308,20 @@ export default { //used for changing the state
             var url = urlPromotion + '/' + promotion.value
             var cont_position=0
             axios.get(url).then(response => {
-                response.data.services.forEach((service) => {
-                    var name = /*response.data.promotion.name +  ' - ' + */service.name
-                    state.servicepromotions.push(  { label: name, value: service.id, precio: service.price ,position: cont_position,estado: 'NO CONFIRMADO',personal: ''}  )
+                response.data.servicespromotions.forEach((service) => {
+                    // var name = /*response.data.promotion.name +  ' - ' + */service.name
+                    state.servicepromotions.push(  { label: service.service.name, value: service.service.id, precio: service.service.price ,position: cont_position,estado: 'NO CONFIRMADO',personal: ''}  )
                     cont_position=cont_position+1
                 })
             }).catch(error => {
                     //state.errorsLaravel = error.response.data
             })
+
+            // var url = urlPromotion + '/' + promotion.value
+            // axios.get(url).then(response => {
+            //     state.servicespromotions = response.data.servicespromotions
+            // });
+
 
         }
     },
@@ -462,9 +468,9 @@ export default { //used for changing the state
     showPromotion(state, promotion){
         
     },
-    editPromotion(state, promotion){
-        var url = urlPromotion + '/' + promotion.id
-        state.fillPromotion.id = promotion.id
+    editPromotion(state, id){
+        var url = urlPromotion + '/' + id
+        state.fillPromotion.id = id
         // state.fillPromotion.total = promotion.total
         axios.get(url).then(response => {
             state.servicespromotions = response.data.servicespromotions
@@ -472,8 +478,14 @@ export default { //used for changing the state
     },
     updatePromotion(state, id){
         var url = urlPromotion + '/' + id
+        var total = 0
+        if(state.fillPromotion.total > 0){
+            total = state.fillPromotion.total
+        }else{
+            total = state.totalPromotion
+        }
         axios.put(url, {
-            total: state.totalPromotion,
+            total: total,
         }).then(response => {
             var url = urlServicepromotion
 
@@ -491,6 +503,7 @@ export default { //used for changing the state
 
             state.listServicepromotions = []
             state.totalPromotion = 0
+            state.fillPromotion.total = 0
             state.newPromotion.total = 0
             state.errorsLaravel = []
 
@@ -937,10 +950,12 @@ export default { //used for changing the state
         })
     },
     editService(state, service){
-        state.options.forEach((category) => {
+        state.optionsCategory.forEach((category) => {
             if(category.value === service.category_id)
                 state.selectedCategory = category
         })
+
+        
         state.fillService.category_id = service.category_id
         state.fillService.id = service.id
         state.fillService.name = service.name
@@ -1417,18 +1432,24 @@ export default { //used for changing the state
     },
     deleteServicePromotion(state){
         state.listServicepromotions.pop()
+        state.totalPromotion = 0
     },
 
 
     /****** suma total */
     totalServicePromotion(state){
-        var total = 0
+        var totalnew = 0
+        var totalold = 0
         state.totalPromotion = 0
-        state.listServicepromotions.forEach(service => {
-            total += parseInt(service.precio)
+
+        state.servicespromotions.forEach(service1 => {
+            totalold += parseInt(service1.price)
+        })
+        state.listServicepromotions.forEach(service2 => {
+            totalnew += parseInt(service2.precio)
         })
         //state.newPromotion.total = total
-        state.totalPromotion = total
+        state.totalPromotion = totalnew + totalold
     },
 
 
@@ -1492,74 +1513,96 @@ export default { //used for changing the state
             });
         });
     },
+
+
     createVoucher(state){
         var url = urlVoucher
-        state.idVoucher = 0
 
-        axios.post(url, {
-            sucursal_id: state.selectedSucursal.id,
-            user_id: state.selectedClient.value,
-            name: 'Voucher ' + state.selectedClient.nombre,
-            payment: state.selectedPayment.label,
-            total: state.totalPost,
-        }).then(response => {
-            var idVoucher = response.data
-            state.idVoucher = idVoucher
-
-            $('#confirmVoucher').modal('hide')
-            toastr.success('Voucher generado con éxito')
-
-            var url = urlClientpost
-            axios.post(url, {
-                voucher_id: idVoucher,
-                user_id: state.selectedClient.value,
-            }).then(response => {
-                //toastr.success('Cliente agregado al voucher con éxito')
-                var url = urlServicepost
-
-                state.listServiceposts.forEach(service => {
-                    //aplicando descuento a los servicios
-                    service.precio = service.precio*(100-state.descuento)/100
-                    axios.post(url, {
-                        voucher_id: idVoucher,
-                        service_id: service.id,
-                        descuento: state.descuento,
-                        price: service.precio,
-                    }).then(response => {
-                        //toastr.success('Servicio agregado con éxito')
-
-                        service.personal.forEach(personal => {
-                            var url = urlPersonalpost
-                            axios.post(url, {
-                                servicepost_id: response.data,
-                                personal_id: personal.value,
-                            })
-                            //toastr.success('Personal asociado al servicio con éxito')
-                        })
-
-                    }).catch(error => {
-                        //state.errorsLaravel = error.response.data
-                    })
+        if (state.totalPost > 0) {
+            let session = {
+                total: state.totalPost,
+                service: state.cart
+            }
+            axios.post(url, session)
+                .then(response => {
+                    state.cart = []
+                    state.totalPost = 0
+                    toastr.success('Venta generada con exito!')
+                    $('#create').modal('hide')
                 })
-                state.selectedSucursal = { id: null, name: null }
-                state.selectedClient = null
-                state.listServiceposts = []
-                state.totalPost = 0
-                state.descuento = 0
-
-                state.finalShow = false
-                state.sucursalShow = false
-                state.codeVoucher = true
-
-            })
-            .catch(error => {
-                state.errorsLaravel = error.response.data
-            })
-
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
+                .catch(error => {
+                    toastr.error(error.response.data)
+                })
+        }
     },
+    // createVoucher(state){
+    //     var url = urlVoucher
+    //     state.idVoucher = 0
+
+    //     axios.post(url, {
+    //         sucursal_id: state.selectedSucursal.id,
+    //         user_id: state.selectedClient.value,
+    //         name: 'Voucher ' + state.selectedClient.nombre,
+    //         payment: state.selectedPayment.label,
+    //         total: state.totalPost,
+    //     }).then(response => {
+    //         var idVoucher = response.data
+    //         state.idVoucher = idVoucher
+
+    //         $('#confirmVoucher').modal('hide')
+    //         toastr.success('Voucher generado con éxito')
+
+    //         var url = urlClientpost
+    //         axios.post(url, {
+    //             voucher_id: idVoucher,
+    //             user_id: state.selectedClient.value,
+    //         }).then(response => {
+    //             //toastr.success('Cliente agregado al voucher con éxito')
+    //             var url = urlServicepost
+
+    //             state.listServiceposts.forEach(service => {
+    //                 //aplicando descuento a los servicios
+    //                 service.precio = service.precio*(100-state.descuento)/100
+    //                 axios.post(url, {
+    //                     voucher_id: idVoucher,
+    //                     service_id: service.id,
+    //                     descuento: state.descuento,
+    //                     price: service.precio,
+    //                 }).then(response => {
+    //                     //toastr.success('Servicio agregado con éxito')
+
+    //                     service.personal.forEach(personal => {
+    //                         var url = urlPersonalpost
+    //                         axios.post(url, {
+    //                             servicepost_id: response.data,
+    //                             personal_id: personal.value,
+    //                         })
+    //                         //toastr.success('Personal asociado al servicio con éxito')
+    //                     })
+
+    //                 }).catch(error => {
+    //                     //state.errorsLaravel = error.response.data
+    //                 })
+    //             })
+    //             state.selectedSucursal = { id: null, name: null }
+    //             state.selectedClient = null
+    //             state.listServiceposts = []
+    //             state.totalPost = 0
+    //             state.descuento = 0
+
+    //             state.finalShow = false
+    //             state.sucursalShow = false
+    //             state.codeVoucher = true
+
+    //         })
+    //         .catch(error => {
+    //             state.errorsLaravel = error.response.data
+    //         })
+
+    //     }).catch(error => {
+    //         state.errorsLaravel = error.response.data
+    //     })
+    // },
     showModalDeleteVoucher(state, id){
         state.idVoucher = id
         $('#modalDeleteVoucher').modal('show')

@@ -82,6 +82,7 @@ export default { //data
     /********************************** */
     /****sección de componentes de servicios */
     servicespromotions: [],
+    services:[],
     service: { name: '', score_exchange: '', score_accumulated: '' },
     newService : { category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '' },
     fillService: { id: '', category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '' },

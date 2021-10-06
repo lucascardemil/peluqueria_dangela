@@ -31,7 +31,7 @@
                                     <button  :disabled="!newPromotion.name" type="submit" class="btn btn-block btn-primary btn-lg">Agregar servicio en promoción</button>
                                 </div>
                                 <div class="col-3">
-                                    <button class="btn btn-danger btn-block btn-lg" @click="deleteServicePromotion">
+                                    <button class="btn btn-danger btn-block btn-lg" type="button" @click="deleteServicePromotion">
                                         <i class="far fa-trash-alt"></i> Eliminar
                                     </button>
                                 </div>
@@ -51,14 +51,18 @@
                             <tbody>
                                 <tr v-for="servicepromotionLocal in listServicepromotions" :key="servicepromotionLocal.id">
                                     <td><h5>{{ servicepromotionLocal.nombre }}</h5></td>
-                                    <td><h5>{{ servicepromotionLocal.precio }}</h5></td>
+                                    <td><h5>$ {{ servicepromotionLocal.precio }}</h5></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><h5>Total:</h5></td>
+                                    <td><h5>$ {{ totalPromotion }}</h5></td>
                                 </tr>
                             </tbody>
                         </table>
                         <!-- <h2>Valor de Promoción:$ {{ totalPromotion }} </h2> -->
-                        <h2>Valor de Promoción: $ {{ totalPromotion }}</h2>
+                        
                         <hr>
-                        <label>Valor Manual</label>
+                        <h4>Valor de Promoción</h4>
                         <div class="mt-2">
                             <input v-validate="'required'"
                                 :class="{'input': true, 'is-invalid': errors.has('total') }"

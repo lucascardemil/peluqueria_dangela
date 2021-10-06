@@ -71,36 +71,36 @@
     </div>
     <div class="col-12" v-show="finalShow">
         <h2>Total Servicios: {{ (totalPost*100)/(100-descuento) }}</h2>
-<<<<<<< HEAD
+
     </div>
     <div class="col-12" v-show="finalShow">
         <h2>Descuentos Aplicados: {{ descuento }} %</h2>
-    </div>
-    <div class="col-12" v-show="finalShow">
-=======
-    </div>
-    <div class="col-12" v-show="finalShow">
-        <h2>Descuentos Aplicados: {{ descuento }} %</h2>
-    </div>
-    <div class="col-12" v-show="finalShow">
->>>>>>> 909326862ace21efbc0d181cffa21cef28ef95b3
-        <h2>Total Final: {{ totalPost }} </h2>
     </div>
     
     <div class="col-12" v-show="finalShow">
+
+        <h2>Total Final: {{ totalPost }} </h2>
+    </div>
+    
+    <!-- <div class="col-12" v-show="finalShow">
         <button :disabled="!completeVoucher"
                 class="btn btn-block btn-success btn-lg pt-4 pb-4" @click="showModalConfirm">
             <h2><i class="fas fa-file-alt"></i> CONFIRMAR SERVICIOS</h2>
         </button>
-    </div>
+    </div> -->
     <div v-if="selectedTypeService.name=='SERVICE'" class="col-lg-3 col-md-6 col-sm-12 mt-5" v-show="finalShow">
         <button class="btn btn-block btn-info btn-lg pt-4 pb-4" @click="showServicePanel">
             <i class="fas fa-arrow-left"></i> Atras
         </button>
     </div>
-    <div v-else class="col-lg-3 col-md-6 col-sm-12 mt-5" v-show="finalShow">
-        <button class="btn btn-block btn-info btn-lg pt-4 pb-4" @click="showPromotionPanel">
+    <div v-else class="col-lg-3 col-md-6 col-sm-12" v-show="finalShow">
+        <button class="btn btn-block btn-info btn-lg pt-4 pb-4 mt-4" @click="showPromotionPanel">
             <i class="fas fa-arrow-left"></i> Atras
+        </button>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 offset-lg-6 pr-0" v-show="finalShow">
+        <button class="btn btn-block btn-success btn-lg  pt-4 pb-4 mt-4" @click="createVoucher">
+            Pagar
         </button>
     </div>
 
@@ -141,7 +141,7 @@ export default {
         ...mapGetters(['completeVoucher'])
     },
     methods:{
-        ...mapActions(['deleteServicepost', 'showServicePanel','showPromotionPanel', 'showModalConfirm', 'resetVoucher'])
+        ...mapActions(['deleteServicepost', 'showServicePanel','showPromotionPanel', 'showModalConfirm', 'resetVoucher','createVoucher'])
     },
     created(){
         loadProgressBar()

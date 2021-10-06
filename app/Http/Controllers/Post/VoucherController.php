@@ -377,8 +377,7 @@ class VoucherController extends Controller
    
     public function vouchersImpagos($id)
     {
-        $vouchers = Voucher::where('user_id', '=', $id)
-                            ->get();
+        $vouchers = Voucher::orderByDesc('is_paid')->orderByDesc('updated_at')->where('user_id', '=', $id)->get();
          
         foreach($vouchers as $voucher){
             $clientpost = $voucher->clientposts;
@@ -408,8 +407,7 @@ class VoucherController extends Controller
                 }
                 
             }
-       }
-
-        return $vouchers;
+        }
+       return $vouchers;
     }
 }

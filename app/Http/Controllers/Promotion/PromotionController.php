@@ -100,13 +100,8 @@ class PromotionController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|unique:promotions|min:4|max:190',
             'total' => 'required'
         ], [
-            'name.required' => 'El campo nombre es obligatorio',
-            'name.unique' => 'El nombre de la promocion ya existe',
-            'name.min' => 'El campo nombre debe tener al menos 4 caracteres',
-            'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
             'total.required' => 'El campo total es obligatorio',
         ]);
 
@@ -138,11 +133,24 @@ class PromotionController extends Controller
 
     public function eliminarProSerEdit($id)
     {
+        $total = 0;
+        $servicepromotions = Servicepromotion::where('id', '=' ,$id)->get();
+        foreach ($servicepromotions as $servicepromotion) {
+            $total += $servicepromotion->price;
+            $id_promotion = $servicepromotion->promotion_id;
+        }
 
-        $servicepromotion = Servicepromotion::findOrFail($id);
-        $servicepromotion->delete();
-
-        return;
+        if($total > 0){
+            $promotions = Promotion::where('id', '=' ,$id_promotion)->get();
+            Promotion::find($id_promotion)->update([
+                'total' => $promotions[0]->total - $total
+            ]);
+        
+            $servicepromotion = Servicepromotion::find($id);
+            $servicepromotion->delete();
+            
+            return;
+        }
     }
 
 
