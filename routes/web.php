@@ -101,6 +101,7 @@ Route::ApiResource('sucursals', 'Post\SucursalController');
 Route::get('sucursals-all', 'Post\SucursalController@all');
 
 Route::ApiResource('vouchers', 'Post\VoucherController');
+Route::post('vouchers-post', 'Post\VoucherController@storeVoucherPost');
 
 Route::ApiResource('payments', 'Post\PaymentController');
 Route::get('payments-all', 'Post\PaymentController@all');

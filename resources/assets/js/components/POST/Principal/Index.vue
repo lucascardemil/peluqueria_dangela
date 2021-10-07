@@ -22,14 +22,14 @@
         <PersonalServicesComponent></PersonalServicesComponent>
     </div>
     -->
-    <div class="col-12 row" v-show="finalShow">
+    <div class="row" v-show="finalShow">
         <div class="col-6">
             <button class="btn btn-danger btn-block btn-lg pt-3 pb-3" @click="deleteServicepost">
                 <i class="far fa-trash-alt"></i> Eliminar
             </button>
         </div>
-        <div class="col-12 mt-4">
-            <table  class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
+        <div class="col-12 mt-4 mb-4">
+            <table  class="table table-hover table-striped table-sm bg-primary text-white">
                 <thead>
                     <tr>
                         <th>
@@ -46,11 +46,12 @@
                 <tbody>
                     <tr v-for="servicepostLocal in listServiceposts" :key="servicepostLocal.id">
                         <td><h3>{{ servicepostLocal.nombre }}</h3></td>
-                        <td><h3>{{ servicepostLocal.precio }}</h3></td>
-                        <td><h3>
-                            <span  v-for="personalLocal in servicepostLocal.personal" :key="personalLocal.id">
-                                {{ personalLocal.label }} |
-                            </span>
+                        <td><h3>$ {{ servicepostLocal.precio }}</h3></td>
+                        <td>
+                            <h3>
+                                <span  v-for="personalLocal in servicepostLocal.personal" :key="personalLocal.id">
+                                    {{ personalLocal.label }} |
+                                </span>
                             </h3>
                         </td>
                     </tr>
@@ -58,60 +59,76 @@
             </table>
         </div>
 
-        <div class="col-12 mb-5" v-show="finalShow">
+        <div class="col-12" v-show="finalShow">
             <label for="pago"><h3>*Método de Pago</h3></label>
             <SelectPayment></SelectPayment>
         </div>
-    </div>
-    <div class="col-12" v-show="finalShow">
-        <h2>Sucursal: {{ selectedSucursal.name }}</h2>
-    </div>
-    <div class="col-12" v-show="finalShow">
-        <h2 v-if="selectedClient != null">Cliente: {{ selectedClient.nombre }}</h2>
-    </div>
-    <div class="col-12" v-show="finalShow">
-        <h2>Total Servicios: {{ (totalPost*100)/(100-descuento) }}</h2>
-
-    </div>
-    <div class="col-12" v-show="finalShow">
-        <h2>Descuentos Aplicados: {{ descuento }} %</h2>
-    </div>
+        <hr>
     
-    <div class="col-12" v-show="finalShow">
+        <div class="col-12 my-3" v-show="finalShow">
+            <table  class="table table-hover table-striped table-sm bg-primary text-white">
+                <thead>
+                    <tr>
+                        <th>
+                            <h3>Sucursal</h3>
+                        </th>
+                        <th>
+                            <h3>Cliente</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><h3>{{ selectedSucursal.name }}</h3></td>
+                        <td v-if="selectedClient != null"><h3>{{ selectedClient.nombre }}</h3></td>
 
-        <h2>Total Final: {{ totalPost }} </h2>
-    </div>
-    
-    <!-- <div class="col-12" v-show="finalShow">
-        <button :disabled="!completeVoucher"
-                class="btn btn-block btn-success btn-lg pt-4 pb-4" @click="showModalConfirm">
-            <h2><i class="fas fa-file-alt"></i> CONFIRMAR SERVICIOS</h2>
-        </button>
-    </div> -->
-    <div v-if="selectedTypeService.name=='SERVICE'" class="col-lg-3 col-md-6 col-sm-12 mt-5" v-show="finalShow">
-        <button class="btn btn-block btn-info btn-lg pt-4 pb-4" @click="showServicePanel">
-            <i class="fas fa-arrow-left"></i> Atras
-        </button>
-    </div>
-    <div v-else class="col-lg-3 col-md-6 col-sm-12" v-show="finalShow">
-        <button class="btn btn-block btn-info btn-lg pt-4 pb-4 mt-4" @click="showPromotionPanel">
-            <i class="fas fa-arrow-left"></i> Atras
-        </button>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-12 offset-lg-6 pr-0" v-show="finalShow">
-        <button class="btn btn-block btn-success btn-lg  pt-4 pb-4 mt-4" @click="createVoucher">
-            Pagar
-        </button>
-    </div>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><h3>Total: $ {{ totalPost }}</h3></td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <!-- <h3>Total Servicios: {{ (totalPost*100)/(100-descuento) }}</h3>
 
-    <div class="col-lg-12 text-center mt-5" v-show="codeVoucher">
-        <h1>Código Voucher: {{ idVoucher }}</h1>
-    </div>
+        
+            <h3>Descuentos Aplicados: {{ descuento }} %</h3> -->
+        
+            
+        </div>
+        
+        <!-- <div class="col-12" v-show="finalShow">
+            <button :disabled="!completeVoucher"
+                    class="btn btn-block btn-success btn-lg pt-4 pb-4" @click="showModalConfirm">
+                <h2><i class="fas fa-file-alt"></i> CONFIRMAR SERVICIOS</h2>
+            </button>
+        </div> -->
+        <div v-if="selectedTypeService.name=='SERVICE'" class="col-lg-3 col-md-6 col-sm-12" v-show="finalShow">
+            <button class="btn btn-block btn-info btn-lg" @click="showServicePanel">
+                <i class="fas fa-arrow-left"></i> Atras
+            </button>
+        </div>
+        <div v-else class="col-lg-3 col-md-6 col-sm-12" v-show="finalShow">
+            <button class="btn btn-block btn-info btn-lg" @click="showPromotionPanel">
+                <i class="fas fa-arrow-left"></i> Atras
+            </button>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 offset-lg-6" v-show="finalShow">
+            <button class="btn btn-block btn-success btn-lg" @click="createVoucher">
+                Pagar
+            </button>
+        </div>
 
-    <div class="col-lg-12 col-sm-12 mt-5" v-show="codeVoucher">
-        <button class="btn btn-block btn-info btn-lg pt-4 pb-4" @click="resetVoucher">
-            <i class="fas fa-file-alt"></i> Generar Nuevo Voucher
-        </button>
+        <div class="col-lg-12 text-center mt-5" v-show="codeVoucher">
+            <h1>Código Voucher: {{ idVoucher }}</h1>
+        </div>
+
+        <div class="col-lg-12 col-sm-12 mt-5" v-show="codeVoucher">
+            <button class="btn btn-block btn-info btn-lg pt-4 pb-4" @click="resetVoucher">
+                <i class="fas fa-file-alt"></i> Generar Nuevo Voucher
+            </button>
+        </div>
     </div>
 
     <ModalConfirm></ModalConfirm>

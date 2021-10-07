@@ -51,6 +51,7 @@ var urlAllClientposts = 'clientposts-all'
 var urlAllPayment = 'payments-all'
 
 var urlVoucher = 'vouchers'
+var urlVoucherPOST = 'vouchers-post'
 var urlVoucherImpagos = 'vouchersimpagos'
 var urlClientpost = 'clientposts'
 var urlServicepost = 'serviceposts'
@@ -1516,16 +1517,20 @@ export default { //used for changing the state
 
 
     createVoucher(state){
-        var url = urlVoucher
+        var url = urlVoucherPOST
 
         if (state.totalPost > 0) {
             let session = {
                 total: state.totalPost,
-                service: state.cart
+                service: state.listServiceposts,
+                payment: state.selectedPayment.label,
+                sucursal_id: state.selectedSucursal.id,
+                client_id: state.selectedClient.value,
+                client_name: 'Voucher ' + state.selectedClient.nombre,
             }
             axios.post(url, session)
                 .then(response => {
-                    state.cart = []
+                    state.listServiceposts = []
                     state.totalPost = 0
                     toastr.success('Venta generada con exito!')
                     $('#create').modal('hide')

@@ -1,6 +1,6 @@
 <template>
-    <div class="col-12 row">
-        <div class="col-lg-12 col-md-12 col-sm-12 pl-0 pr-0">
+    <div>
+        
             <v-select v-validate="'required|min:4'"
                         :class="{'input': true, 'is-invalid': errors.has('categoria') }"
                         name="categoria"
@@ -8,7 +8,7 @@
                         :options="optionsCategory"
                         :value="selectedCategory"></v-select>
             <p v-show="errors.has('categoria')" class="text-danger">{{ errors.first('categoria') }}</p>
-        </div>
+      
     </div>
 </template>
 

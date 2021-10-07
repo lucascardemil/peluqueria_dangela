@@ -36,7 +36,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Voucher::orderBy('id', 'DESC')->id()->where('is_paid', '=', 1)->paginate(10);
+        $vouchers = Voucher::orderBy('id', 'DESC')->id()->where('is_paid', '=', 1)->paginate(20);
 
         return [
             'pagination' => [
@@ -70,7 +70,7 @@ class VoucherController extends Controller
                 $voucher = Voucher::create([
                     'sucursal_id' => $data[$i]['sucursal_id'],
                     'user_id' => $data[$i]['client_id'],
-                    'name' => $data[$i]['client_name'],
+                    'name' =>  $data[$i]['client_name'],
                     'total' => $data[$i]['service_price'],
                     'is_paid' => 0
                 ])->id;
@@ -90,6 +90,55 @@ class VoucherController extends Controller
                 Personalpost::create([
                     'servicepost_id' => $servicepost,
                     'personal_id' => $data[$i]['personal_id']
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeVoucherPost(Request $request)
+    {
+        // $voucher = Voucher::create($request->all());
+
+        // return $voucher->id;
+
+        $services = $request->service;
+        
+
+        for ($i=0; $i < count($services); $i++){
+            
+            $voucher = Voucher::create([
+                'sucursal_id' => $request['sucursal_id'],
+                'user_id' => $request['client_id'],
+                'name' => $request['client_name'],
+                'payment' => $request['payment'],
+                'total' => $request['total'],
+                'is_paid' => 1
+            ])->id;
+
+            Clientpost::create([
+                'voucher_id' => $voucher,
+                'user_id' => $request['client_id']
+            ]);
+
+
+            $servicepost = Servicepost::create([
+                'voucher_id' => $voucher,
+                'service_id' => $services[$i]['id'],
+                'price' => $services[$i]['precio']
+            ])->id;
+
+            
+            $personals = $request->service[$i]['personal'];
+            for ($z=0; $z < count($personals); $z++){
+                Personalpost::create([
+                    'servicepost_id' => $servicepost,
+                    'personal_id' => $personals[$z]['value']
                 ]);
             }
         }

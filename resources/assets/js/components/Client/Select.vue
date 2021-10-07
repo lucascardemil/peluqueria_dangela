@@ -1,22 +1,26 @@
 <template>
-    <div class="row col-12 pr-0">
-        <div class="col-12">
-            <h1 class="color-primary mb-5 mt-2">SELECCIONAR CLIENTE</h1>
+    <div>
+        <hr> 
+        <h2 class="color-primary">SELECCIONAR CLIENTE</h2>
+        <div class="row"> 
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-4">
+                <v-select v-validate="'required|min:2'"
+                            :class="{'input': true, 'is-invalid': errors.has('cliente') }"
+                            class="selectPost"
+                            name="cliente"
+                            @input="setClient"
+                            :options="clients"
+                            :value="selectedClient"></v-select>
+                <p v-show="errors.has('cliente')" class="text-danger">{{ errors.first('cliente') }}</p>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <a href="#" class="btn btn-block btn-primary" @click="showTypeServicePanel">
+                    SELECCIONAR
+                </a>
+            </div>
         </div>
-        <div class="col-lg-8 col-md-12 col-sm-12 mb-4">
-            <v-select v-validate="'required|min:2'"
-                        :class="{'input': true, 'is-invalid': errors.has('cliente') }"
-                        name="cliente"
-                        @input="setClient"
-                        :options="clients"
-                        :value="selectedClient"></v-select>
-            <p v-show="errors.has('cliente')" class="text-danger">{{ errors.first('cliente') }}</p>
-        </div>
-        <div class="col-lg-4 col-md-12 col-sm-12">
-            <a href="#" class="btn btn-block btn-primary btn-lg boton-grande" @click="showTypeServicePanel">
-                SELECCIONAR
-            </a>
-        </div>
+
+       
     </div>
 </template>
 
@@ -37,5 +41,4 @@ export default {
     }
 }
 </script>
-
 

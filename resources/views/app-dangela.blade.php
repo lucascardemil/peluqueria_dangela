@@ -28,6 +28,9 @@
                 opacity: 0;
                 border-radius: 0.25rem;
             }
+            .v-select .dropdown-toggle {
+                background-color: white!important;
+            }
         </style>
 
 

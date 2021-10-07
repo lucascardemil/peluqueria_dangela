@@ -1,15 +1,16 @@
 <template>
-    <div class="row col-12">
-        <div class="col-12">
+    <div class="col-12">
+        
             <h2 v-if="selectedClient != null">Cliente: {{ selectedClient.nombre }}</h2>
-        </div>
-        <div class="col-12">
-            <h1 class="color-primary mt-2">SELECCIONAR CATEGORIA</h1>
-        </div>
+            <hr>
+        
+        
+            <h2 class="color-primary mt-2">SELECCIONAR CATEGORIA</h2>
+        
         <SelectCategory></SelectCategory>
-        <div class="col-12">
-            <h1 class="color-primary mt-2">SELECCIONAR SERVICIO</h1>
-        </div>
+        
+            <h2 class="color-primary mt-2">SELECCIONAR SERVICIO</h2>
+        
         <SelectService></SelectService>
     </div>
 </template>
