@@ -12,30 +12,35 @@
                     </div>
                     <div class="modal-body">
 
-                        <label for="nombre">Nombre</label>
-                        <input v-validate="'required|min:4|max:190'"
-                                :class="{'input': true, 'is-invalid': errors.has('nombre') }"
-                                type="text"
-                                name="nombre"
-                                class="form-control" v-model="newCompany.name">
-                        <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input v-validate="'required|min:4|max:190'"
+                                    :class="{'input': true, 'is-invalid': errors.has('nombre') }"
+                                    type="text"
+                                    name="nombre"
+                                    class="form-control" v-model="newCompany.name">
+                            <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
+                        </div>
 
-                        <label for="fecha">Fecha*</label>
+                        <!-- <label for="fecha">Fecha*</label>
                         <input v-validate="'required'"
                                 :class="{'input': true, 'is-invalid': errors.has('fecha') }"
                                 type="date"
                                 name="fecha"
                                 class="form-control form-control-sm"
                                 v-model="newCompany.date">
-                        <p v-show="errors.has('fecha')" class="text-danger">{{ errors.first('fecha') }}</p>
+                        <p v-show="errors.has('fecha')" class="text-danger">{{ errors.first('fecha') }}</p> -->
 
-                        <label for="descuento">Descuento</label>
-                        <input v-validate="'required'"
-                                :class="{'input': true, 'is-invalid': errors.has('nombre') }"
-                                type="number"
-                                name="descuento"
-                                class="form-control" v-model="newCompany.discount">
-                        <p v-show="errors.has('descuento')" class="text-danger">{{ errors.first('descuento') }}</p>
+                        <div class="form-group">
+
+                            <label for="descuento">Descuento</label>
+                            <input v-validate="'required'"
+                                    :class="{'input': true, 'is-invalid': errors.has('nombre') }"
+                                    type="number"
+                                    name="descuento"
+                                    class="form-control" v-model="newCompany.discount">
+                            <p v-show="errors.has('descuento')" class="text-danger">{{ errors.first('descuento') }}</p>
+                        </div>
 
                         <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
                             <p>{{ error.name }}</p>

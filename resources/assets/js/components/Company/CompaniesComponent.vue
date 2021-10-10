@@ -35,7 +35,7 @@
                     <tr v-for="companyLocal in companies" :key="companyLocal.id">
                         <td width="10px">{{ companyLocal.id }}</td>
                         <td>{{ companyLocal.name }}</td>
-                        <td>{{ companyLocal.date |  moment('DD/MM') }}</td>
+                        <td>{{ companyLocal.created_at |  moment('DD/MM') }}</td>
                         <td>{{ companyLocal.discount }}%</td>
                         <td width="10px">
                             <a href="#" class="btn btn-warning btn-sm"

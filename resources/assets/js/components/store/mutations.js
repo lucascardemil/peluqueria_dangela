@@ -588,11 +588,11 @@ export default { //used for changing the state
         var url = urlCompany;
         axios.post(url, {
             name: state.newCompany.name,
-            date: state.newCompany.date,
+            // date: state.newCompany.date,
             discount: state.newCompany.discount
         }).then(response => {
             state.newCompany.name = ''
-            state.newCompany.date = ''
+            // state.newCompany.date = ''
             state.errorsLaravel = []
             $('#create').modal('hide')
             toastr.success('Empresa generada con éxito')
@@ -610,7 +610,7 @@ export default { //used for changing the state
     updateCompany(state, id){
         var url = urlCompany + '/' + id
         axios.put(url, state.fillCompany).then(response => {
-            state.fillCompany = { 'id': '', 'name': '', 'date': '' }
+            state.fillCompany = { 'id': '', 'name': '' }
             state.errorsLaravel = []
             $('#edit').modal('hide')
             toastr.success('Empresa actualizada con éxito')

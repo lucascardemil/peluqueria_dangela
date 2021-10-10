@@ -36,7 +36,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Voucher::orderBy('id', 'DESC')->id()->where('is_paid', '=', 1)->paginate(20);
+        $vouchers = Voucher::orderByDesc('is_paid')->orderByDesc('updated_at')->id()->where('is_paid', '=', 1)->paginate(20);
 
         return [
             'pagination' => [
@@ -108,19 +108,19 @@ class VoucherController extends Controller
         // return $voucher->id;
 
         $services = $request->service;
+
+        $voucher = Voucher::create([
+            'sucursal_id' => $request['sucursal_id'],
+            'user_id' => $request['client_id'],
+            'name' => $request['client_name'],
+            'payment' => $request['payment'],
+            'total' => $request['total'],
+            'is_paid' => 1
+        ])->id;
         
 
         for ($i=0; $i < count($services); $i++){
             
-            $voucher = Voucher::create([
-                'sucursal_id' => $request['sucursal_id'],
-                'user_id' => $request['client_id'],
-                'name' => $request['client_name'],
-                'payment' => $request['payment'],
-                'total' => $request['total'],
-                'is_paid' => 1
-            ])->id;
-
             Clientpost::create([
                 'voucher_id' => $voucher,
                 'user_id' => $request['client_id']

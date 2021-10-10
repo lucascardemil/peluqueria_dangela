@@ -44,8 +44,8 @@ export default { //data
     idPersonal: null,
     /*** sección componentes de empresas */
     companies: [],
-    newCompany : { name : '', date: '', discount: '' },
-    fillCompany: { id: '', name: '', date: '', discount: '' },
+    newCompany : { name : '', discount: '' },
+    fillCompany: { id: '', name: '', discount: '' },
     searchCompany: {  name: '' },
     /*** sección componentes de profesiones */
     professions: [],

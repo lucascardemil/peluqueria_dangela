@@ -12,30 +12,35 @@
                     </div>
                     <div class="modal-body">
 
-                        <label for="nombre">Nombre</label>
-                        <input v-validate="'required|min:4|max:190'"
-                                :class="{'input': true, 'is-invalid': errors.has('nombre') }"
-                                type="text"
-                                name="nombre"
-                                class="form-control" v-model="fillCompany.name">
-                        <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input v-validate="'required|min:4|max:190'"
+                                    :class="{'input': true, 'is-invalid': errors.has('nombre') }"
+                                    type="text"
+                                    name="nombre"
+                                    class="form-control" v-model="fillCompany.name">
+                            <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
+                        </div>
 
-                        <label for="fecha">Fecha*</label>
+                        <!-- <label for="fecha">Fecha*</label>
                         <input v-validate="'required'"
                                 :class="{'input': true, 'is-invalid': errors.has('fecha') }"
                                 type="date"
                                 name="fecha"
                                 class="form-control form-control-sm"
                                 v-model="fillCompany.date">
-                        <p v-show="errors.has('fecha')" class="text-danger">{{ errors.first('fecha') }}</p>
+                        <p v-show="errors.has('fecha')" class="text-danger">{{ errors.first('fecha') }}</p> -->
 
-                        <label for="porcentaje">Porcentaje</label>
-                        <input v-validate="'required'"
-                                :class="{'input': true, 'is-invalid': errors.has('nombre') }"
-                                type="number"
-                                name="porcentaje"
-                                class="form-control" v-model="fillCompany.discount">
-                        <p v-show="errors.has('porcentaje')" class="text-danger">{{ errors.first('porcentaje') }}</p>
+                        <div class="form-group">
+
+                            <label for="porcentaje">Porcentaje</label>
+                            <input v-validate="'required'"
+                                    :class="{'input': true, 'is-invalid': errors.has('nombre') }"
+                                    type="number"
+                                    name="porcentaje"
+                                    class="form-control" v-model="fillCompany.discount">
+                            <p v-show="errors.has('porcentaje')" class="text-danger">{{ errors.first('porcentaje') }}</p>
+                        </div>
 
                         <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
                             <p>{{ error.name }}</p>
