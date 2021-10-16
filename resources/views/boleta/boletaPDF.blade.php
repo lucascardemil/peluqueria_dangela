@@ -30,12 +30,16 @@
             </tr>
             <?php $contador = 1; ?>
             <?php $descuento = 0; ?>
-                @foreach ($services as $service)
-                <tr>
-                    <td>SERVICIO N°<?php echo $contador; ?></td>
-                    <td><b>${{ number_format($service->service->price, 0, ',', '.') }}</b> ({{ $service->service->name }})</td>
-                    <?php $contador = $contador + 1; ?>
-                    <?php $descuento = $service->descuento; ?>
+            @foreach ($services as $service)
+            <tr>
+                <td>SERVICIO N°<?php echo $contador; ?></td>
+                @if($service->is_promotion > 0)
+                <td><b>${{ number_format($service->price, 0, ',', '.') }}</b> ({{ $service->service->name }})</td>
+                @else
+                <td><b>${{ number_format($service->service->price, 0, ',', '.') }}</b> ({{ $service->service->name }})</td>
+                @endif
+                <?php $contador = $contador + 1; ?>
+                <?php $descuento = $service->descuento; ?>
             </tr>
                 @endforeach
             <!-- <tr>
@@ -44,7 +48,11 @@
             </tr> -->
             <tr>
                 <td>DESCUENTO</td>
-                <td><b>{{$descuento}}%</b></td>
+                @if($service->is_promotion > 0)
+                <td><b>0</b></td>
+                @else
+                <td><b>{{ $descuento }}%</b></td>
+                @endif
             </tr>
             <tr>
                 <td>METODO DE PAGO</td>

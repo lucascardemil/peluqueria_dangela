@@ -307,13 +307,24 @@ export default { //used for changing the state
         if(promotion != null){
             /* aca se debe hacer la consulta con idpromotion para obtener los servicios */
             var url = urlPromotion + '/' + promotion.value
-            var cont_position=0
+            var cont_position = 0
+            
             axios.get(url).then(response => {
                 response.data.servicespromotions.forEach((service) => {
                     // var name = /*response.data.promotion.name +  ' - ' + */service.name
-                    state.servicepromotions.push(  { label: service.service.name, value: service.service.id, precio: service.service.price ,position: cont_position,estado: 'NO CONFIRMADO',personal: ''}  )
-                    cont_position=cont_position+1
+
+                    state.servicepromotions.push({ 
+                        label: service.service.name, 
+                        value: service.service.id, 
+                        precio: service.service.price,
+                        position: cont_position, 
+                        estado: 'NO CONFIRMADO', 
+                        personal: '',
+                    })
+                    cont_position=cont_position+10
                 })
+                state.total_promotion = response.data.total_promotion
+                
             }).catch(error => {
                     //state.errorsLaravel = error.response.data
             })
@@ -469,10 +480,10 @@ export default { //used for changing the state
     showPromotion(state, promotion){
         
     },
-    editPromotion(state, id){
-        var url = urlPromotion + '/' + id
-        state.fillPromotion.id = id
-        // state.fillPromotion.total = promotion.total
+    editPromotion(state, promotion){
+        var url = urlPromotion + '/' + promotion.id
+        state.fillPromotion.id = promotion.id
+        state.fillPromotion.total = promotion.total
         axios.get(url).then(response => {
             state.servicespromotions = response.data.servicespromotions
         });
@@ -1229,6 +1240,7 @@ export default { //used for changing the state
         state.serviceShow = false
         state.personalShow = false
         state.finalShow = false
+        state.is_convenio = state.selectedClient.is_convenio
     },
     showPromotionPanel(state){
         state.clientShow = false
@@ -1304,7 +1316,7 @@ export default { //used for changing the state
         axios.get(url).then(response => {
             state.clients = []
             response.data.forEach((client) => {
-                state.clients.push( { label: client.name, value: client.id, nombre: client.name } )
+                state.clients.push( { label: client.name, value: client.id, nombre: client.name, is_convenio: client.is_convenio } )
             });
         });
     },
@@ -1370,29 +1382,33 @@ export default { //used for changing the state
             precio: state.selectedServiceposts.precio,
             personal: state.selectedPersonalposts,
         })
-
+        state.total_normal += state.selectedServiceposts.precio
         //toastr.success('Servicio Agregado con Éxito')
         state.selectedServiceposts = null
         state.selectedPersonalposts = null
     },
-    addServicePersonalPromotion(state,service){
+    addServicePersonalPromotion(state, service){
+ 
         state.listServiceposts.push({
                 id: service.value,
                 nombre: service.label,
                 precio: service.precio,
                 personal: [state.selectedPersonalposts],
+                
             })
+        state.total_normal += service.precio
         //dejando inactivo el servicio confirmado
         state.servicepromotions.forEach(s => {
-            if(s.value==service.value){
-                s.estado='CONFIRMADO'
-                s.personal=state.selectedPersonalposts.label
+            if(s.value == service.value){
+                s.estado = 'CONFIRMADO'
+                s.personal = state.selectedPersonalposts.label
             }
         })
         state.selectedPersonalposts = null
     },
     deleteServicepost(state){
         state.listServiceposts.pop()
+        state.total_normal.pop()
     },
     /****** suma total */
     //Aqui se esta preguntando por usuario para acceder a su compañia y de su compañia al descuento
@@ -1400,18 +1416,22 @@ export default { //used for changing the state
         var url = urlUser + '/' + state.selectedClient.value
         axios.get(url).then(response => {
             if(response.data.is_convenio){
-               state.descuento=response.data.company.discount
+               state.descuento = response.data.company.discount
             }else{
-                state.descuento=0
+                state.descuento = 0
             }
         }).then(response => {
             var total = 0
             state.totalPost = 0
-            state.listServiceposts.forEach(service => {
-                total += parseInt(service.precio)
-            })
-            //aplicando descuento en el total
-            state.totalPost = total*(100-state.descuento)/100
+            if(state.total_promotion > 0){
+                state.totalPost = state.total_promotion
+            }else{
+                state.listServiceposts.forEach(service => {
+                    total += parseInt(service.precio)
+                })
+                //aplicando descuento en el total
+                state.totalPost = total*(100-state.descuento)/100
+            }
         }).catch(error => {
         })
     },
@@ -1516,7 +1536,7 @@ export default { //used for changing the state
     },
 
 
-    createVoucher(state){
+    createVoucherService(state){
         var url = urlVoucherPOST
 
         if (state.totalPost > 0) {
@@ -1527,17 +1547,47 @@ export default { //used for changing the state
                 sucursal_id: state.selectedSucursal.id,
                 client_id: state.selectedClient.value,
                 client_name: 'Voucher ' + state.selectedClient.nombre,
+                is_promotion: 0,
+                total_normal: state.total_normal,
+                discount: state.descuento
             }
-            axios.post(url, session)
-                .then(response => {
-                    state.listServiceposts = []
-                    state.totalPost = 0
-                    toastr.success('Venta generada con exito!')
-                    $('#create').modal('hide')
-                })
-                .catch(error => {
-                    toastr.error(error.response.data)
-                })
+            axios.post(url, session).then(response => {
+                state.listServiceposts = []
+                state.total_normal = 0 
+                state.totalPost = 0
+                toastr.success('Venta generada con exito!')
+                // $('#create').modal('hide')
+            })
+            .catch(error => {
+                toastr.error(error.response.data)
+            })
+        }
+    },
+
+    createVoucherPromotion(state){
+        var url = urlVoucherPOST
+
+        if (state.totalPost > 0) {
+            let session = {
+                total: state.totalPost,
+                service: state.listServiceposts,
+                payment: state.selectedPayment.label,
+                sucursal_id: state.selectedSucursal.id,
+                client_id: state.selectedClient.value,
+                client_name: 'Voucher ' + state.selectedClient.nombre,
+                is_promotion: 1,
+                total_normal: state.total_normal,
+                discount: 0
+            }
+            axios.post(url, session).then(response => {
+                state.listServiceposts = []
+                state.total_normal = 0 
+                state.totalPost = 0
+                toastr.success('Venta generada con exito!')
+                // $('#create').modal('hide')
+            }).catch(error => {
+                toastr.error(error.response.data)
+            })
         }
     },
     // createVoucher(state){
@@ -1654,6 +1704,9 @@ export default { //used for changing the state
     cajaZ(state, id){
         var url = urlCajaZ + '/' + id
         state.totalCajaZ = 0
+        var total_normal = 0
+        var total = 0
+        var porcent_promotion = 0
         state.cajaServices = []
 
         axios.get(url).then(response => {
@@ -1662,17 +1715,25 @@ export default { //used for changing the state
             state.cajaZData.forEach(voucher => {
                 if(voucher.is_paid){
                     state.totalCajaZ += voucher.total
-                    voucher.serviceposts.forEach(service => {
-                        state.cajaServices.push( {
-                            id: service.id,
-                            price_service: service.price*100/(100-service.descuento),
-                            descuento: service.descuento,
-                            price:service.price,
-                            name: service.service.name,
-                            date: service.created_at,
-                            personals: service.personalposts
-                        })
-                    })
+
+                    // voucher.serviceposts.forEach(serviceP => {
+                    //     total_normal += serviceP.service.price
+                    // })
+                    
+
+                    // console.log(voucher.total)
+                    // console.log(total_normal)
+                    
+                    // porcent_promotion = (voucher.total / total_normal)
+                    
+                    state.cajaServices.push({
+                        serviceposts: voucher.serviceposts,
+                        clientposts: voucher.clientposts,
+                        // porcent_promotion: Math.round(porcent_promotion * 100) / 100
+                        
+                    }) 
+
+                    
                 }
             })
         })
@@ -1805,6 +1866,7 @@ export default { //used for changing the state
                                     descuento: servicePos.descuento,
                                     price: servicePos.price,
                                     created_at: servicePos.created_at,
+                                    is_promotion: servicePos.is_promotion
                                 })
                                 //aplicando descuentos del voucher correspondiente
                                 state.filtroVoucher.total += servicePos.price
@@ -1850,6 +1912,7 @@ export default { //used for changing the state
                                 descuento: servicePos.descuento,
                                 price: servicePos.price,
                                 created_at: servicePos.created_at,
+                                is_promotion: servicePos.is_promotion
                             })
                             state.filtroVoucher.total += servicePos.price
                             contador += 1
@@ -1917,6 +1980,15 @@ export default { //used for changing the state
         state.cartTotal = state.cartTotal - service.service_price
 
         state.cart.splice(state.cart.indexOf(data.id))
+    },
+
+    removeFromPost(state, data) {
+        let service = state.listServiceposts.find(s => s.nombre == data.id)
+
+        state.total_normal = state.total_normal - service.precio
+        state.totalPost = state.totalPost - service.precio
+
+        state.listServiceposts.splice(state.listServiceposts.indexOf(data.id))
     },
 
     // createVoucherSession(state){

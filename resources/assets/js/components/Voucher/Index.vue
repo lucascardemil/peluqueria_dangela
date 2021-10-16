@@ -105,24 +105,35 @@
                         <th>Precio Servicio</th>
                         <th>Descuento</th>
                         <th>Precio Final</th>
+                        
                         <th>Fecha</th>
                         <th>Personal</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr v-for="serviceLocal in cajaServices" :key="serviceLocal.id">
-                        <td width="10px">{{ serviceLocal.id }}</td>
-                        <td>{{ serviceLocal.name }}</td>
-                        <td>{{ serviceLocal.price_service | currency('$', '.', { thousandsSeparator: '.' }) }}</td>
-                        <td>{{ serviceLocal.descuento }}</td>
-                        <td>{{ (serviceLocal.price) | currency('$', '.', { thousandsSeparator: '.' }) }}</td>
-                        <td>{{ serviceLocal.date |  moment('DD/MM/YYYY HH:mm:ss') }}</td>
+                <tbody v-for="serviceLocal in cajaServices" :key="serviceLocal.id">
+           
+                    <tr v-for="servicepostsLocal in serviceLocal.serviceposts" :key="servicepostsLocal.id">
+                        <td>{{ servicepostsLocal.id }}</td>
+                        <td>{{ servicepostsLocal.service.name }}</td>
+                        <td>{{ servicepostsLocal.service.price | currency('$', '.', { thousandsSeparator: '.' }) }}</td>
                         <td>
-                            <span v-for="personal in serviceLocal.personals" :key="personal.id">
-                                {{ personal.personal.name }} -
+                            <span v-if="servicepostsLocal.is_promotion > 0">
+                                {{ parseFloat(servicepostsLocal.descuento).toFixed(2) }}%
+                            </span>
+                            <span v-else>
+                                {{ servicepostsLocal.descuento }}%
+                            </span>
+                        </td>
+                        <td>{{ servicepostsLocal.price | currency('$', '.', { thousandsSeparator: '.' }) }}</td>
+                        
+                        <td>{{ servicepostsLocal.service.created_at |  moment('DD/MM/YYYY HH:mm:ss') }}</td>
+                        <td>
+                            <span v-for="personalpostsLocal in servicepostsLocal.personalposts" :key="personalpostsLocal.id">
+                                {{ personalpostsLocal.personal.name }} -
                             </span>
                         </td>
                     </tr>
+                     
                 </tbody>
             </table>
         </div>
@@ -207,7 +218,7 @@
         components: {},
         computed:{
             ...mapState(['vouchers', 'searchVoucher', 'pagination', 'offset', 'voucher',
-                        'cajaZData', 'cajaServices', 'totalCajaZ', 'totalPersonalServices',
+                        'cajaZData', 'cajaServices', 'clientposts' , 'totalCajaZ', 'totalPersonalServices',
                         'detailPersonalServices', 'detailPersonalName', 'data']),
             ...mapGetters(['isActived', 'pagesNumber'])
         },

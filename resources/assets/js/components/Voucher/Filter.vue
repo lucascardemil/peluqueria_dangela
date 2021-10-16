@@ -93,11 +93,40 @@
                         <td>{{ servicioLocal.id }}</td>
                         <td>{{ servicioLocal.personal }}</td>
                         <td>{{ servicioLocal.name }}</td>
-                        <td>{{ servicioLocal.price*100/(100-servicioLocal.descuento) | currency }}</td>
-                        <td>{{ servicioLocal.descuento }}</td>
+                        <td>{{ servicioLocal.price_service | currency('$', '.', { thousandsSeparator: '.' }) }}</td>
+                        <td>
+                            <span v-if="servicioLocal.is_promotion > 0">
+                                {{ parseFloat(servicioLocal.descuento).toFixed(2) }}%
+                            </span>
+                            <span v-else>
+                                {{ servicioLocal.descuento }}%
+                            </span>
+                        </td>
                         <td>{{ servicioLocal.price | currency }}</td>
                         <td>{{ servicioLocal.created_at |  moment('DD/MM/YYYY') }}</td>
                     </tr>
+
+                    <!-- <tr v-for="servicepostsLocal in servicioLocal.serviceposts" :key="servicepostsLocal.id">
+                        <td>{{ servicepostsLocal.id }}</td>
+                        <td>{{ servicepostsLocal.service.name }}</td>
+                        <td>{{ servicepostsLocal.service.price | currency('$', '.', { thousandsSeparator: '.' }) }}</td>
+                        <td>
+                            <span v-if="servicepostsLocal.is_promotion > 0">
+                                {{ parseFloat(servicepostsLocal.descuento).toFixed(2) }}%
+                            </span>
+                            <span v-else>
+                                {{ servicepostsLocal.descuento }}%
+                            </span>
+                        </td>
+                        <td>{{ servicepostsLocal.price | currency('$', '.', { thousandsSeparator: '.' }) }}</td>
+                        
+                        <td>{{ servicepostsLocal.service.created_at |  moment('DD/MM/YYYY HH:mm:ss') }}</td>
+                        <td>
+                            <span v-for="personalpostsLocal in servicepostsLocal.personalposts" :key="personalpostsLocal.id">
+                                {{ personalpostsLocal.personal.name }} -
+                            </span>
+                        </td>
+                    </tr> -->
                 </tbody>
             </table>
 

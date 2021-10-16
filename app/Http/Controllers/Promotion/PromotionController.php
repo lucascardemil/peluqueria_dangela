@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Promotion;
+use App\Service;
 use App\Servicepromotion;
 
 class PromotionController extends Controller
@@ -78,15 +79,17 @@ class PromotionController extends Controller
         $services = $promotion->servicepromotions;
 
         $arrayService = array();
-
+        $total_normal = 0;
 
         foreach ($services as $value) {
-            $service = Servicepromotion::with('service')->find($value->id);
-            array_push($arrayService, $service);
+            $servicepromotions = Servicepromotion::with('service')->find($value->id);
+            array_push($arrayService, $servicepromotions);
         }
 
         return [
-            'servicespromotions' => $arrayService
+            'servicespromotions' => $arrayService,
+            'total_promotion' => $promotion->total,
+            
         ];
     }
 

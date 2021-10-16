@@ -30,7 +30,7 @@
                             <td class="col-3" v-else> <h3>{{ service.personal }}</h3> </td>
                             
                             <td>
-                                <button  class="btn btn-block btn-secondary" :disabled="service.estado=='CONFIRMADO' || selectedPersonalposts==null" @click="addServicePersonalPromotion(servicepromotions[service.position])">
+                                <button  class="btn btn-block btn-secondary" :disabled="service.estado=='CONFIRMADO' || selectedPersonalposts==null" @click="addServicePersonalPromotion(service)">
                                 CONFIRMAR
                                 </button>
                             </td>

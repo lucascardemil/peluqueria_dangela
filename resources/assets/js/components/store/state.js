@@ -79,6 +79,7 @@ export default { //data
                 phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', score: '', password: '',
                 is_convenio: 0 },
     searchClient: { barcode: '', rut: '', name: '' },
+    is_convenio: 0,
     /********************************** */
     /****sección de componentes de servicios */
     servicespromotions: [],
@@ -131,9 +132,11 @@ export default { //data
     selectedPayment: null,
     /****sección de componentes de servicios */
     serviceposts: [],
+    clientposts: [],
     selectedServiceposts: { label: '', value: '', precio: ''}, //captura el elemento seleccionado
     listServiceposts: [],
     listPersonalposts: [],
+    total_promotion:[],
     personalposts: [],
     selectedPersonalposts: null, //captura el elemento seleccionado
     servicepromotions: [],
@@ -171,6 +174,7 @@ export default { //data
     fillVoucher : { id: '', personal: '', name: '', total: '', is_paid: 0 },
     cart:[],
     cartTotal: 0,
+    total_normal: 0,
     index: 0,
 
     detailPersonalServices: [],

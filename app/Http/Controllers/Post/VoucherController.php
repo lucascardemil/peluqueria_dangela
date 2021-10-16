@@ -10,6 +10,7 @@ use App\Personal;
 use App\Personalpost;
 use App\FiltersService;
 use App\FiltersPersonal;
+use App\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
@@ -117,20 +118,44 @@ class VoucherController extends Controller
             'total' => $request['total'],
             'is_paid' => 1
         ])->id;
+
+        Clientpost::create([
+            'voucher_id' => $voucher,
+            'user_id' => $request['client_id']
+        ]);
+
         
+        $porcent_promotion = 0;
+        $precio_service = 0;
+
+        if($request['is_promotion'] > 0){
+            $porcent_promotion = ($request['total'] / $request['total_normal']);
+        }else{
+            if($request['discount'] > 0){
+                $porcent_promotion = $request['discount'];
+            }else{
+                $porcent_promotion = 0;
+            }
+        }
 
         for ($i=0; $i < count($services); $i++){
-            
-            Clientpost::create([
-                'voucher_id' => $voucher,
-                'user_id' => $request['client_id']
-            ]);
 
-
+        
+            if($request['is_promotion'] > 0){
+                $precio_service = round($services[$i]['precio'] * $porcent_promotion);
+            }else{
+                if($request['discount'] > 0){
+                    $precio_service = round($services[$i]['precio'] * $request['discount'] / 100);
+                }else{
+                    $precio_service = $services[$i]['precio'];
+                }
+            }
             $servicepost = Servicepost::create([
                 'voucher_id' => $voucher,
                 'service_id' => $services[$i]['id'],
-                'price' => $services[$i]['precio']
+                'price' => $precio_service,
+                'descuento' => $porcent_promotion,
+                'is_promotion' => $request['is_promotion']
             ])->id;
 
             
@@ -142,6 +167,8 @@ class VoucherController extends Controller
                 ]);
             }
         }
+        
+        
     }
 
     /**
@@ -250,7 +277,7 @@ class VoucherController extends Controller
     {
         $voucher = Voucher::whereHas('sucursal', function ($query) use($id) {
             $query->where('id', '=', $id);
-        })->with('sucursal', 'serviceposts.service', 'serviceposts.personalposts.personal')
+        })->with('sucursal', 'serviceposts.service', 'serviceposts.personalposts.personal', 'clientposts.user.company')
         ->where('is_paid', '=', 1)
         ->whereDay( 'created_at', '=', date('d') )
         ->whereMonth( 'created_at', '=', date('m') )
@@ -318,20 +345,21 @@ class VoucherController extends Controller
     {
         $voucher = Voucher::with('sucursal')->findOrFail($id);
 
-        $clientpost = $voucher->clientposts;
-
-        $client = null;
+        $clientpost = $voucher->clientposts;    
 
         foreach ($clientpost as $value) {
-            $client = $value->user;
+            $users = User::with('company')->find($value->user_id);
         }
 
+        $discount = $users->company->discount;
+        
         $services = $voucher->serviceposts;
 
         $arrayService = array();
 
 
         foreach ($services as $value) {
+
             $service = Servicepost::with('service')->find($value->id);
             array_push($arrayService, $service);
 
@@ -353,7 +381,7 @@ class VoucherController extends Controller
 
         //return $pdf->download('Voucher N° '.$id.'.pdf');
 
-        return view('boleta.boleta', compact(['voucher', 'services']) );
+        return view('boleta.boleta', compact(['voucher', 'services', 'discount']) );
     }
 
     public function pdf($id)
@@ -362,11 +390,11 @@ class VoucherController extends Controller
 
         $clientpost = $voucher->clientposts;
 
-        $client = null;
-
         foreach ($clientpost as $value) {
-            $client = $value->user;
+            $users = User::with('company')->find($value->user_id);
         }
+
+        $discount = $users->company->discount;
 
         $services = $voucher->serviceposts;
 
@@ -392,7 +420,7 @@ class VoucherController extends Controller
 
         $services = $services;
 
-        $pdf = PDF::loadView('boleta.boletaPDF', compact(['voucher', 'services']) )->setPaper([ 0 , 0 , 226.772 , 141.732 ], 'landscape');
+        $pdf = PDF::loadView('boleta.boletaPDF', compact(['voucher', 'services', 'discount']) )->setPaper([ 0 , 0 , 226.772 , 141.732 ], 'landscape');
 
         return $pdf->download('Voucher N° '.$id.'.pdf');
     }

@@ -56,7 +56,7 @@ export default { //methods
 
     },
     editPromotion(context, data){
-        context.commit('editPromotion', data.id)
+        context.commit('editPromotion', data.promotionLocal)
     },
     updatePromotion(context, data){
         context.commit('updatePromotion', data.id)
@@ -478,8 +478,8 @@ export default { //methods
         context.commit('addServicePromotion')
         context.commit('totalServicePromotion')
     },
-    addServicePersonalPromotion(context,data,service){
-        context.commit('addServicePersonalPromotion',data,service)
+    addServicePersonalPromotion(context, service){
+        context.commit('addServicePersonalPromotion', service)
         context.commit('totalServicePost')
     },
     deleteServicePromotion(context){
@@ -499,8 +499,11 @@ export default { //methods
     getVouchers(context, data){
         context.commit('getVouchers', data.page)
     },
-    createVoucher(context){
-        context.commit('createVoucher')
+    createVoucherService(context){
+        context.commit('createVoucherService')
+    },
+    createVoucherPromotion(context){
+        context.commit('createVoucherPromotion')
     },
     showModalDeleteVoucher(context, data){
         context.commit('showModalDeleteVoucher', data.id)
@@ -559,6 +562,9 @@ export default { //methods
     },
     removeFromCart(context, data) {
         context.commit('removeFromCart', data)
+    },
+    removeFromPost(context, data) {
+        context.commit('removeFromPost', data)
     },
     createMail(context){
         context.commit('createMail')
