@@ -4,9 +4,9 @@
                     :class="{'input': true, 'is-invalid': errors.has('servicio') }"
                     name="servicio"
                     @input="setServicepromotion"
-                    :options="options"
+                    :options="optionsService"
                     :value="selectedServicepromotions"
-                    multiple></v-select>
+                    ></v-select>
         <p v-show="errors.has('servicio')" class="text-danger">{{ errors.first('servicio') }}</p>
     </div>
 </template>
@@ -17,14 +17,11 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
     computed:{
-        ...mapState(['options', 'selectedServicepromotions']),
+        ...mapState(['optionsService', 'selectedServicepromotions']),
         ...mapGetters(['getItem'])
     },
     methods:{
         ...mapActions(['setServicepromotion'])
-    },
-    created(){
-        this.$store.dispatch('allServicesPromotion')
     }
 }
 </script>

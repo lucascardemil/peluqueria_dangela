@@ -12,6 +12,7 @@ export default { //data
     optionsProduct: [] ,
     optionsCode: [] ,
     optionsTemplate: [] ,
+    optionsService: [],
     selectedCategory: null,
     selectedIsSession: null,
     selectedPromotion: null,
@@ -64,20 +65,17 @@ export default { //data
     user: { name : '', email: '',password: ''},
     newUser : { name : '', rut: '', email: '',password: ''},
     fillUser: { id: '', name : '', email: '',password: ''},
-    searchUser: { email: '', name: '' },
+    searchUser: { email: '', name: '', rut: '' },
     /********************************* */
     /************************************ */
     /*** sección componentes de clientes */
     clients: [],
-    client: { company_id: '', company: { name: '' },profession_id: '', profession: { name: '' }, rut: '', name : '', email: '', address: '',
-             phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', score: 0, password: '',
-            is_convenio: 0 },
-    newClient : { company_id: '',profession_id: '', rut: '', name : '', email: '', address: '',
-                phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', score: 0, password: '',
-                is_convenio: 0 },
-    fillClient: { id: '', company_id: '', profession_id: '', rut: '', name : '', email: '', address: '',
-                phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', score: '', password: '',
-                is_convenio: 0 },
+    client: { company_id: '', company: { name: '' },profession_id: '', profession: { name: '' }, rut: '', name : '', email: '', city: '',
+             phone: '', birthdate: '', sex: '', score: 0, password: '', is_convenio: 0, other_sex: '', image: ''},
+    newClient : { company_id: '',profession_id: '', rut: '', name : '', email: '', city: '',
+                phone: '', birthdate: '', sex: '', score: 0, password: '', is_convenio: 0, other_sex: '', image: ''},
+    fillClient: { id: '', company_id: '', profession_id: '', rut: '', name : '', email: '', city: '',
+                phone: '', birthdate: '', sex: '', score: '', password: '', is_convenio: 0, other_sex: '', image: '' },
     searchClient: { barcode: '', rut: '', name: '' },
     is_convenio: 0,
     /********************************** */
@@ -85,8 +83,8 @@ export default { //data
     servicespromotions: [],
     services:[],
     service: { name: '', score_exchange: '', score_accumulated: '' },
-    newService : { category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '' },
-    fillService: { id: '', category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '' },
+    newService : { category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '', redeemable_service: '' },
+    fillService: { id: '', category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '', redeemable_service: '' },
     searchService: {  name: '' },
     /************************************* */
     /*****sección de usuarios y servicios asociados */
@@ -259,4 +257,8 @@ export default { //data
     images: [],
     index: null,
     form: new FormData,
+    inputOther: false,
+    selectedImage: '',
+    userSucursal: false,
+    selectCompany: false
 }

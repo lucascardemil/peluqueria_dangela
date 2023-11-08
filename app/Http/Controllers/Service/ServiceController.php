@@ -12,13 +12,6 @@ use App\Servicepost;
 
 class ServiceController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:services.index')->only('index');
-        $this->middleware('permission:services.store')->only('store');
-        $this->middleware('permission:services.update')->only('update');
-        $this->middleware('permission:services.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -52,13 +45,16 @@ class ServiceController extends Controller
         $this->validate($request, [
             'name' => 'required|min:4|max:190',
             'score_exchange' => 'required',
-            'score_accumulated' => 'required'
+            'score_accumulated' => 'required',
+            'price' => 'required|min:1'
         ], [
             'name.required' => 'El campo nombre es obligatorio',
             'name.min' => 'El campo nombre debe tener al menos 4 caracteres',
             'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
             'score_exchange.required' => 'El campo puntaje de cambio es obligatorio',
             'score_accumulated.required' => 'El campo puntaje que acumula es obligatorio',
+            'price.required' => 'El campo precio es obligatorio',
+            'price.min' => 'El campo precio debe tener al menos 1 caracteres',
         ]);
 
         Service::create($request->all());
@@ -90,11 +86,18 @@ class ServiceController extends Controller
         $this->validate($request, [
             'name' => ['required', 'min:4', 'max:190',
                         \Illuminate\Validation\Rule::unique('services')->ignore(Service::find($id))],
+            'score_exchange' => 'required',
+            'score_accumulated' => 'required',
+            'price' => 'required|min:1'
         ], [
             'name.required' => 'El campo nombre es obligatorio',
             'name.unique' => 'El nombre del servicio ya existe',
             'name.min' => 'El campo nombre debe tener al menos 4 caracteres',
             'name.max' => 'El campo nombre debe tener a lo más 190 caracteres',
+            'score_exchange.required' => 'El campo puntaje de cambio es obligatorio',
+            'score_accumulated.required' => 'El campo puntaje que acumula es obligatorio',
+            'price.required' => 'El campo precio es obligatorio',
+            'price.min' => 'El campo precio debe tener al menos 1 caracteres',
         ]);
 
         Service::find($id)->update($request->all());

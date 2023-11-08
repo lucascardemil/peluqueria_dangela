@@ -1,14 +1,8 @@
 <template>
     <div>
-        
-            <v-select v-validate="'required|min:4'"
-                        :class="{'input': true, 'is-invalid': errors.has('categoria') }"
-                        name="categoria"
-                        @input="setCategoryPos"
-                        :options="optionsCategory"
-                        :value="selectedCategory"></v-select>
-            <p v-show="errors.has('categoria')" class="text-danger">{{ errors.first('categoria') }}</p>
-      
+        <v-select v-validate="'required|min:4'" :class="{ 'input': true, 'is-invalid': errors.has('categoria') }"
+            name="categoria" @input="setCategoryPos" :options="optionsCategory" :value="selectedCategory"></v-select>
+        <p v-show="errors.has('categoria')" class="text-danger">{{ errors.first('categoria') }}</p>
     </div>
 </template>
 
@@ -17,19 +11,17 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
-    computed:{
+    computed: {
         ...mapState(['optionsCategory', 'selectedCategory']),
         ...mapGetters(['getItem'])
     },
-    methods:{
+    methods: {
         ...mapActions(['setCategoryPos'])
     },
-    created(){
+    created() {
         this.$store.dispatch('allCategories')
     }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

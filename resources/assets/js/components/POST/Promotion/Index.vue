@@ -10,7 +10,7 @@
             </div>
             <SelectPromotion></SelectPromotion>
             <div class="col-12">
-                <table  class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
+                <table class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
                     <thead>
                         <tr>
                             <th>
@@ -25,13 +25,21 @@
                     </thead>
                     <tbody>
                         <tr v-for="service in servicepromotions" :key="service.value">
-                            <td><h3>{{ service.label }}</h3></td>
-                            <td class="col-3" v-if="service.estado!='CONFIRMADO'"><SelectPersonal></SelectPersonal></td>
-                            <td class="col-3" v-else> <h3>{{ service.personal }}</h3> </td>
-                            
                             <td>
-                                <button  class="btn btn-block btn-secondary" :disabled="service.estado=='CONFIRMADO' || selectedPersonalposts==null" @click="addServicePersonalPromotion(service)">
-                                CONFIRMAR
+                                <h3>{{ service.label }}</h3>
+                            </td>
+                            <td class="col-3" v-if="service.estado != 'CONFIRMADO'">
+                                <SelectPersonal></SelectPersonal>
+                            </td>
+                            <td class="col-3" v-else>
+                                <h3>{{ service.personal }}</h3>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block btn-secondary"
+                                    :disabled="service.estado == 'CONFIRMADO' || selectedPersonalposts == null"
+                                    @click="addServicePersonalPromotion(service)">
+                                    CONFIRMAR
                                 </button>
                             </td>
                         </tr>
@@ -40,14 +48,8 @@
             </div>
 
             <div class="col-lg-3 col-md-6 col-sm-12">
-                <button class="btn btn-block btn-info btn-lg" @click="showTypeServicePanel">
-                <i class="fas fa-arrow-left"></i> Atras
-                </button>
-            </div>
-
-            <div class="col-lg-3 col-md-6 col-sm-12 offset-lg-6">
-                <button class="btn btn-block btn-info btn-lg " @click="showFinalPanel">
-                <i class="fas fa-arrow-right"></i> Siguiente
+                <button class="btn btn-block btn-info btn-lg " @click="showFinalPanel" :disabled="listServiceposts.length === 0">
+                    <i class="fas fa-arrow-right"></i> Ir a pagar
                 </button>
             </div>
         </div>
@@ -62,22 +64,20 @@ import { loadProgressBar } from 'axios-progress-bar'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
-    components: { SelectPromotion,SelectPersonal },
-    computed:{
-        ...mapState(['selectedClient','servicepromotions','selectedPersonalposts']),
+    components: { SelectPromotion, SelectPersonal },
+    computed: {
+        ...mapState(['selectedClient', 'servicepromotions', 'selectedPersonalposts', 'listServiceposts']),
         ...mapGetters([])
     },
-    methods:{
-        ...mapActions(['addServicePersonalPromotion','showTypeServicePanel','showFinalPanel'])
+    methods: {
+        ...mapActions(['addServicePersonalPromotion', 'showTypeServicePanel', 'showFinalPanel'])
     },
-    created(){
+    created() {
         loadProgressBar()
-        
+
     }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
 

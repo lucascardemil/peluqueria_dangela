@@ -17,6 +17,8 @@
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Rol</th>
+                    <th class="text-center">Desactivar bloqueo IP</th>
+                    <th class="text-center">Llave de acceso</th>
                     <th></th>
                 </tr>
             </thead>
@@ -33,6 +35,8 @@
                     </td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr v-for="userLocal in users" :key="userLocal.id">
                     <td width="10px">{{ userLocal.id }}</td>
@@ -40,7 +44,28 @@
                     <td>{{ userLocal.email }}</td>
                     <td v-if="!userLocal.roles.length">No Asignado</td>
                     <td v-else>{{ userLocal.roles[0].name }}</td>
+                    <td class="text-center">
+                        <input type="checkbox" class="mt-2" v-model="userLocal.is_blockip"
+                            @change="canBlockIp({ id :userLocal.id, check: userLocal.is_blockip })">
+                    </td>
+                    <td class="text-center">{{ userLocal.key }}</td>
                     <td class="text-right">
+
+                        <button class="btn btn-info btn-rounded btn-sm"
+                                @click.prevent="generateKey({ id: userLocal.id })"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Generar llave acceso">
+                                <i class="fas fa-key"></i>
+                        </button>
+
+                        <button class="btn btn-success btn-rounded btn-sm"
+                                @click.prevent="resetIp({ id: userLocal.id })"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Resetear ip de sistema">
+                                <i class="fas fa-laptop"></i>
+                        </button>
 
                         <button class="btn btn-warning btn-rounded btn-sm"
                                 @click.prevent="editUser({userLocal})"
@@ -118,7 +143,7 @@ export default {
         ...mapGetters(['isActived', 'pagesNumber'])
     },
     methods:{
-        ...mapActions(['getUsers','editUser', 'deleteUser', 'changePageUser'])
+        ...mapActions(['getUsers','editUser', 'deleteUser', 'changePageUser','generateKey','resetIp','canBlockIp'])
     },
     created(){
         loadProgressBar()

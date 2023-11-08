@@ -1,7 +1,6 @@
 @extends('layoutBoletaPDF')
 
 @section('content')
-
     <table>
         <thead>
             <tr>
@@ -22,41 +21,42 @@
                 <td>SUCURSAL</td>
                 <td>{{ $voucher->sucursal->name }}</td>
             </tr>
-            <tr>
-                @foreach ($voucher->clientposts as $client)
+            @foreach ($voucher->clientposts as $client)
+                <tr>
                     <td>CLIENTE</td>
                     <td>{{ $client->user->name }}</td>
-                @endforeach
-            </tr>
+                </tr>
+            @endforeach
             <?php $contador = 1; ?>
             <?php $descuento = 0; ?>
-            @foreach ($services as $service)
-            <tr>
-                <td>SERVICIO N°<?php echo $contador; ?></td>
-                @if($service->is_promotion > 0)
-                <td><b>${{ number_format($service->price, 0, ',', '.') }}</b> ({{ $service->service->name }})</td>
-                @else
-                <td><b>${{ number_format($service->service->price, 0, ',', '.') }}</b> ({{ $service->service->name }})</td>
-                @endif
-                <?php $contador = $contador + 1; ?>
-                <?php $descuento = $service->descuento; ?>
-            </tr>
+            @if (empty($arrayService) != true)
+                @foreach ($arrayService as $service)
+                    <tr>
+                        <td>SERVICIO N°<?php echo $contador; ?></td>
+                        <td>
+                            <b>${{ number_format($service['service']->price, 0, ',', '.') }}</b>
+                            ({{ $service['service']->name }})
+                        </td>
+                        <?php $contador = $contador + 1; ?>
+                        <?php $descuento = isset($service['service']->descuento) ? $service['service']->descuento : 0; ?>
+                    </tr>
                 @endforeach
-            <!-- <tr>
-                <td>SUBTOTAL</td>
-                <td><b>${{ number_format($voucher->total*100/(100-$descuento), 0, ',', '.') }}</b></td>
-            </tr> -->
-            <tr>
-                <td>DESCUENTO</td>
-                @if($service->is_promotion > 0)
-                <td><b>0</b></td>
-                @else
-                <td><b>{{ $descuento }}%</b></td>
-                @endif
-            </tr>
+                {{-- <tr>
+                    <td>SUBTOTAL</td>
+                    <td><b>${{ number_format(($voucher->total * 100) / (100 - $descuento), 0, ',', '.') }}</b></td>
+                </tr> --}}
+                <tr>
+                    <td>DESCUENTO</td>
+                    @if ($service['service']->is_promotion > 0)
+                        <td><b>0</b></td>
+                    @else
+                        <td><b>{{ $descuento }}%</b></td>
+                    @endif
+                </tr>
+            @endif
             <tr>
                 <td>METODO DE PAGO</td>
-                <td><b>{{$voucher->payment}}</b></td>
+                <td><b>{{ $voucher->payment }}</b></td>
             </tr>
             <tr>
                 <td>TOTAL</td>
@@ -72,5 +72,4 @@
         <tbody>
         </tbody>
     </table>
-
 @endsection

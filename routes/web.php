@@ -11,7 +11,16 @@
 |
 */
 
-Auth::routes();
+Route::get('login/{key?}', 'Auth\LoginController@index')->name('login');
+Route::post('login/{key}', 'Auth\LoginController@login')->middleware('checkUserIp');
+Route::post('logout/{key}', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('error_url', 'ErrorController@index')->name('error_url');
+Route::get('error_ip', 'ErrorIpController@index')->name('error_ip');
+
+Route::get('error_permisos', function () {
+    return view('errors.error_permisos');
+});
 
 //administrador de recursos para los roles
 Route::ApiResource('roles', 'Role\RoleController');
@@ -63,6 +72,7 @@ Route::delete('promotions-services-edit/{id}', 'Promotion\PromotionController@el
 //administrador de recursos para los usuarios
 Route::ApiResource('users', 'User\UserController');
 Route::get('users', 'User\UserController@indexUsers');
+Route::get('search-user', 'User\UserController@searchUser');
 Route::post('create-user', 'User\UserController@storeUser');
 Route::put('update-user/{id}', 'User\UserController@updateUser');
 Route::ApiResource('users-all', 'User\UserController@all');
@@ -73,25 +83,17 @@ Route::get('users-total-services', 'User\UserController@totalByService');
 Route::ApiResource('users.services', 'User\UserServiceController')->except(['store']);
 
 Route::ApiResource('users.personals.services', 'UserPersonalServiceController')->only('store');
-//ruta para obtener la cantidad total de usuarios inscritos
-//Route::get('users-count', 'User\UserController@contadorUsuario');
-//administrador de recursos para los servicios de cada usuario
-//Route::ApiResource('users.services', 'User\UserServiceController');
-//ruta para obtener la cantidad de servicios realizados
-//ruta para obtener la cantidad de servicios realizados por un cliente
-//Route::get('user-services-total/{id}', 'User\UserServiceController@totalServiceByUser');
-//Route::get('users-service-count', 'User\UserServiceController@contadorUsuarioServicio');
-
-
-//administrador de recursos para las ofertas de cada usuario
-//Route::ApiResource('user-offers', 'User\UserOfferController');
 
 /**************** recursos para clientes ***************************/
 Route::ApiResource('clients-pos', 'Post\ClientpostController');
 Route::get('clients', 'User\UserController@indexClients');
-Route::post('create-client', 'User\UserController@storeClient');
-Route::put('update-client/{id}', 'User\UserController@updateClient');
+Route::post('create-client', 'Client\ClientController@storeClient');
+Route::post('update-client/{id}', 'Client\ClientController@updateClient');
 Route::post('clients-pos', 'User\UserController@storeUser');
+
+Route::get('register-client', function () {
+    return view('clients.register-client');
+});
 
 /********************* Sistema POS **************** */
 /**************************************************** */
@@ -155,59 +157,50 @@ Route::get('filtro-voucher', 'Post\VoucherController@filtroVoucher');
 
 Route::ApiResource('imagenes-mail', 'ImagenmailController');
 
-Route::middleware(['auth'])->group( function(){
+Route::middleware(['auth', 'checkSessionKey'])->group( function(){
 
     Route::get('categorias', function () {
         return view('admin.category');
-        })->name('categorias')
-        ->middleware('permission:categories');
+        })->name('categorias');
 
     Route::get('personales', function () {
         return view('admin.personal');
-        })->name('personales')
-        ->middleware('permission:personals');
+        })->name('personales');
 
     //Empresas
     Route::get('empresas', function () {
         return view('admin.company');
-        })->name('empresas')
-        ->middleware('permission:empresas');
+        })->name('empresas');
 
     //Profesiones
     Route::get('profesiones', function () {
         return view('admin.profession');
-        })->name('profesiones')
-        ->middleware('permission:profesiones');
+        })->name('profesiones');
 
     //Usuarios
     Route::get('usuarios', function () {
             return view('admin.user');
-        })->name('usuarios')
-        ->middleware('permission:usuarios');
+        })->name('usuarios');
 
     //Clientes
     Route::get('clientes', function () {
         return view('admin.client');
-    })->name('clientes')
-    ->middleware('permission:clientes');
+    })->name('clientes');
 
     //Servicios
     Route::get('servicios', function () {
             return view('admin.service');
-        })->name('servicios')
-        ->middleware('permission:servicios');
+        })->name('servicios');
 
     //Promociones
     Route::get('promociones', function () {
         return view('admin.promotion');
-    })->name('promociones')
-    ->middleware('permission:promociones');
+    })->name('promociones');
 
     //Administración puntaje usuarios
-    Route::get('administrar-puntaje-usuario', function () {
+    Route::get('detail-user', function () {
             return view('admin.detail-user');
-        })->name('detalleUsuario')
-        ->middleware('permission:score.admin');
+    })->name('detail-user');
 
 
     /******************** SISTEMA POS **********************/
@@ -215,64 +208,27 @@ Route::middleware(['auth'])->group( function(){
 
     Route::get('sistema-post', function () {
         return view('post.principal');
-    })->name('sistema-post')->middleware('permission:sistema-post');
+    })->name('sistema-post');
 
     Route::get('buscar-voucher', function () {
         return view('admin.voucher');
-    })->name('buscar-voucher')->middleware('permission:buscar-voucher');
+    })->name('buscar-voucher');
 
-    Route::get('admin-vouchers', function () {
+    Route::get('session-voucher', function () {
         return view('admin.admin-voucher');
-    })->name('admin-vouchers')->middleware('permission:admin-vouchers');
+    })->name('session-voucher');
 
     Route::get('filter-vouchers', function () {
         return view('admin.filter-voucher');
-    })->name('filter-vouchers')->middleware('permission:buscar-voucher');
+    })->name('filter-vouchers');
 
     Route::get('session-voucher', function () {
         return view('admin.session-voucher');
-    })->name('session-voucher')->middleware('permission:buscar-voucher');
+    })->name('session-voucher');
 
     Route::get('correoMasivo', function () {
         return view('admin.send-masive-email');
-    })->name('correoMasivo')->middleware('permission:admin-vouchers');
-
-    /******************** INVENTARIO **********************/
-    /****************************************************** */
-    Route::get('marcas', function () {
-        return view('inventory.admin-brand');
-    })->name('marcas');
-
-    Route::get('laboratorios', function () {
-        return view('inventory.admin-laboratory');
-    })->name('laboratorios');
-
-    Route::get('unidades-de-medida', function () {
-        return view('inventory.admin-unit');
-    })->name('unidades');
-
-    Route::get('productos', function () {
-        return view('inventory.admin-product');
-    })->name('productos');
-
-    Route::get('codigos', function () {
-        return view('inventory.admin-code');
-    })->name('codigos');
-
-    Route::get('plantillas-inventario', function () {
-        return view('inventory.admin-inventory-template');
-    })->name('plantillas-inventario');
-
-    Route::get('inventarios', function () {
-        return view('inventory.admin-inventory');
-    })->name('inventarios');
-
-    Route::get('consumo-inventario', function () {
-        return view('inventory.admin-reduction');
-    })->name('consumo-inventario');
-
-    /****************************************************** */
-    /***************************************************** */
+    })->name('correoMasivo');
 
 
     Route::get('role', function () {
@@ -288,26 +244,32 @@ Route::middleware(['auth'])->group( function(){
         return view('admin.all-service-user');
     })->name('servicios-canje');
 
+    Route::get('/mis-puntos', function () {
+        return view('clients.mis-puntos');
+    })->name('mis-puntos');
+
+    Route::get('/canje-puntos', function () {
+        return view('clients.canje-puntos');
+    })->name('canje-puntos');
+
     //ruta para generar códigos de barra
     Route::get('/generar-codigos-de-barra', 'User\UserController@saveBarcode');
 
     //ruta para poder enviar correos automatizados a los clientes que pertenezcan a una profesión
     Route::get('/enviar-correo-profesion', 'MailController@sendProfession')->name('send-mail-profession');
 
-
+    Route::post('generate-key/{id}', 'User\UserController@generateKey');
+    Route::post('reset-ip/{id}', 'User\UserController@resetIp');
+    Route::put('block-ip/{id}', 'User\UserController@blockIp');
+    Route::put('delete-image/{id}', 'Client\ClientController@deleteImage');
+    
 });
 
 
-Route::get('storage-link', function(){
-    if(file_exists(public_path('storage'))){
-        return 'El directorio"public/storage" ya existe.';
-    }
-
-    app('files')->link(
-        storage_path('app/public'), public_path('storage')
-    );
-
-    return 'El directorio "public/storage" ha sido vinculado';
+Route::get('/storage-link', function(){
+    $targetFolder = storage_path('app/public');
+    $linkFolder = $_SERVER['DOCUMENT_ROOT'] . '/storage';
+    symlink($targetFolder, $linkFolder);
 });
 
 

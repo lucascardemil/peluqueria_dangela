@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\User;
-use Caffeinated\Shinobi\Model\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

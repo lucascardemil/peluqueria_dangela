@@ -8,13 +8,6 @@ use App\Http\Controllers\Controller;
 
 class PersonalpostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:personalposts.index')->only('index');
-        $this->middleware('permission:personalposts.store')->only('store');
-        $this->middleware('permission:personalposts.update')->only('update');
-        $this->middleware('permission:personalposts.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *

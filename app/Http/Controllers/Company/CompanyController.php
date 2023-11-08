@@ -10,15 +10,6 @@ use App\Company;
 
 class CompanyController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('permission:companies.index')->only('index');
-        $this->middleware('permission:companies.store')->only('store');
-        $this->middleware('permission:companies.update')->only('update');
-        $this->middleware('permission:companies.destroy')->only('destroy');
-    }
-
     /**
      * Display a listing of the resource.
      *

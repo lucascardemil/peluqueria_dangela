@@ -119,20 +119,7 @@
                 <h3>Descuentos Aplicados: {{ descuento }} %</h3>
             </div>
         </div>
-        
-        <!-- <div class="col-12" v-show="finalShow">
-            <button :disabled="!completeVoucher"
-                    class="btn btn-block btn-success btn-lg pt-4 pb-4" @click="showModalConfirm">
-                <h2><i class="fas fa-file-alt"></i> CONFIRMAR SERVICIOS</h2>
-            </button>
-        </div> -->
-
         <div v-if="selectedTypeService.name=='SERVICE'" class="row justify-content-between" v-show="finalShow">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <button class="btn btn-block btn-info btn-lg" @click="showServicePanel">
-                    <i class="fas fa-arrow-left"></i> Atras
-                </button>
-            </div>
             <div class="col-lg-4 col-md-6 col-sm-12" v-show="finalShow">
                 <button class="btn btn-block btn-success btn-lg" @click="createVoucherService">
                     Pagar
@@ -140,11 +127,6 @@
             </div>
         </div>
         <div v-else class="row justify-content-between" v-show="finalShow">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <button class="btn btn-block btn-info btn-lg" @click="showPromotionPanel">
-                    <i class="fas fa-arrow-left"></i> Atras
-                </button>
-            </div>
             <div class="col-lg-4 col-md-6 col-sm-12" v-show="finalShow">
                 <button class="btn btn-block btn-success btn-lg" @click="createVoucherPromotion">
                     Pagar

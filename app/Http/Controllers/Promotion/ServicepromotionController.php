@@ -8,14 +8,6 @@ use App\Http\Controllers\Controller;
 
 class ServicepromotionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:servicepromotions.index')->only('index');
-        $this->middleware('permission:servicepromotions.store')->only('store');
-        $this->middleware('permission:servicepromotions.update')->only('update');
-        $this->middleware('permission:servicepromotions.destroy')->only('destroy');
-    }
-
      /**
      * Display a listing of the resource.
      *

@@ -36,6 +36,7 @@ var urlServiceTotalByMonth = 'services-total-month'
 var urlUserTotal = 'users-total'
 var urlUserTotalByServices = 'users-total-services'
 var urlUserAvailableService = 'users-available-service'
+var urlSearchUser = 'search-user'
 
 var urlClientPos = 'clients-pos'
 var urlClient = 'clients'
@@ -59,7 +60,7 @@ var urlPersonalpost = 'personalposts'
 var urlFiltroVoucher = 'filtro-voucher'
 
 var urlBoleta = 'ver-voucher'
-var urlBoletaPdf  = 'generar-voucher'
+var urlBoletaPdf = 'generar-voucher'
 var urlCajaZ = 'boxz-sucursal'
 var urlListaVoucher = 'lista-voucher'
 var urlTotalVoucherPersonal = 'total-vouchers-personal'
@@ -68,7 +69,7 @@ var urlDetailVoucherPersonal = 'vouchers-personal'
 var urlCorreoMasivo = 'enviar-correo-masivo'
 var urlUpload = 'imagenes-mail'
 
-var includeVoucherFiltro =  '&include=serviceposts.service,serviceposts.personalposts.personal'
+var includeVoucherFiltro = '&include=serviceposts.service,serviceposts.personalposts.personal'
 
 /***********Inventario** ****/
 var urlBrand = 'brands'
@@ -87,165 +88,160 @@ var urlInventory = 'inventories'
 
 /******consumo inventario***** */
 var urlConsumeProduct = 'consumeProduct'
+var urlGenerateKey = 'generate-key'
+var urlResetIp = 'reset-ip'
+var urlBlockIp = 'block-ip'
+var urlDeleteImage = 'delete-image'
 
 export default { //used for changing the state
     /****** sección select **** */
     /******************************* */
-    allCategories(state){
+    allCategories(state) {
         var url = urlAllCategory
         axios.get(url).then(response => {
             state.optionsCategory = []
             response.data.forEach((category) => {
-                state.optionsCategory.push( { label: category.name, value: category.id } )
+                state.optionsCategory.push({ label: category.name, value: category.id })
             });
         });
     },
-    allIsSession(state){
+    allIsSession(state) {
         var url = urlAllIsSession
         axios.get(url).then(response => {
             state.optionsIsSession = []
             response.data.forEach((category) => {
-                state.optionsIsSession.push( { label: category.name, value: category.id } )
+                state.optionsIsSession.push({ label: category.name, value: category.id })
             });
         });
     },
-    allPromotions(state){
+    allPromotions(state) {
         var url = urlAllPromotion
         axios.get(url).then(response => {
             state.optionsPromotion = []
             response.data.forEach((promotion) => {
-                state.optionsPromotion.push( { label: promotion.name, value: promotion.id } )
+                state.optionsPromotion.push({ label: promotion.name, value: promotion.id })
             });
         });
     },
-    allPersonals(state){
+    allPersonals(state) {
         var url = urlAllPersonal
         axios.get(url).then(response => {
             state.optionsPersonal = []
             response.data.forEach((personal) => {
-                state.optionsPersonal.push( { label: personal.name, value: personal.id } )
+                state.optionsPersonal.push({ label: personal.name, value: personal.id })
             });
         });
     },
-    allCompanies(state){
+    allCompanies(state) {
         var url = urlAllCompany
         axios.get(url).then(response => {
             state.options = []
             response.data.forEach((company) => {
-                state.options.push( { label: company.name, value: company.id } )
+                if (company.id !== 1) {
+                    state.options.push({ label: company.name, value: company.id })
+                }
             });
         });
     },
-    allProfessions(state){
+    allProfessions(state) {
         var url = urlAllProfession
         axios.get(url).then(response => {
             state.optionsProfession = []
             response.data.forEach((profession) => {
-                state.optionsProfession.push( { label: profession.name, value: profession.id } )
+                state.optionsProfession.push({ label: profession.name, value: profession.id })
             });
         });
     },
-    allServices(state){
+    allServices(state) {
         var url = urlAllService
         axios.get(url).then(response => {
             state.options = []
             response.data.forEach((service) => {
                 var name = service.category.name + " - " + service.name
-                state.options.push( { label: name, value: service.id } )
+                state.options.push({ label: name, value: service.id })
             })
         });
     },
-    allServicesPromotion(state){
-        var url = urlAllService
-        axios.get(url).then(response => {
-            state.options = []
-            response.data.forEach((service) => {
-                //if(service.category.name == 'SERVICIO EN PROMOCION'){
-                state.options.push( { label: service.name, value: service.id, precio: service.price } )
-                //}
-            })
-        });
-    },
-    allUsers(state){
+    allUsers(state) {
         var url = urlAllUser
         axios.get(url).then(response => {
             state.clients = []
             response.data.forEach((client) => {
                 var name = client.name
-                state.clients.push( { label: name, value: client.id } )
+                state.clients.push({ label: name, value: client.id })
             });
         });
     },
-    allBrands(state){
+    allBrands(state) {
         var url = urlAllBrands
         axios.get(url).then(response => {
             state.optionsBrand = []
             response.data.forEach((brand) => {
-                state.optionsBrand.push( { label: brand.name, value: brand.id } )
+                state.optionsBrand.push({ label: brand.name, value: brand.id })
             });
         });
     },
-    allLaboratories(state){
+    allLaboratories(state) {
         var url = urlAllLaboratories
         axios.get(url).then(response => {
             state.optionsLaboratory = []
             response.data.forEach((laboratory) => {
-                state.optionsLaboratory.push( { label: laboratory.name, value: laboratory.id } )
+                state.optionsLaboratory.push({ label: laboratory.name, value: laboratory.id })
             });
         });
     },
-    allUnits(state){
+    allUnits(state) {
         var url = urlUnits
         axios.get(url).then(response => {
             state.optionsUnit = []
             response.data.forEach((unit) => {
-                state.optionsUnit.push( { label: unit.name, value: unit.id } )
+                state.optionsUnit.push({ label: unit.name, value: unit.id })
             });
         });
     },
-    allProducts(state){
+    allProducts(state) {
         var url = urlAllProducts
         axios.get(url).then(response => {
             state.optionsProduct = []
             response.data.forEach((product) => {
-                state.optionsProduct.push( { label: product.name + ' - ' + product.detail, value: product.id } )
+                state.optionsProduct.push({ label: product.name + ' - ' + product.detail, value: product.id })
             });
         });
     },
-    allCodes(state){
+    allCodes(state) {
         var url = urlAllCodes + '?include=product,brand,laboratory'
         axios.get(url).then(response => {
             state.optionsCode = []
             response.data.forEach((code) => {
-                state.optionsCode.push( {
+                state.optionsCode.push({
                     label: code.product.name + ' - ' + code.laboratory.name + ' - ' +
-                        '(' + code.product.name + ')' + ' - ' +  code.name + ' - ' + code.detail,
+                        '(' + code.product.name + ')' + ' - ' + code.name + ' - ' + code.detail,
                     value: code.id
-                } )
+                })
             });
         });
     },
-    allTemplates(state){
+    allTemplates(state) {
         var url = urlAllTemplates + '?include=sucursal&filter[sucursal_id]='
         axios.get(url).then(response => {
             state.optionsTemplate = []
 
-            state.optionsTemplate.push( {
+            state.optionsTemplate.push({
                 label: 'Todo el inventario',
                 value: 0
-            } )
+            })
 
             response.data.forEach((template) => {
-                state.optionsTemplate.push( {
+                state.optionsTemplate.push({
                     label: template.sucursal.name + ' - ' + template.name,
                     value: template.id
-                } )
+                })
             });
         });
     },
     setCategory(state, category) {
         state.selectedCategory = category
-        if(category != null)
+        if (category != null)
             state.fillService.category_id = category.value
     },
     setCategoryPos(state, category) {
@@ -253,34 +249,36 @@ export default { //used for changing the state
 
         state.selectedCategory = category
 
-        if(category != null){
+        if (category != null) {
             state.fillService.category_id = category.value
             var url = urlCategory + '/' + category.value
 
-            axios.get(url).then( response =>{
+            axios.get(url).then(response => {
+                state.optionsService = []
                 response.data.services.forEach((service) => {
-                    var name = response.data.name +  ' - ' + service.name
-                    state.serviceposts.push(  { label: name, value: service.id, precio: service.price }  )
+                    var name = response.data.name + ' - ' + service.name
+                    state.serviceposts.push({ label: name, value: service.id, precio: service.price })
 
-                    if(response.data.name == 'PROMOCIÓN CERA A' ||
-                    response.data.name == 'PROMOCIÓN CERA B' ||
-                    response.data.name == 'PROMOCIÓN CERA C' ||
-                    response.data.name == 'PROMOCIÓN ROLL-ON D' ||
-                    response.data.name == 'PROMOCIÓN ROLL-ON E' ||
-                    response.data.name == 'PROMOCIÓN COLORES' ||
-                    response.data.name == 'PROMOCIÓN DÍA DE SPA' ||
-                    response.data.name == 'PROMOCIÓN PESTAÑAS X 2 $20.0000' ||
-                    response.data.name == 'PROMOCIÓN BELLEZA' ||
-                    response.data.name == 'PROMOCIÓN I.P.L' ||
-                    response.data.name == 'PROMOCIÓN M&M' )
-                    {
+                    if (response.data.name == 'PROMOCIÓN CERA A' ||
+                        response.data.name == 'PROMOCIÓN CERA B' ||
+                        response.data.name == 'PROMOCIÓN CERA C' ||
+                        response.data.name == 'PROMOCIÓN ROLL-ON D' ||
+                        response.data.name == 'PROMOCIÓN ROLL-ON E' ||
+                        response.data.name == 'PROMOCIÓN COLORES' ||
+                        response.data.name == 'PROMOCIÓN DÍA DE SPA' ||
+                        response.data.name == 'PROMOCIÓN PESTAÑAS X 2 $20.0000' ||
+                        response.data.name == 'PROMOCIÓN BELLEZA' ||
+                        response.data.name == 'PROMOCIÓN I.P.L' ||
+                        response.data.name == 'PROMOCIÓN M&M') {
 
                         var servicePos = { label: name, value: service.id, precio: service.price }
                         state.selectedServiceposts.push(servicePos)
                     }
 
+                    state.optionsService.push({ label: service.name, value: service.id, precio: service.price })
+
                 })
-            } )
+            })
         }
     },
     setPersonal(state, personal) {
@@ -288,11 +286,11 @@ export default { //used for changing the state
     },
     setCompany(state, company) {
         state.selectedItem = company
-        state.fillUser.company_id=company.value
+        state.fillUser.company_id = company.value
     },
     setProfession(state, profession) {
         state.selectedProfession = profession
-        state.fillUser.profession_id=profession.value
+        state.fillUser.profession_id = profession.value
     },
     setService(state, service) {
         state.selectedItem = service
@@ -304,29 +302,29 @@ export default { //used for changing the state
         state.servicepromotions = []
         state.selectedPromotion = promotion
 
-        if(promotion != null){
+        if (promotion != null) {
             /* aca se debe hacer la consulta con idpromotion para obtener los servicios */
             var url = urlPromotion + '/' + promotion.value
             var cont_position = 0
-            
+
             axios.get(url).then(response => {
                 response.data.servicespromotions.forEach((service) => {
                     // var name = /*response.data.promotion.name +  ' - ' + */service.name
 
-                    state.servicepromotions.push({ 
-                        label: service.service.name, 
-                        value: service.service.id, 
+                    state.servicepromotions.push({
+                        label: service.service.name,
+                        value: service.service.id,
                         precio: service.service.price,
-                        position: cont_position, 
-                        estado: 'NO CONFIRMADO', 
+                        position: cont_position,
+                        estado: 'NO CONFIRMADO',
                         personal: '',
                     })
-                    cont_position=cont_position+10
+                    cont_position = cont_position + 10
                 })
                 state.total_promotion = response.data.total_promotion
-                
+
             }).catch(error => {
-                    //state.errorsLaravel = error.response.data
+                //state.errorsLaravel = error.response.data
             })
 
             // var url = urlPromotion + '/' + promotion.value
@@ -359,42 +357,41 @@ export default { //used for changing the state
         state.selectedTemplate = template
     },
     /****** seccion index con estadisticas **** */
-    countUser(state){
+    countUser(state) {
         var url = urlUserTotal
-        axios.get(url).then( response =>{
+        axios.get(url).then(response => {
             state.countIndex.user = response.data
-        } )
+        })
     },
-    countUserService(state){
+    countUserService(state) {
         var url = urlServiceTotal
-        axios.get(url).then( response =>{
+        axios.get(url).then(response => {
             state.countIndex.service = response.data
-        } )
+        })
     },
-    showServicesByMonth(state){
+    showServicesByMonth(state) {
         var url = urlServiceTotalByMonth
-        axios.get(url).then( response =>{
+        axios.get(url).then(response => {
             state.serviceMonth = response.data
-        } )
+        })
     },
-    showUsersByServices(state){
+    showUsersByServices(state) {
         var url = urlUserTotalByServices
-        axios.get(url).then( response =>{
+        axios.get(url).then(response => {
             state.userServices = response.data
-        } )
+        })
     },
     /******************************* */
     /****** sección categoria **** */
     /******************************* */
-    getCategories(state, page){
+    getCategories(state, page) {
         var url = urlCategory + '?page=' + page + '&name=' + state.searchCategory.name
         axios.get(url).then(response => {
-            console.log(response);
             state.categories = response.data.categories.data
             state.pagination = response.data.pagination
         });
     },
-    createCategory(state){
+    createCategory(state) {
         var url = urlCategory
         axios.post(url, {
             name: state.newCategory.name,
@@ -409,13 +406,13 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editCategory(state, category){
+    editCategory(state, category) {
         state.fillCategory.id = category.id
         state.fillCategory.name = category.name
         state.fillCategory.isSession = category.isSession
         $("#edit").modal('show')
     },
-    updateCategory(state, id){
+    updateCategory(state, id) {
         var url = urlCategory + '/' + id
         axios.put(url, state.fillCategory).then(response => {
             state.fillCategory = { 'id': '', 'name': '' }
@@ -426,8 +423,8 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteCategory(state, id){
-        var url = urlCategory + '/' +  id
+    deleteCategory(state, id) {
+        var url = urlCategory + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Categoría eliminado con éxito')
         })
@@ -435,35 +432,28 @@ export default { //used for changing the state
     /******************************* */
     /****** sección promociones **** */
     /******************************* */
-    getPromotions(state, page){
+    getPromotions(state, page) {
         var url = urlPromotion + '?page=' + page + '&name=' + state.searchPromotion.name
         axios.get(url).then(response => {
             state.promotions = response.data.promotions.data
             state.pagination = response.data.pagination
         });
     },
-    createPromotion(state){
-        var url = urlPromotion
-        var idPromotion=0
-
-        axios.post(url, {
+    createPromotion(state) {
+        axios.post(urlPromotion, {
             name: state.newPromotion.name,
             total: state.newPromotion.total,
         }).then(response => {
-
-            idPromotion = response.data
-            state.idPromotion = idPromotion
-            var url = urlServicepromotion
-
+            state.idPromotion = response.data
             state.listServicepromotions.forEach(service => {
-                axios.post(url, {
-                    promotion_id: idPromotion,
-                    service_id: service.id,
+                axios.post(urlServicepromotion, {
+                    promotion_id: state.idPromotion,
+                    service_id: service.service,
                     price: service.precio,
                 }).then(response => {
                     toastr.success('Servicio agregado con éxito')
                 }).catch(error => {
-                    //state.errorsLaravel = error.response.data
+                    state.errorsLaravel = error.response.data
                 })
             })
             state.listServicepromotions = []
@@ -477,10 +467,10 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    showPromotion(state, promotion){
-        
+    showPromotion(state, promotion) {
+
     },
-    editPromotion(state, promotion){
+    editPromotion(state, promotion) {
         var url = urlPromotion + '/' + promotion.id
         state.fillPromotion.id = promotion.id
         state.fillPromotion.total = promotion.total
@@ -488,12 +478,12 @@ export default { //used for changing the state
             state.servicespromotions = response.data.servicespromotions
         });
     },
-    updatePromotion(state, id){
+    updatePromotion(state, id) {
         var url = urlPromotion + '/' + id
         var total = 0
-        if(state.fillPromotion.total > 0){
+        if (state.fillPromotion.total > 0) {
             total = state.fillPromotion.total
-        }else{
+        } else {
             total = state.totalPromotion
         }
         axios.put(url, {
@@ -504,12 +494,12 @@ export default { //used for changing the state
             state.listServicepromotions.forEach(service => {
                 axios.post(url, {
                     promotion_id: id,
-                    service_id: service.id,
+                    service_id: service.service,
                     price: service.precio,
                 }).then(response => {
                     toastr.success('Servicio agregado con éxito')
                 }).catch(error => {
-                    //state.errorsLaravel = error.response.data
+                    state.errorsLaravel = error.response.data
                 })
             })
 
@@ -518,24 +508,20 @@ export default { //used for changing the state
             state.fillPromotion.total = 0
             state.newPromotion.total = 0
             state.errorsLaravel = []
-
-
-            // state.fillPromotion = { id: '', name: '', total: 0 }
-            // state.errorsLaravel = [];
             $('#edit').modal('hide')
             toastr.success('Promoción actualizado con éxito')
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
     },
-    deletePromotion(state, id){
-        var url = urlPromotion + '/' +  id
+    deletePromotion(state, id) {
+        var url = urlPromotion + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Promoción eliminada con éxito')
         })
     },
-    deletePromotionEdit(state, id){
-        var url = urlPromotionServicesEdit + '/' +  id
+    deletePromotionEdit(state, id) {
+        var url = urlPromotionServicesEdit + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Servicio eliminada con éxito')
         })
@@ -543,14 +529,14 @@ export default { //used for changing the state
     /******************************* */
     /****** sección personal **** */
     /******************************* */
-    getPersonals(state, page){
+    getPersonals(state, page) {
         var url = urlPersonal + '?page=' + page + '&name=' + state.searchPersonal.name
         axios.get(url).then(response => {
             state.personals = response.data.personals.data
             state.pagination = response.data.pagination
         });
     },
-    createPersonal(state){
+    createPersonal(state) {
         var url = urlPersonal;
         axios.post(url, {
             name: state.newPersonal.name,
@@ -563,12 +549,12 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editPersonal(state, personal){
+    editPersonal(state, personal) {
         state.fillPersonal.id = personal.id
         state.fillPersonal.name = personal.name
         $("#edit").modal('show')
     },
-    updatePersonal(state, id){
+    updatePersonal(state, id) {
         var url = urlPersonal + '/' + id
         axios.put(url, state.fillPersonal).then(response => {
             state.fillPersonal = { 'id': '', 'name': '' }
@@ -579,8 +565,8 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deletePersonal(state, id){
-        var url = urlPersonal + '/' +  id
+    deletePersonal(state, id) {
+        var url = urlPersonal + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Personal eliminado con éxito');
         })
@@ -588,14 +574,14 @@ export default { //used for changing the state
     /******************************* */
     /****** sección empresas **** */
     /******************************* */
-    getCompanies(state, page){
+    getCompanies(state, page) {
         var url = urlCompany + '?page=' + page + '&name=' + state.searchCompany.name
         axios.get(url).then(response => {
             state.companies = response.data.companies.data
             state.pagination = response.data.pagination
         });
     },
-    createCompany(state){
+    createCompany(state) {
         var url = urlCompany;
         axios.post(url, {
             name: state.newCompany.name,
@@ -611,14 +597,14 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editCompany(state, company){
+    editCompany(state, company) {
         state.fillCompany.id = company.id
         state.fillCompany.name = company.name
         state.fillCompany.date = company.date
         state.fillCompany.discount = company.discount
         $("#edit").modal('show')
     },
-    updateCompany(state, id){
+    updateCompany(state, id) {
         var url = urlCompany + '/' + id
         axios.put(url, state.fillCompany).then(response => {
             state.fillCompany = { 'id': '', 'name': '' }
@@ -629,8 +615,8 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteCompany(state, id){
-        var url = urlCompany + '/' +  id
+    deleteCompany(state, id) {
+        var url = urlCompany + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Empresa eliminada con éxito');
         })
@@ -638,14 +624,14 @@ export default { //used for changing the state
     /******************************* */
     /****** sección profesiones **** */
     /******************************* */
-    getProfessions(state, page){
+    getProfessions(state, page) {
         var url = urlProfession + '?page=' + page + '&name=' + state.searchProfession.name
         axios.get(url).then(response => {
             state.professions = response.data.professions.data
             state.pagination = response.data.pagination
         });
     },
-    createProfession(state){
+    createProfession(state) {
         var url = urlProfession;
         axios.post(url, {
             name: state.newProfession.name,
@@ -661,14 +647,14 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editProfession(state, profession){
+    editProfession(state, profession) {
         state.fillProfession.id = profession.id
         state.fillProfession.name = profession.name
         state.fillProfession.date = profession.date
         state.fillProfession.percentage = profession.percentage
         $("#edit").modal('show')
     },
-    updateProfession(state, id){
+    updateProfession(state, id) {
         var url = urlProfession + '/' + id
         axios.put(url, state.fillProfession).then(response => {
             state.fillProfession = { 'id': '', 'name': '', 'date': '' }
@@ -679,71 +665,87 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteProfession(state, id){
-        var url = urlProfession + '/' +  id
+    deleteProfession(state, id) {
+        var url = urlProfession + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Profesión eliminada con éxito');
         })
     },
     /****** sección clientes **** */
     /******************************* */
-    getClients(state, page){
-        
+    getClients(state, page) {
         var url = urlClient + '?page=' + page + '&barcode=' + state.searchClient.barcode
-                + '&rut=' + state.searchClient.rut + '&name=' + state.searchClient.name
+            + '&rut=' + state.searchClient.rut + '&name=' + state.searchClient.name
         axios.get(url).then(response => {
+            state.userSucursal = response.data.user_sucursal
             state.clients = response.data.clients.data
             state.pagination = response.data.pagination
         });
     },
-    showClient(state, id){
+    showClient(state, id) {
         var url = urlUser + '/' + id
         axios.get(url).then(response => {
             state.user = response.data
         });
     },
-    createClient(state){
-        //alert(state.selectedItem.value)
-        var company_id = state.selectedItem.value
-        var profession_id = state.selectedProfession.value
-
+    createClient(state) {
         var url = urlCreateClient
 
-        axios.post(url, {
-            company_id: company_id,
-            profession_id: profession_id,
+        for (let i = 0; i < state.attachment.length; i++) {
+            state.form.append('image', state.attachment[i])
+        }
+
+        let company = 0;
+
+        if (state.selectedItem === null) {
+            company = 1;
+        } else {
+            company = state.selectedItem.value
+        }
+
+        const user = {
+            company_id: company,
+            profession_id: state.selectedProfession.value,
             rut: state.newClient.rut,
             name: state.newClient.name,
             email: state.newClient.email,
-            address: state.newClient.address,
+            city: state.newClient.city,
             phone: state.newClient.phone,
             birthdate: state.newClient.birthdate,
             sex: state.newClient.sex,
-            civil: state.newClient.civil,
-            children: state.newClient.children,
-            barcode: 0,
+            other_sex: state.newClient.other_sex,
             score: state.newClient.score,
             password: '',
             is_convenio: state.newClient.is_convenio
-        }).then(response => {
-            state.newClient = { company_id: '',profession_id: '', rut: '', name : '', email: '', address: '',
-                            phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', password: '',is_convenio:0 };
+        };
+
+        for (const key in user) {
+            state.form.append(key, user[key]);
+        }
+
+        axios.post(url, state.form).then(response => {
+            state.selectedProfession = []
+            state.selectedItem = []
+            state.newClient = {
+                company_id: '', profession_id: '', rut: '', name: '', email: '', city: '',
+                phone: '', birthdate: '', sex: '', score: 0, password: '', is_convenio: 0, other_sex: '', image: null
+            };
             state.errorsLaravel = [];
+            $("#image").val(null);
             $('#create').modal('hide');
             toastr.success('Cliente generado con éxito');
         }).catch(error => {
             state.errorsLaravel = error.response.data
-            //toastr.error(error.response.data)
         })
     },
-    editClient(state, user){
+    editClient(state, user) {
         state.options.forEach((company) => {
-            if(company.value === user.company_id)
-                state.selectedItem=company
+            if (company.value === user.company_id)
+                state.selectedItem = company
         })
         state.optionsProfession.forEach((profession) => {
-            if(profession.value === user.profession_id)
-                 state.selectedProfession=profession
+            if (profession.value === user.profession_id)
+                state.selectedProfession = profession
         })
 
         state.fillClient.id = user.id
@@ -752,62 +754,86 @@ export default { //used for changing the state
         state.fillClient.rut = user.rut
         state.fillClient.name = user.name
         state.fillClient.email = user.email
-        state.fillClient.address = user.address
+        state.fillClient.city = user.city
         state.fillClient.phone = user.phone
         state.fillClient.birthdate = user.birthdate
         state.fillClient.sex = user.sex
-        state.fillClient.civil = user.civil
-        state.fillClient.children = user.children
-        // state.fillClient.barcode = user.barcode
+        state.fillClient.other_sex = user.other_sex
         state.fillClient.score = user.score
         state.fillClient.password = user.password
         state.fillClient.is_convenio = user.is_convenio
+        state.fillClient.image = user.image
+
+        if (state.fillClient.sex === 3) {
+            state.inputOther = true;  // Muestra el input si 'Otro' está seleccionado
+        }
         $("#edit").modal('show')
     },
-    updateClient(state, id){
+    updateClient(state, id) {
         var url = urlUpdateClient + '/' + id;
-        axios.put(url, {
-            id: state.fillClient.id,
-            company_id: state.selectedItem.value,
+
+        let formDataUpdate = new FormData();
+        let company = 0;
+
+        if (state.selectedItem === null) {
+            company = 1;
+        } else {
+            company = state.selectedItem.value
+        }
+
+        const user = {
+            image: state.selectedImage,
+            company_id: company,
             profession_id: state.selectedProfession.value,
             rut: state.fillClient.rut,
             name: state.fillClient.name,
             email: state.fillClient.email,
-            address: state.fillClient.address,
+            city: state.fillClient.city,
             phone: state.fillClient.phone,
             birthdate: state.fillClient.birthdate,
             sex: state.fillClient.sex,
-            civil: state.fillClient.civil,
-            children: state.fillClient.children,
-            barcode: 0,
+            other_sex: state.fillClient.other_sex,
             score: state.fillClient.score,
             is_convenio: state.fillClient.is_convenio
-        }).then(response => {
-            state.fillClient = { id: '', company_id: '', profession_id: '', rut: '', name : '', email: '', address: '',
-            phone: '', birthdate: '', sex: '', civil: '', children: 0, barcode: '', password: '' ,is_convenio: 0};
+        };
+
+        for (const key in user) {
+            formDataUpdate.append(key, user[key]);
+        }
+
+        axios.post(url, formDataUpdate).then(response => {
+            state.selectedProfession = []
+            state.selectedItem = []
             state.errorsLaravel = [];
+            $("#imagen").val(null);
             $('#edit').modal('hide');
             toastr.success('Cliente actualizado con éxito')
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
     },
-    deleteClient(state, id){
-        var url = urlUser + '/' +  id;
+    deleteClient(state, id) {
+        var url = urlUser + '/' + id;
         axios.delete(url).then(response => {
             toastr.success('Cliente eliminado con éxito');
         });
     },
     /****** sección usuarios **** */
     /******************************* */
-    getUsers(state, page){
-        var url = urlUser + '?page=' + page + '&email=' + state.searchUser.email + '&name=' + state.searchUser.name
+    getUsers(state, page) {
+        var url = urlUser + '?page=' + page + '&email=' + state.searchUser.email + '&name=' + state.searchUser.name + '&rut=' + state.searchUser.rut
         axios.get(url).then(response => {
             state.users = response.data.users.data
             state.pagination = response.data.pagination
         });
     },
-    createUser(state){
+    getSearchUsers(state) {
+        var url = urlSearchUser + '?email=' + state.searchUser.email + '&name=' + state.searchUser.name + '&rut=' + state.searchUser.rut
+        axios.get(url).then(response => {
+            state.users = response.data
+        });
+    },
+    createUser(state) {
         var url = urlCreateUser
         axios.post(url, {
             name: state.newUser.name,
@@ -815,7 +841,7 @@ export default { //used for changing the state
             email: state.newUser.email,
             password: state.newUser.password,
         }).then(response => {
-            state.newUser = { name : '', rut: '', email: '', password: ''};
+            state.newUser = { name: '', rut: '', email: '', password: '' };
             state.errorsLaravel = [];
             $('#create').modal('hide');
             toastr.success('Usuario generado con éxito');
@@ -823,16 +849,16 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editUser(state, user){
+    editUser(state, user) {
         state.fillUser.id = user.id
         state.fillUser.name = user.name
         state.fillUser.email = user.email
         $("#edit").modal('show')
     },
-    updateUser(state, id){
+    updateUser(state, id) {
         var url = urlUpdateUser + '/' + id;
         axios.put(url, state.fillUser).then(response => {
-            state.fillUser = { id: '', name : '', email: '', password: ''};
+            state.fillUser = { id: '', name: '', email: '', password: '' };
             state.errorsLaravel = [];
             $('#edit').modal('hide');
             toastr.success('Usuario actualizado con éxito')
@@ -840,11 +866,13 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    updateScoreExchange(state){
+    updateScoreExchange(state) {
         var url = urlUser + '/' + state.user.id
-        var user = { id: null, company_id: null,profession_id: null, rut: null, name: null, email: null,
-                    address: null, phone: null, birthdate: null, sex: null,
-                    civil: null, children: null, barcode: null, score: null, is_convenio:null }
+        var user = {
+            id: null, company_id: null, profession_id: null, rut: null, name: null, email: null,
+            city: null, phone: null, birthdate: null, sex: null,
+            civil: null, children: null, barcode: null, score: null, is_convenio: null
+        }
 
         user.id = state.user.id
         user.company_id = state.user.company_id
@@ -852,7 +880,7 @@ export default { //used for changing the state
         user.rut = state.user.rut
         user.name = state.user.name
         user.email = state.user.email
-        user.address = state.user.address
+        user.city = state.user.city
         user.phone = state.user.phone
         user.birthdate = state.user.birthdate
         user.sex = state.user.sex
@@ -860,9 +888,9 @@ export default { //used for changing the state
         user.children = state.user.children
         user.score = state.user.score - state.service.score_exchange
         user.barcode = state.user.barcode
-        user.is_convenio=state.user.is_convenio
+        user.is_convenio = state.user.is_convenio
         axios.put(url, user).then(response => {
-            state.service = {  name: null, score_exchange: null, score_accumulated: null }
+            state.service = { name: null, score_exchange: null, score_accumulated: null }
             state.user.score = user.score
 
             toastr.success('Servicio canjeado con éxito')
@@ -871,11 +899,13 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    updateScoreAccumulated(state){
+    updateScoreAccumulated(state) {
         var url = urlUser + '/' + state.user.id
-        var user = { id: null, company_id: null,profession_id: null, rut: null, name: null, email: null,
-            address: null, phone: null, birthdate: null, sex: null,
-            civil: null, children: null, barcode: null, score: null ,is_convenio: null}
+        var user = {
+            id: null, company_id: null, profession_id: null, rut: null, name: null, email: null,
+            city: null, phone: null, birthdate: null, sex: null,
+            civil: null, children: null, barcode: null, score: null, is_convenio: null
+        }
 
         user.id = state.user.id
         user.company_id = state.user.company_id
@@ -883,7 +913,7 @@ export default { //used for changing the state
         user.rut = state.user.rut
         user.name = state.user.name
         user.email = state.user.email
-        user.address = state.user.address
+        user.city = state.user.city
         user.phone = state.user.phone
         user.birthdate = state.user.birthdate
         user.sex = state.user.sex
@@ -891,33 +921,33 @@ export default { //used for changing the state
         user.children = state.user.children
         user.score = state.user.score + state.service.score_accumulated
         user.barcode = state.user.barcode
-        user.is_convenio=state.user.is_convenio
+        user.is_convenio = state.user.is_convenio
 
         axios.put(url, user).then(response => {
             $('#accumulated').modal('hide')
             toastr.success('Servicio canjeado con éxito')
 
-            state.service = {  name: null, score_exchange: null, score_accumulated: null }
+            state.service = { name: null, score_exchange: null, score_accumulated: null }
             state.user.score = user.score
 
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
     },
-    deleteUser(state, id){
-        var url = urlUser + '/' +  id;
+    deleteUser(state, id) {
+        var url = urlUser + '/' + id;
         axios.delete(url).then(response => {
             toastr.success('Ususario eliminado con éxito');
         });
     },
     /****** sección servicios **** */
     /******************************* */
-    getServices(state, page){
+    getServices(state, page) {
         var url = urlService + '?page=' + page + '&name=' + state.searchService.name;
         axios.get(url).then(response => {
             state.services = response.data.services.data
             state.pagination = response.data.pagination
-            if(state.service.length === 1 ){
+            if (state.service.length === 1) {
                 state.service.forEach((service) => {
                     state.service = service
                 })
@@ -926,63 +956,60 @@ export default { //used for changing the state
                 state.service = { score_exchange: null, score_accumulated: null }
         });
     },
-    showService(state, id){
+    showService(state, id) {
         var url = urlService + '/' + id;
         axios.get(url).then(response => {
             state.service = response.data
         });
     },
-    createService(state){
-        var category_id = null
-        if(state.selectedCategory != null){
-            category_id = state.selectedCategory.value
-        }
+    createService(state) {
         var url = urlService
-        if(category_id == null){
-            toastr.warning('Debe seleccionar una categoría')
-            return
-        }
         axios.post(url, {
-            category_id: category_id,
+            category_id: state.selectedCategory.value,
             name: state.newService.name,
             score_exchange: state.newService.score_exchange,
             score_accumulated: state.newService.score_accumulated,
             price: state.newService.price,
+            redeemable_service: state.newService.redeemable_service
         }).then(response => {
-            state.newService.name = ''
-            state.newService.score_exchange = ''
-            state.newService.score_accumulated = ''
-            state.newService.price = ''
+            state.newService = {
+                category_id: '',
+                name: '',
+                score_exchange: '',
+                score_accumulated: '',
+                price: '',
+                redeemable_service: ''
+            }
             state.errorsLaravel = []
-            state.selectedCategory = null
             $('#create').modal('hide')
             toastr.success('Servicio generado con éxito')
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
     },
-    editService(state, service){
+    editService(state, service) {
         state.optionsCategory.forEach((category) => {
-            if(category.value === service.category_id)
+            if (category.value === service.category_id)
                 state.selectedCategory = category
         })
 
-        
+
         state.fillService.category_id = service.category_id
         state.fillService.id = service.id
         state.fillService.name = service.name
         state.fillService.score_exchange = service.score_exchange
         state.fillService.score_accumulated = service.score_accumulated
         state.fillService.price = service.price
+        state.fillService.redeemable_service = service.redeemable_service
         $("#edit").modal('show')
     },
-    updateService(state, id){
+    updateService(state, id) {
         var category_id = state.selectedCategory.value
         state.fillService.category_id = category_id
         var url = urlService + '/' + id
         axios.put(url, state.fillService).then(response => {
-            state.fillService = { id: '', category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '' },
-            state.selectedItem = null
+            state.fillService = { id: '', category_id: '', name: '', score_exchange: '', score_accumulated: '', price: '' },
+                state.selectedItem = null
             state.errorsLaravel = [];
             $('#edit').modal('hide')
             toastr.success('Servicio actualizado con éxito')
@@ -990,20 +1017,20 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteService(state, id){
-        var url = urlService + '/' +  id;
+    deleteService(state, id) {
+        var url = urlService + '/' + id;
         axios.delete(url).then(response => {
             toastr.success('Servicio eliminado con éxito')
         });
     },
     /******* sección usuarios con servicios*/
-    getUserServices(state, id){
+    getUserServices(state, id) {
         var url = urlUser + '/' + id + '/' + urlService;
         axios.get(url).then(response => {
             state.userServices = response.data
         });
     },
-    createUserService(state){
+    createUserService(state) {
         var url = urlUser + '/' + state.user.id + '/' + urlService + '/' + state.service.id
         var personals = '| '
 
@@ -1012,24 +1039,24 @@ export default { //used for changing the state
             personals += personal.label + ' | '
         })
 
-        axios.put(url,{
-                user_id: state.user.id,
-                personal_id: state.idPersonal,
-                service_id: state.selectedItem.value,
-                personal: personals
-            } ).then(response => {
-                toastr.success('Servicio asociado al usuario con éxito')
-                state.errorsLaravel = []
-                //alert("Cantidad: " + response.data)
-                //comprobar si el cliente adquirió una cierta cantidad de servicios
-            if( (response.data % 5) == 0 )
-                toastr.warning("Felicidades, ha sido enviado un correo con un descuento especial para usted", {timeOut: 10000});
+        axios.put(url, {
+            user_id: state.user.id,
+            personal_id: state.idPersonal,
+            service_id: state.selectedItem.value,
+            personal: personals
+        }).then(response => {
+            toastr.success('Servicio asociado al usuario con éxito')
+            state.errorsLaravel = []
+            //alert("Cantidad: " + response.data)
+            //comprobar si el cliente adquirió una cierta cantidad de servicios
+            if ((response.data % 5) == 0)
+                toastr.warning("Felicidades, ha sido enviado un correo con un descuento especial para usted", { timeOut: 10000 });
         }).catch(error => {
             state.errorsLaravel = error.response
             alert(error.response);
         })
     },
-    getUsersAvaibleServices(state, id){
+    getUsersAvaibleServices(state, id) {
         var url = urlUserAvailableService + '/' + id
         axios.get(url).then(response => {
             state.userScoreServices = response.data
@@ -1037,14 +1064,14 @@ export default { //used for changing the state
     },
     /****** sección de control de roles **** */
     /******************************* */
-    getRoles(state, page){
+    getRoles(state, page) {
         var url = urlRoles + '?page=' + page
         axios.get(url).then(response => {
             state.roles = response.data.roles.data
             state.pagination = response.data.pagination
         });
     },
-    createRole(state){
+    createRole(state) {
         var url = urlRoles
         axios.post(url, {
             name: state.newRole.name,
@@ -1061,7 +1088,7 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editRole(state, role){
+    editRole(state, role) {
         var permissions = []
         state.checkedSpecialRole = ''
         state.checkedPermissions = []
@@ -1076,7 +1103,7 @@ export default { //used for changing the state
         state.checkedPermissions = permissions
         $("#edit").modal('show')
     },
-    updateRole(state, id){
+    updateRole(state, id) {
         var url = urlRoles + '/' + id
         state.fillRole.special = state.checkedSpecialRole
         state.fillRole.permissions = state.checkedPermissions
@@ -1089,26 +1116,52 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteRole(state, id){
-        var url = urlRoles + '/' +  id
+    deleteRole(state, id) {
+        var url = urlRoles + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Rol eliminado con éxito');
         })
     },
-    getAllRoles(state){
+    getAllRoles(state) {
         var url = urlAllRoles
         axios.get(url).then(response => {
+            const roles = response.data;
+            roles.forEach(role => {
+                switch (role.name) {
+                    case 'clientes':
+                        role.description = 'Rol para los clientes'
+                        break;
+                    case 'admin':
+                        role.description = 'Rol para los administradores'
+                        break;
+                    case 'sucursal':
+                        role.description = 'Rol para los jefe de sucursal'
+                        break;
+                }
+            })
             state.roles = response.data
         });
     },
-    getUserRoles(state, id){
+    getUserRoles(state, id) {
         var url = urlUser + '/' + id + '/' + urlRoles
         axios.get(url).then(response => {
+            const user = response.data[0];
+            switch (user.name) {
+                case 'clientes':
+                    user.description = 'Rol para los clientes'
+                    break;
+                case 'admin':
+                    user.description = 'Rol para los administradores'
+                    break;
+                case 'sucursal':
+                    user.description = 'Rol para los jefe de sucursal'
+                    break;
+            }
             state.userRoles = response.data
             $("#showRoles").modal('show')
         });
     },
-    editUserRoles(state, user){
+    editUserRoles(state, user) {
         var roles = []
         state.checkedRoles = []
         state.fillUserRoles.id = user.id
@@ -1119,7 +1172,7 @@ export default { //used for changing the state
         state.checkedRoles = roles
         $("#editRoles").modal('show')
     },
-    updateUserRoles(state, id){
+    updateUserRoles(state, id) {
         var url = urlUserRoles + '/' + id;
         axios.put(url, state.checkedRoles).then(response => {
             state.checkedRoles = []
@@ -1129,32 +1182,38 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    getAllPermissions(state){
+    getAllPermissions(state) {
         var url = urlAllPermissions
         axios.get(url).then(response => {
             state.permissions = response.data
         });
     },
     setRoles(state, arr) {
-    	state.checkedRoles = arr
+        state.checkedRoles = arr
     },
     setSpecialRole(state, value) {
-        if(value === 'no-access' || value === 'all-access'){
+        if (value === 'all-access') {
+            state.permissions.forEach(permission => {
+                state.checkedPermissions.push(permission.id);
+            })
+        } else if (value === 'no-access') {
             state.checkedPermissions = []
             $('input[name="permission"]').prop('disabled', true)
-        }else{
+        } else {
             $('input[name="permission"]').prop('disabled', false)
         }
-    	state.checkedSpecialRole = value
+
+
+        state.checkedSpecialRole = value
     },
     setPermissions(state, arr) {
         state.checkedSpecialRole = ''
-    	state.checkedPermissions = arr
+        state.checkedPermissions = arr
     },
 
     /****** sección paginacion **** */
     /******************************* */
-    paginate(state, page){
+    paginate(state, page) {
         state.pagination.current_page = page
     },
     /**************************************** */
@@ -1166,55 +1225,14 @@ export default { //used for changing the state
     /******************************* */
     /****** sección clientes **** */
     /******************************* */
-    // getClients(state, page){
-    //     var url = urlClient + '?page=' + page
-    //     axios.get(url).then(response => {
-    //         state.clients = response.data.clients.data
-    //         state.pagination = response.data.pagination
-    //     });
-    // },
-    // createClient(state){
-    //     var url = urlClient
-    //     axios.post(url, {
-    //         name: state.newClient.name,
-    //     }).then(response => {
-    //         state.newClient.name = ''
-    //         state.errorsLaravel = []
-    //         $('#createclient').modal('hide')
-    //         toastr.success('Cliente generado con éxito')
-    //     }).catch(error => {
-    //         state.errorsLaravel = error.response.data
-    //     })
-    // },
-    // editClient(state, client){
-    //     state.fillClient.id = client.id
-    //     state.fillClient.name = client.name
-    //     $("#editClient").modal('show')
-    // },
-    // updateClient(state, id){
-    //     var url = urlClient + '/' + id
-    //     axios.put(url, state.fillClient).then(response => {
-    //         state.fillClient = { id: '', name: '' }
-    //         state.errorsLaravel = [];
-    //         $('#editClient').modal('hide')
-    //         toastr.success('Cliente actualizado con éxito')
-    //     }).catch(error => {
-    //         state.errorsLaravel = error.response.data
-    //     })
-    // },
-    // deleteClient(state, id){
-    //     var url = urlClient + '/' +  id
-    //     axios.delete(url).then(response => {
-    //         toastr.success('Cliente eliminado con éxito')
-    //     })
-    // },
+
     /*************************POST********************** */
     /**************************************************** */
     /**************************************************** */
     /**************************************************** */
 
     /********* seccion de paneles *****/
-    showSucursalPanel(state){
+    showSucursalPanel(state) {
         state.clientShow = false
         state.sucursalShow = true
         state.typeServiceShow = false
@@ -1223,7 +1241,7 @@ export default { //used for changing the state
         state.personalShow = false
         state.finalShow = false
     },
-    showClientPanel(state){
+    showClientPanel(state) {
         state.clientShow = true
         state.sucursalShow = false
         state.typeServiceShow = false
@@ -1232,7 +1250,7 @@ export default { //used for changing the state
         state.personalShow = false
         state.finalShow = false
     },
-    showTypeServicePanel(state){
+    showTypeServicePanel(state) {
         state.clientShow = false
         state.sucursalShow = false
         state.typeServiceShow = true
@@ -1242,7 +1260,7 @@ export default { //used for changing the state
         state.finalShow = false
         state.is_convenio = state.selectedClient.is_convenio
     },
-    showPromotionPanel(state){
+    showPromotionPanel(state) {
         state.clientShow = false
         state.sucursalShow = false
         state.typeServiceShow = false
@@ -1250,9 +1268,9 @@ export default { //used for changing the state
         state.serviceShow = false
         state.personalShow = false
         state.finalShow = false
-        state.selectedTypeService={id: 1, name: 'PROMOTION'}
+        state.selectedTypeService = { id: 1, name: 'PROMOTION' }
     },
-    showServicePanel(state){
+    showServicePanel(state) {
         state.clientShow = false
         state.sucursalShow = false
         state.typeServiceShow = false
@@ -1260,9 +1278,9 @@ export default { //used for changing the state
         state.serviceShow = true
         state.personalShow = true
         state.finalShow = false
-        state.selectedTypeService={id: 0, name: 'SERVICE'}
+        state.selectedTypeService = { id: 0, name: 'SERVICE' }
     },
-    showFinalPanel(state){
+    showFinalPanel(state) {
         state.clientShow = false
         state.sucursalShow = false
         state.typeServiceShow = false
@@ -1271,39 +1289,36 @@ export default { //used for changing the state
         state.personalShow = false
         state.finalShow = true
     },
-    addSucursal(state, sucursal){
+    addSucursal(state, sucursal) {
         state.selectedSucursal = sucursal
     },
-    addTypeService(state, typeService){
+    addTypeService(state, typeService) {
         state.selectedTypeService = typeService
     },
     /****** sección select *************** */
     /******************************* */
 
     /*********sucursales *************/
-    allSucursals(state){
+    allSucursals(state) {
         var url = urlAllSucursals
         state.sucursalsSelect = []
         axios.get(url).then(response => {
             state.sucursals = response.data
             response.data.forEach((sucursal) => {
-                state.sucursalsSelect.push( { label: sucursal.name, value: sucursal.id } )
+                state.sucursalsSelect.push({ label: sucursal.name, value: sucursal.id })
             })
-            /*response.data.forEach((category) => {
-                state.options.push( { label: category.name, value: category.id } )
-            });*/
         });
     },
     setSucursal(state, sucursal) {
         state.selectedSucursal = sucursal
     },
     /***** métodos de pago *********/
-    allPayments(state){
+    allPayments(state) {
         var url = urlAllPayment
         axios.get(url).then(response => {
             state.payments = []
             response.data.forEach((payment) => {
-                state.payments.push( { label: payment.name, value: payment.id } )
+                state.payments.push({ label: payment.name, value: payment.id })
             });
         });
     },
@@ -1311,12 +1326,12 @@ export default { //used for changing the state
         state.selectedPayment = payment
     },
     /************ clientes *************/
-    allClients(state){
+    allClients(state) {
         var url = urlAllClientposts
         axios.get(url).then(response => {
             state.clients = []
             response.data.forEach((client) => {
-                state.clients.push( { label: client.name, value: client.id, nombre: client.name, is_convenio: client.is_convenio } )
+                state.clients.push({ label: client.name, value: client.id, nombre: client.name, is_convenio: client.is_convenio })
             });
         });
     },
@@ -1324,14 +1339,14 @@ export default { //used for changing the state
         state.selectedClient = client
     },
     /********* servicios *************/
-    allServiceposts(state){
-        if(state.selectedCategory != null){
+    allServiceposts(state) {
+        if (state.selectedCategory != null) {
             var url = urlAllServiceCategory + '/' + state.selectedCategory.value
             axios.get(url).then(response => {
                 state.serviceposts = []
                 if (response.data != null) {
                     response.data.forEach((service) => {
-                        state.serviceposts.push( { label: service.name, value: service.id, precio: service.price } )
+                        state.serviceposts.push({ label: service.name, value: service.id, precio: service.price })
                     });
                 }
             });
@@ -1347,14 +1362,14 @@ export default { //used for changing the state
         state.selectedServicepromotions = service
     },
     /********* personales *************/
-    allPersonalposts(state){
+    allPersonalposts(state) {
         var url = urlAllPersonal
         state.personalposts = []
-        state.personalposts.push( { label: 'TODOS', value: null } )
+        state.personalposts.push({ label: 'TODOS', value: null })
 
         axios.get(url).then(response => {
             response.data.forEach((personal) => {
-                state.personalposts.push( { label: personal.name, value: personal.id } )
+                state.personalposts.push({ label: personal.name, value: personal.id })
             });
         });
     },
@@ -1362,7 +1377,7 @@ export default { //used for changing the state
         state.selectedPersonalposts = personal
     },
     /**********sección agregar servicios */
-    addService(state){
+    addService(state) {
 
         // state.selectedServiceposts.forEach(service => {
 
@@ -1374,7 +1389,7 @@ export default { //used for changing the state
         //     })
         // })
 
-        
+
 
         state.listServiceposts.push({
             id: state.selectedServiceposts.value,
@@ -1387,78 +1402,69 @@ export default { //used for changing the state
         state.selectedServiceposts = null
         state.selectedPersonalposts = null
     },
-    addServicePersonalPromotion(state, service){
- 
+    addServicePersonalPromotion(state, service) {
+
         state.listServiceposts.push({
-                id: service.value,
-                nombre: service.label,
-                precio: service.precio,
-                personal: [state.selectedPersonalposts],
-                
-            })
+            id: service.value,
+            nombre: service.label,
+            precio: service.precio,
+            personal: [state.selectedPersonalposts],
+
+        })
         state.total_normal += service.precio
         //dejando inactivo el servicio confirmado
         state.servicepromotions.forEach(s => {
-            if(s.value == service.value){
+            if (s.value == service.value) {
                 s.estado = 'CONFIRMADO'
                 s.personal = state.selectedPersonalposts.label
             }
         })
         state.selectedPersonalposts = null
     },
-    deleteServicepost(state){
+    deleteServicepost(state) {
         state.listServiceposts.pop()
         state.total_normal.pop()
     },
     /****** suma total */
     //Aqui se esta preguntando por usuario para acceder a su compañia y de su compañia al descuento
-    totalServicePost(state){
+    totalServicePost(state) {
         var url = urlUser + '/' + state.selectedClient.value
         axios.get(url).then(response => {
-            if(response.data.is_convenio){
-               state.descuento = response.data.company.discount
-            }else{
+            if (response.data.is_convenio) {
+                state.descuento = response.data.company.discount
+            } else {
                 state.descuento = 0
             }
         }).then(response => {
             var total = 0
             state.totalPost = 0
-            if(state.total_promotion > 0){
+            if (state.total_promotion > 0) {
                 state.totalPost = state.total_promotion
-            }else{
+            } else {
                 state.listServiceposts.forEach(service => {
                     total += parseInt(service.precio)
                 })
                 //aplicando descuento en el total
-                state.totalPost = total*(100-state.descuento)/100
+                state.totalPost = total * (100 - state.descuento) / 100
             }
         }).catch(error => {
         })
     },
-    addServicePromotion(state){
-
-        if(state.selectedServicepromotions != null){
-
-            state.selectedServicepromotions.forEach(service => {
-
-                state.listServicepromotions.push({
-                    id: service.value,
-                    nombre: service.label,
-                    precio: service.precio,
-                })
-            })
-        
-            state.selectedServicepromotions = null
-        }
+    addServicePromotion(state) {
+        state.listServicepromotions.push({
+            service: state.selectedServicepromotions.value,
+            nombre: state.selectedServicepromotions.label,
+            precio: state.selectedServicepromotions.precio
+        })
     },
-    deleteServicePromotion(state){
+    deleteServicePromotion(state) {
         state.listServicepromotions.pop()
         state.totalPromotion = 0
     },
 
 
     /****** suma total */
-    totalServicePromotion(state){
+    totalServicePromotion(state) {
         var totalnew = 0
         var totalold = 0
         state.totalPromotion = 0
@@ -1476,10 +1482,10 @@ export default { //used for changing the state
 
 
     /*******seccion sucursales */
-    showModalConfirm(state){
+    showModalConfirm(state) {
         $('#confirmVoucher').modal('show')
     },
-    resetVoucher(state){
+    resetVoucher(state) {
         state.codeVoucher = false
         state.sucursalShow = true
 
@@ -1488,8 +1494,8 @@ export default { //used for changing the state
         state.selectedPayment = null
     },
     /*************************************** */
-    getVouchers(state, page){
-        if(state.searchVoucher.id == '' || state.searchVoucher.id == null)
+    getVouchers(state, page) {
+        if (state.searchVoucher.id == '' || state.searchVoucher.id == null)
             var url = urlVoucher + '?page=' + page
         else
             var url = urlVoucher + '?page=' + page + '&id=' + state.searchVoucher.id
@@ -1498,18 +1504,18 @@ export default { //used for changing the state
             state.pagination = response.data.pagination
         })
     },
-    getVouchersImpagos(state,data){
-        var url = urlVoucherImpagos +'/'+state.selectedClient.value
-        state.vouchers=[]
+    getVouchersImpagos(state, data) {
+        var url = urlVoucherImpagos + '/' + state.selectedClient.value
+        state.vouchers = []
 
         axios.get(url).then(response => {
             state.data = response.data
             var data = response.data
 
             data.forEach(voucher => {
-                var descuento=0
-                var personal=""
-                var service=""
+                var descuento = 0
+                var personal = ""
+                var service = ""
                 voucher.serviceposts.forEach(s => {
                     //descuento = s.descuento
                     service = s.service.name
@@ -1523,7 +1529,7 @@ export default { //used for changing the state
                     name: voucher.name,
                     aditional: voucher.aditional,
                     //descuento: descuento,
-                    service: service, 
+                    service: service,
                     created_at: voucher.created_at,
                     total: voucher.total,
                     personal: personal,
@@ -1536,7 +1542,7 @@ export default { //used for changing the state
     },
 
 
-    createVoucherService(state){
+    createVoucherService(state) {
         var url = urlVoucherPOST
 
         if (state.totalPost > 0) {
@@ -1553,18 +1559,18 @@ export default { //used for changing the state
             }
             axios.post(url, session).then(response => {
                 state.listServiceposts = []
-                state.total_normal = 0 
+                state.total_normal = 0
                 state.totalPost = 0
                 toastr.success('Venta generada con exito!')
                 // $('#create').modal('hide')
             })
-            .catch(error => {
-                toastr.error(error.response.data)
-            })
+                .catch(error => {
+                    toastr.error(error.response.data)
+                })
         }
     },
 
-    createVoucherPromotion(state){
+    createVoucherPromotion(state) {
         var url = urlVoucherPOST
 
         if (state.totalPost > 0) {
@@ -1581,7 +1587,7 @@ export default { //used for changing the state
             }
             axios.post(url, session).then(response => {
                 state.listServiceposts = []
-                state.total_normal = 0 
+                state.total_normal = 0
                 state.totalPost = 0
                 toastr.success('Venta generada con exito!')
                 // $('#create').modal('hide')
@@ -1658,18 +1664,18 @@ export default { //used for changing the state
     //         state.errorsLaravel = error.response.data
     //     })
     // },
-    showModalDeleteVoucher(state, id){
+    showModalDeleteVoucher(state, id) {
         state.idVoucher = id
         $('#modalDeleteVoucher').modal('show')
     },
-    deleteVoucher(state){
+    deleteVoucher(state) {
         var url = urlVoucher + '/' + state.idVoucher
         axios.delete(url).then(response => {
             toastr.success('Voucher eliminada con éxito')
             $('#modalDeleteVoucher').modal('hide')
         })
     },
-    showVoucherButton(state){
+    showVoucherButton(state) {
         state.voucher = null
         var url = urlVoucher + '/' + state.searchVoucher.id
         axios.get(url).then(response => {
@@ -1684,24 +1690,24 @@ export default { //used for changing the state
             //state.voucherClient = response.data.client
 
             //alert(state.voucher.name)
-           // alert(state.voucherClient.name)
+            // alert(state.voucherClient.name)
 
 
         }).catch(error => {
             toastr.warning('No se encontró el voucher con el código especificado')
         })
     },
-    boleta(state, id){
+    boleta(state, id) {
         var url = urlBoleta + '/' + id
         var printWindow = window.open(url);
         printWindow.focus();
         printWindow.print();
     },
-    boletaPdf(state, id){
+    boletaPdf(state, id) {
         var url = urlBoletaPdf + '/' + id
         window.location.href = url;
     },
-    cajaZ(state, id){
+    cajaZ(state, id) {
         var url = urlCajaZ + '/' + id
         state.totalCajaZ = 0
         var total_normal = 0
@@ -1713,36 +1719,36 @@ export default { //used for changing the state
             state.cajaZData = response.data
 
             state.cajaZData.forEach(voucher => {
-                if(voucher.is_paid){
+                if (voucher.is_paid) {
                     state.totalCajaZ += voucher.total
 
                     // voucher.serviceposts.forEach(serviceP => {
                     //     total_normal += serviceP.service.price
                     // })
-                    
+
 
                     // console.log(voucher.total)
                     // console.log(total_normal)
-                    
+
                     // porcent_promotion = (voucher.total / total_normal)
-                    
+
                     state.cajaServices.push({
                         serviceposts: voucher.serviceposts,
                         clientposts: voucher.clientposts,
                         // porcent_promotion: Math.round(porcent_promotion * 100) / 100
-                        
-                    }) 
 
-                    
+                    })
+
+
                 }
             })
         })
     },
-    listaVoucher(state, id){
+    listaVoucher(state, id) {
         var url = urlListaVoucher + '/' + id
         window.location.href = url;
     },
-    totalVoucherPersonal(state, id){
+    totalVoucherPersonal(state, id) {
         state.sucursalId = id
         var url = urlTotalVoucherPersonal + '/' + id
         state.totalPersonalServices = []
@@ -1760,8 +1766,7 @@ export default { //used for changing the state
                 state.personalName = ''
 
 
-                if(voucher.serviceposts)
-                {
+                if (voucher.serviceposts) {
                     voucher.serviceposts.forEach(serviceP => {
 
                         serviceP.personalposts.forEach(personalP => {
@@ -1787,8 +1792,7 @@ export default { //used for changing the state
 
         })
     },
-    detailPersonalVoucher(state, data)
-    {
+    detailPersonalVoucher(state, data) {
         var url = urlDetailVoucherPersonal + '/' + state.sucursalId + '/' + data.id
         state.detailPersonalServices = []
         state.detailPersonalName = data.name
@@ -1801,10 +1805,11 @@ export default { //used for changing the state
 
                 datap.serviceposts.forEach(serviceP => {
 
-                    state.detailPersonalServices.push( {
+                    state.detailPersonalServices.push({
                         id: serviceP.service.id,
                         name: serviceP.service.name,
-                        price: serviceP.service.price  } )
+                        price: serviceP.service.price
+                    })
 
                 })
 
@@ -1813,7 +1818,7 @@ export default { //used for changing the state
 
         })
     },
-    selectedDate(state, data){
+    selectedDate(state, data) {
         state.vouchersFilter = []
         state.serviciosPersonal = []
         state.filtroVoucher.total = 0
@@ -1821,31 +1826,29 @@ export default { //used for changing the state
         var idPersonal = ''
         var contador = 1
         //alert(format)
-        if(state.selectedPersonalposts != null){
-            if(state.selectedPersonalposts.value != null)
+        if (state.selectedPersonalposts != null) {
+            if (state.selectedPersonalposts.value != null)
                 idPersonal = state.selectedPersonalposts.value
             else
                 idPersonal = ''
         }
 
-        if(data.format == 'day')
+        if (data.format == 'day')
             fecha = moment(state.fecha.diaSeleccionado).format('YYYY-MM-DD')
-        if(data.format == 'month')
+        if (data.format == 'month')
             fecha = moment(state.fecha.mesSeleccionado).format('YYYY-MM-DD')
-        if(data.format == 'year')
+        if (data.format == 'year')
             fecha = moment(state.fecha.anioSellecionado).format('YYYY-MM-DD')
 
-        if(idPersonal == '')
+        if (idPersonal == '')
             var url = urlFiltroVoucher + '?filter[' + data.format + ']=' + fecha + '&filter[sucursal_id]=' + data.id +
-                    includeVoucherFiltro
+                includeVoucherFiltro
         else
             var url = urlFiltroVoucher + '?filter[' + data.format + ']=' + fecha + '&filter[sucursal_id]=' + data.id +
-                    '&filter[personal]=' + idPersonal
-            + includeVoucherFiltro
+                '&filter[personal]=' + idPersonal
+                + includeVoucherFiltro
 
-        console.log(url)
-
-        if(idPersonal != '')
+        if (idPersonal != '')
             axios.get(url).then(response => {
                 state.vouchersFilter = response.data
 
@@ -1856,8 +1859,7 @@ export default { //used for changing the state
                         servicePos.personalposts.forEach(personalPos => {
 
 
-                            if(personalPos.personal_id == idPersonal)
-                            {
+                            if (personalPos.personal_id == idPersonal) {
                                 state.serviciosPersonal.push({
                                     id: contador,
                                     personal: personalPos.personal.name,
@@ -1880,10 +1882,7 @@ export default { //used for changing the state
                 })
 
                 state.filtroVoucher.iva = state.filtroVoucher.total * 0.19
-                state.filtroVoucher.totalNeto =  state.filtroVoucher.total - state.filtroVoucher.iva
-
-                console.log(state.serviciosPersonal)
-
+                state.filtroVoucher.totalNeto = state.filtroVoucher.total - state.filtroVoucher.iva
             })
         else
             axios.get(url).then(response => {
@@ -1924,13 +1923,11 @@ export default { //used for changing the state
                 })
 
                 state.filtroVoucher.iva = state.filtroVoucher.total * 0.19
-                state.filtroVoucher.totalNeto =  state.filtroVoucher.total - state.filtroVoucher.iva
-
-                console.log(state.serviciosPersonal)
+                state.filtroVoucher.totalNeto = state.filtroVoucher.total - state.filtroVoucher.iva
 
             })
     },
-    getVouchersFiltrado(state){
+    getVouchersFiltrado(state) {
 
         var url = urlFiltroVoucher
         axios.get(url).then(response => {
@@ -1940,11 +1937,11 @@ export default { //used for changing the state
     },
 
     addToCart(state) {
-        if(state.selectedClient != null && 
-            state.selectedCategory != null && 
-            state.selectedPersonalposts != null && 
+        if (state.selectedClient != null &&
+            state.selectedCategory != null &&
+            state.selectedPersonalposts != null &&
             state.selectedServiceposts != null &&
-            state.selectedSucursal != null){
+            state.selectedSucursal != null) {
 
             state.cart.push({
                 // service: {
@@ -2048,7 +2045,7 @@ export default { //used for changing the state
     //     state.newVoucherSession= { quantity: 1, price: 0}
     // },
 
-    createVoucherSession(state){
+    createVoucherSession(state) {
         var url = urlVoucher
 
         if (state.cartTotal > 0) {
@@ -2069,12 +2066,7 @@ export default { //used for changing the state
         }
     },
 
-
-
-
-
-
-    editVoucher(state, voucher){
+    editVoucher(state, voucher) {
 
         state.fillVoucher.id = voucher.id
         state.fillVoucher.name = voucher.name
@@ -2083,7 +2075,7 @@ export default { //used for changing the state
         state.fillVoucher.payment = voucher.payment
         state.fillVoucher.personal = voucher.personal
         state.fillVoucher.is_paid = !voucher.is_paid
-        
+
 
         state.personalposts.forEach(personal => {
             if (personal.label == state.fillVoucher.personal) {
@@ -2094,26 +2086,26 @@ export default { //used for changing the state
         state.payments.forEach(payment => {
             if (payment.label == state.fillVoucher.payment) {
                 state.selectedPayment = payment
-            }else{
+            } else {
                 state.selectedPayment = null
             }
         })
 
         $("#edit").modal('show')
     },
-    updateVoucher(state, id){
+    updateVoucher(state, id) {
         var url = urlVoucher + '/' + id
 
         state.fillVoucher.personal = state.selectedPersonalposts.value
         state.fillVoucher.payment = state.selectedPayment.label
 
         axios.put(url, state.fillVoucher).then(response => {
-            state.fillVoucher = { 
-                id: '', 
-                name: '', 
+            state.fillVoucher = {
+                id: '',
+                name: '',
                 aditional: '',
                 payment: '',
-                is_paid: 0 
+                is_paid: 0
             }
             state.errorsLaravel = [];
             $('#edit').modal('hide')
@@ -2129,14 +2121,14 @@ export default { //used for changing the state
     /***************************************** */
     /*****************Marca***************** */
     /******************************* */
-    getBrands(state, page){
+    getBrands(state, page) {
         var url = urlBrand + '?page=' + page + '&name=' + state.searchBrand.name
         axios.get(url).then(response => {
             state.brands = response.data.brands.data
             state.pagination = response.data.pagination
         });
     },
-    createBrand(state){
+    createBrand(state) {
         var url = urlBrand
         axios.post(url, {
             name: state.newBrand.name,
@@ -2149,12 +2141,12 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editBrand(state, brand){
+    editBrand(state, brand) {
         state.fillBrand.id = brand.id
         state.fillBrand.name = brand.name
         $("#edit").modal('show')
     },
-    updateBrand(state, id){
+    updateBrand(state, id) {
         var url = urlBrand + '/' + id
         axios.put(url, state.fillBrand).then(response => {
             state.fillBrand = { 'id': '', 'name': '' }
@@ -2165,22 +2157,22 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteBrand(state, id){
-        var url = urlBrand + '/' +  id
+    deleteBrand(state, id) {
+        var url = urlBrand + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Marca eliminada con éxito')
         })
     },
     /*****************Laboratorio***************** */
     /******************************* */
-    getLaboratories(state, page){
+    getLaboratories(state, page) {
         var url = urlLaboratory + '?page=' + page + '&name=' + state.searchLaboratory.name
         axios.get(url).then(response => {
             state.laboratories = response.data.laboratories.data
             state.pagination = response.data.pagination
         });
     },
-    createLaboratory(state){
+    createLaboratory(state) {
         var url = urlLaboratory
         axios.post(url, {
             name: state.newLaboratory.name,
@@ -2193,12 +2185,12 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editLaboratory(state, laboratory){
+    editLaboratory(state, laboratory) {
         state.fillLaboratory.id = laboratory.id
         state.fillLaboratory.name = laboratory.name
         $("#edit").modal('show')
     },
-    updateLaboratory(state, id){
+    updateLaboratory(state, id) {
         var url = urlLaboratory + '/' + id
         axios.put(url, state.fillLaboratory).then(response => {
             state.fillLaboratory = { 'id': '', 'name': '' }
@@ -2209,22 +2201,22 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteLaboratory(state, id){
-        var url = urlLaboratory + '/' +  id
+    deleteLaboratory(state, id) {
+        var url = urlLaboratory + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Laboratorio eliminado con éxito')
         })
     },
     /*****************Unidad de Medida***************** */
     /******************************* */
-    getUnits(state, page){
+    getUnits(state, page) {
         var url = urlUnit + '?page=' + page + '&name=' + state.searchUnit.name
         axios.get(url).then(response => {
             state.units = response.data.units.data
             state.pagination = response.data.pagination
         });
     },
-    createUnit(state){
+    createUnit(state) {
         var url = urlUnit
         axios.post(url, {
             name: state.newUnit.name,
@@ -2237,12 +2229,12 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editUnit(state, unit){
+    editUnit(state, unit) {
         state.fillUnit.id = unit.id
         state.fillUnit.name = unit.name
         $("#edit").modal('show')
     },
-    updateUnit(state, id){
+    updateUnit(state, id) {
         var url = urlUnit + '/' + id
         axios.put(url, state.fillUnit).then(response => {
             state.fillUnit = { 'id': '', 'name': '' }
@@ -2253,22 +2245,22 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteUnit(state, id){
-        var url = urlUnit + '/' +  id
+    deleteUnit(state, id) {
+        var url = urlUnit + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Unidad de Medida eliminada con éxito')
         })
     },
-     /*****************Producto***************** */
+    /*****************Producto***************** */
     /*********************************************** */
-    getProducts(state, page){
+    getProducts(state, page) {
         var url = urlProduct + '?page=' + page + '&include=unit_of_mesaurent'
         axios.get(url).then(response => {
             state.products = response.data.products.data
             state.pagination = response.data.pagination
         });
     },
-    createProduct(state){
+    createProduct(state) {
         var url = urlProduct
         axios.post(url, {
             unit_of_mesaurent_id: state.selectedUnit.value,
@@ -2287,15 +2279,15 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editProduct(state, product){
+    editProduct(state, product) {
         state.fillProduct.id = product.id
         state.fillProduct.unit_of_mesaurent_id = product.unit_of_mesaurent_id
-        state.selectedUnit = { label: product.unit_of_mesaurent.name , value: product.unit_of_mesaurent.id }
+        state.selectedUnit = { label: product.unit_of_mesaurent.name, value: product.unit_of_mesaurent.id }
         state.fillProduct.name = product.name
         state.fillProduct.detail = product.detail
         $("#edit").modal('show')
     },
-    updateProduct(state, id){
+    updateProduct(state, id) {
         var url = urlProduct + '/' + id
         axios.put(url, state.fillProduct).then(response => {
             state.fillProduct = {
@@ -2310,22 +2302,22 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteProduct(state, id){
-        var url = urlProduct + '/' +  id
+    deleteProduct(state, id) {
+        var url = urlProduct + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Producto eliminado con éxito')
         })
     },
-     /*****************codigo***************** */
+    /*****************codigo***************** */
     /*********************************************** */
-    getCodes(state, page){
+    getCodes(state, page) {
         var url = urlCode + '?page=' + page + '&include=product,brand,laboratory,inventories'
         axios.get(url).then(response => {
             state.codes = response.data.codes.data
             state.pagination = response.data.pagination
         });
     },
-    getAllCodes(state){
+    getAllCodes(state) {
 
         state.codesEdit = []
         state.codes = []
@@ -2341,7 +2333,7 @@ export default { //used for changing the state
                 var total = 0
 
                 code.inventories.forEach(inventory => {
-                    if(inventory.sucursal_id == state.idSucursal)
+                    if (inventory.sucursal_id == state.idSucursal)
                         total += parseInt(inventory.quantity)
                 })
 
@@ -2371,7 +2363,7 @@ export default { //used for changing the state
 
         });
     },
-    createCode(state){
+    createCode(state) {
         var url = urlCode
         axios.post(url, {
             brand_id: state.selectedBrand.value,
@@ -2392,19 +2384,19 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editCode(state, code){
+    editCode(state, code) {
         state.fillCode.id = code.id
         state.fillCode.brand_id = code.brand_id
         state.fillCode.laboratory_id = code.laboratory_id
         state.fillCode.product_id = code.product_id
-        state.selectedBrand = { label: code.brand.name , value: code.brand.id }
-        state.selectedLaboratory = { label: code.laboratory.name , value: code.laboratory.id }
-        state.selectedProduct = { label: code.product.name , value: code.product.id }
+        state.selectedBrand = { label: code.brand.name, value: code.brand.id }
+        state.selectedLaboratory = { label: code.laboratory.name, value: code.laboratory.id }
+        state.selectedProduct = { label: code.product.name, value: code.product.id }
         state.fillCode.detail = code.detail
         state.fillCode.name = code.name
         $("#edit").modal('show')
     },
-    updateCode(state, id){
+    updateCode(state, id) {
         var url = urlCode + '/' + id
         axios.put(url, state.fillCode).then(response => {
             state.fillCode = {
@@ -2418,15 +2410,15 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteCode(state, id){
-        var url = urlCode + '/' +  id
+    deleteCode(state, id) {
+        var url = urlCode + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Código eliminado con éxito')
         })
     },
-     /*****************plantillas de inventario***************** */
+    /*****************plantillas de inventario***************** */
     /*********************************************** */
-    getTemplates(state, page){
+    getTemplates(state, page) {
         var url = urlTemplate + '?page=' + page + '&include=sucursal,codes.brand,codes.laboratory,codes.product'
         axios.get(url).then(response => {
             state.templates = response.data.templates.data
@@ -2434,17 +2426,16 @@ export default { //used for changing the state
 
         });
     },
-    chargeTemplate(state){
+    chargeTemplate(state) {
 
         state.codesEdit = []
         state.codes = []
 
         var url = urlTemplate + '/' + state.selectedTemplate.value
-                        + '?include=sucursal,codes.brand,codes.laboratory,codes.product,codes.inventories'
-                        //+ '&filter[sucursal_id]=' + state.selectedSucursal.value
+            + '?include=sucursal,codes.brand,codes.laboratory,codes.product,codes.inventories'
+        //+ '&filter[sucursal_id]=' + state.selectedSucursal.value
         axios.get(url).then(response => {
 
-            console.log(response.data)
 
             var respuesta = response.data.codes
             var contador = 1
@@ -2454,7 +2445,7 @@ export default { //used for changing the state
                 var total = 0
 
                 code.inventories.forEach(inventory => {
-                    if(inventory.sucursal_id == state.idSucursal)
+                    if (inventory.sucursal_id == state.idSucursal)
                         total += parseInt(inventory.quantity)
                 })
 
@@ -2489,12 +2480,12 @@ export default { //used for changing the state
 
         });
     },
-    createTemplate(state){
+    createTemplate(state) {
         var url = urlTemplate
         state.codesTemplate = []
 
         state.codes.forEach(code => {
-            if(code.isActivate)
+            if (code.isActivate)
                 state.codesTemplate.push(code.id)
         })
 
@@ -2512,10 +2503,10 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editTemplate(state, template){
+    editTemplate(state, template) {
         state.fillTemplate.id = template.id
         state.fillTemplate.sucursal_id = template.sucursal_id
-        state.selectedSucursal = { label: template.sucursal.name , value: template.sucursal.id }
+        state.selectedSucursal = { label: template.sucursal.name, value: template.sucursal.id }
         state.fillTemplate.name = template.name
         state.fillTemplate.codes = template.codes
 
@@ -2524,7 +2515,7 @@ export default { //used for changing the state
         state.codesEdit.forEach(codeEdit => {
             codeEdit.isActivate = false
             respuesta.forEach(code => {
-                if(code.id == codeEdit.id)
+                if (code.id == codeEdit.id)
                     codeEdit.isActivate = true
             })
 
@@ -2532,14 +2523,14 @@ export default { //used for changing the state
 
         $("#edit").modal('show')
     },
-    updateTemplate(state, id){
+    updateTemplate(state, id) {
         var url = urlTemplate + '/' + id
 
 
         state.codesTemplate = []
 
         state.codesEdit.forEach(code => {
-            if(code.isActivate)
+            if (code.isActivate)
                 state.codesTemplate.push(code.id)
         })
 
@@ -2547,7 +2538,7 @@ export default { //used for changing the state
             sucursal_id: state.selectedSucursal.value,
             name: state.fillTemplate.name,
             codes: state.codesTemplate,
-            }).then(response => {
+        }).then(response => {
             state.fillTemplate = {
                 id: '',
                 sucursal_id: '',
@@ -2560,34 +2551,34 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteTemplate(state, id){
-        var url = urlTemplate + '/' +  id
+    deleteTemplate(state, id) {
+        var url = urlTemplate + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Plantilla de inventario eliminada con éxito')
         })
     },
     /******************************************** */
     /******************************************** */
-    addCodeTemplate(state, code){
+    addCodeTemplate(state, code) {
         state.codesTemplate.push(code)
     },
-    deleteCodeTemplate(state, id){
+    deleteCodeTemplate(state, id) {
         var temporal = []
         state.codesTemplate.forEach(code => {
-            if(code.id != id)
+            if (code.id != id)
                 temporal.push(code)
         })
         state.codesTemplate = temporal
     },
     /*****************inventario***************** */
     /*********************************************** */
-    getInventories(state, data){
+    getInventories(state, data) {
         //var url = urlInventory + '?page=' + page + '&include=code,code.product,code.product.brand,code.product.laboratory'
         var url = urlCode + '?page=' + data.page + '&include=product,brand,laboratory,inventories'
-                 + '&code=' + state.searchReduction.code
-                 + '&product=' + state.searchReduction.product
-                 + '&laboratory=' + state.searchReduction.laboratory
-                 + '&brand=' + state.searchReduction.brand
+            + '&code=' + state.searchReduction.code
+            + '&product=' + state.searchReduction.product
+            + '&laboratory=' + state.searchReduction.laboratory
+            + '&brand=' + state.searchReduction.brand
 
         state.idSucursal = null
         state.idSucursal = data.sucursal_id
@@ -2596,7 +2587,6 @@ export default { //used for changing the state
 
             state.inventories = []
 
-            console.log(response.data.codes.data)
             var respuesta = response.data.codes.data
             var contador = 1
 
@@ -2605,7 +2595,7 @@ export default { //used for changing the state
                 var total = 0
 
                 code.inventories.forEach(inventory => {
-                    if(inventory.sucursal_id == data.sucursal_id)
+                    if (inventory.sucursal_id == data.sucursal_id)
                         total += parseInt(inventory.quantity)
                 })
 
@@ -2633,20 +2623,18 @@ export default { //used for changing the state
             state.pagination = response.data.pagination
         });
     },
-    getInventories2(state, page){
+    getInventories2(state, page) {
         //var url = urlInventory + '?page=' + page + '&include=code,code.product,code.product.brand,code.product.laboratory'
         var url = urlCode + '?page=' + page + '&include=product,brand,laboratory,inventories'
-                + '&code=' + state.searchReduction.code
-                 + '&product=' + state.searchReduction.product
-                 + '&laboratory=' + state.searchReduction.laboratory
-                 + '&brand=' + state.searchReduction.brand
+            + '&code=' + state.searchReduction.code
+            + '&product=' + state.searchReduction.product
+            + '&laboratory=' + state.searchReduction.laboratory
+            + '&brand=' + state.searchReduction.brand
 
         state.inventories = []
         axios.get(url).then(response => {
 
             state.inventories = []
-
-            console.log(response.data.codes.data)
             var respuesta = response.data.codes.data
             var contador = 1
 
@@ -2655,7 +2643,7 @@ export default { //used for changing the state
                 var total = 0
 
                 code.inventories.forEach(inventory => {
-                    if(inventory.sucursal_id == state.idSucursal)
+                    if (inventory.sucursal_id == state.idSucursal)
                         total += parseInt(inventory.quantity)
                 })
 
@@ -2683,14 +2671,14 @@ export default { //used for changing the state
             state.pagination = response.data.pagination
         });
     },
-    createInventory(state){
+    createInventory(state) {
         var url = urlInventory
 
         var codesArray = []
 
         state.codes.forEach(code => {
 
-            var utilidad = parseInt(code.price_sale) * 1.19  - parseInt(code.price_cost) * 1.19
+            var utilidad = parseInt(code.price_sale) * 1.19 - parseInt(code.price_cost) * 1.19
 
             codesArray.push({
                 code_id: code.id,
@@ -2719,14 +2707,14 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    editInventory(state, inventory){
+    editInventory(state, inventory) {
         state.fillInventory.id = inventory.id
         state.fillInventory.code_id = inventory.code_id
         state.fillInventory.price = inventory.price
         state.fillInventory.quantity = inventory.quantity
         $("#edit").modal('show')
     },
-    updateInventory(state, id){
+    updateInventory(state, id) {
         var url = urlInventory + '/' + id
         axios.put(url, state.fillInventory).then(response => {
             state.fillCode = {
@@ -2741,36 +2729,36 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    deleteInventory(state, id){
-        var url = urlInventory + '/' +  id
+    deleteInventory(state, id) {
+        var url = urlInventory + '/' + id
         axios.delete(url).then(response => {
             toastr.success('Inventario eliminado con éxito')
         })
     },
-    detailInventory(state, inventory){
+    detailInventory(state, inventory) {
         state.detailInventory = null
         state.detailInventory = inventory
         $("#detail").modal('show')
     },
     /******************************************** */
     /******************************************** */
-    addConsumeProduct(state, inventory){
+    addConsumeProduct(state, inventory) {
         state.consumeProducts.push(inventory)
     },
-    deleteConsumeProduct(state, id){
+    deleteConsumeProduct(state, id) {
         var temporal = []
         state.consumeProducts.forEach(consume => {
-            if(consume.id != id)
+            if (consume.id != id)
                 temporal.push(consume)
         })
         state.consumeProducts = temporal
     },
     /******************************************* */
     /******************************************** */
-    confirmReduction(state){
+    confirmReduction(state) {
         $('#confirm').modal('show')
     },
-    createReduction(state){
+    createReduction(state) {
 
         var productos = []
 
@@ -2794,7 +2782,6 @@ export default { //used for changing the state
             state.inventories = []
             state.errorsLaravel = []
             toastr.success(response.data.resultado)
-            console.log(response.data)
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
@@ -2802,7 +2789,7 @@ export default { //used for changing the state
     },
     /****************************************** */
     /************************************ */
-    createMail(state){
+    createMail(state) {
 
         var url = urlCorreoMasivo
         var id = state.selectedClient.value
@@ -2825,17 +2812,17 @@ export default { //used for changing the state
     },
     /***************************************** */
     /***************************************** */
-    canSendMail(state, data){
+    canSendMail(state, data) {
         var url = urlUser + '/' + data.user.id
 
-        if(data.send)
+        if (data.send)
             data.send = 1
         else
             data.send = 0
 
         var user = {
             is_activate: data.user.is_activate,
-            address: data.user.address,
+            city: data.user.city,
             barcode: data.user.barcode,
             email: data.user.email,
             name: data.user.name,
@@ -2848,29 +2835,26 @@ export default { //used for changing the state
         axios.put(url, user).then(response => {
             state.errorsLaravel = [];
             toastr.success('Actualizado')
-            console.log(response.data)
         }).catch(error => {
             state.errorsLaravel = error.response.data
-            console.log(state.errorsLaravel)
         })
     },
-    fileChange(state, evt){
+    fileChange(state, evt) {
         state.form = new FormData
         state.images = []
         state.attachment = []
         let selectedFiles = evt.target.files
 
-        if(!selectedFiles.length){
+        if (!selectedFiles.length) {
             return false
         }
 
-        for(let i = 0; i < selectedFiles.length; i++ ){
+        for (let i = 0; i < selectedFiles.length; i++) {
             state.attachment.push(selectedFiles[i])
-            console.log(selectedFiles[i])
         }
     },
-    uploadPhoto(state){
-        for(let i = 0; i < state.attachment.length; i++ ){
+    uploadPhoto(state) {
+        for (let i = 0; i < state.attachment.length; i++) {
             state.form.append('pics[]', state.attachment[i])
         }
 
@@ -2879,13 +2863,65 @@ export default { //used for changing the state
         var url = urlUpload
 
         $("#files").val(null)
-        axios.post(url, state.form , config).then(response=> {
-            console.log(response.data)
+        axios.post(url, state.form, config).then(response => {
             toastr.success('Imagen(es) subida(s) con éxito')
             state.attachment = []
         })
-        .catch(response => {
-        })
+            .catch(response => {
+            })
 
     },
+    generateKey(state, id) {
+        var url = urlGenerateKey + '/' + id
+        axios.post(url).then(response => {
+            if (response.data.status === 'success') {
+                state.errorsLaravel = [];
+                toastr.success(response.data.message)
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+    resetIp(state, id) {
+        var url = urlResetIp + '/' + id
+        axios.post(url).then(response => {
+            if (response.data.status === 'success') {
+                state.errorsLaravel = [];
+                toastr.success(response.data.message)
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+    canBlockIp(state, data) {
+        var url = urlBlockIp + '/' + data.id
+
+        axios.put(url, data).then(response => {
+            state.errorsLaravel = [];
+            if (response.data.status === 'success') {
+                toastr.success(response.data.message)
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+    setSelectedImage(state, value) {
+        state.selectedImage = value
+    },
+    deleteImage(state, data) {
+        var url = urlDeleteImage + '/' + data.id
+        const image = {
+            image: data.image.replace(/.*\/storage\//, '')
+        }
+
+        axios.put(url, image).then(response => {
+            state.errorsLaravel = [];
+            if (response.data.status === 'success') {
+                toastr.success(response.data.message)
+                state.fillClient.image = null
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    }
 }

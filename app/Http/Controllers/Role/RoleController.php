@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Role;
 
-use Caffeinated\Shinobi\Models\Role;
-use Caffeinated\Shinobi\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -64,9 +64,11 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $role->update($request->all());
+        $role->update(['name' => $request->input('name')]);
 
-        $role->permissions()->sync($request->get('permissions'));
+        // Sincronizar los permisos del rol con los permisos proporcionados en el arreglo.
+        $permissions = Permission::whereIn('id', $request->input('permissions', []))->get();
+        $role->syncPermissions($permissions);
 
         return;
     }

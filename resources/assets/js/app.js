@@ -6,11 +6,11 @@
  */
 
 require('bootstrap')
-import Vue from 'vue';
+window.Vue = require('vue').default
 
-/*Vue.config.devtools = false
+Vue.config.devtools = true
 Vue.config.debug = false
-Vue.config.silent = true*/
+Vue.config.silent = true
 
 import store from './components/store/index'
 import vSelect from 'vue-select'
@@ -85,6 +85,8 @@ Vue.component('inventory-component', require('./components/Inventory/Inventory/I
 Vue.component('reduction-component', require('./components/Inventory/Reduction/Index.vue').default)
 
 Vue.component('email-masive-component', require('./components/Mail/Index.vue').default)
+
+Vue.component('register-client-component', require('./components/Client/RegisterClientComponent.vue').default)
 
 
 new Vue({

@@ -8,13 +8,6 @@ use App\Http\Controllers\Controller;
 
 class SucursalController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:sucursals.index')->only('index');
-        $this->middleware('permission:sucursals.store')->only('store');
-        $this->middleware('permission:sucursals.update')->only('update');
-        $this->middleware('permission:sucursals.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *

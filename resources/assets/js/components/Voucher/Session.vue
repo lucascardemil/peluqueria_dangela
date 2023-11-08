@@ -135,7 +135,6 @@ import { loadProgressBar } from 'axios-progress-bar'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import SelectSucursal from '../POST/Sucursal/Select'
 import PersonalService from '../POST/Personal/SelectOne'
-// import SelectCategory from '../Category/SelectCategoryPos'
 import SelectIsSession from '../Category/SelectIsSession'
 import SelectService from '../POST/Service/Select'
 import Payment from '../POST/Payment/Select'
@@ -148,11 +147,6 @@ export default {
     },
     methods:{
         ...mapActions(['createVoucherSession', 'addToCart', 'removeFromCart'])
-    },
-    created(){
-        loadProgressBar();
-        this.$store.dispatch('allSucursals')
-        //this.$store.dispatch('getVouchers', { page: 1 })
     }
 }
 </script>

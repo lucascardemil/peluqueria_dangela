@@ -5,12 +5,6 @@
                 <i class="far fa-building" style="font-size:48px"></i> <h2>{{ sucursalLocal.name }}</h2>
             </button>
         </div>
-
-        <div class="col-lg-3 col-md-6 col-sm-12 offset-lg-9 offset-md-6">
-            <button class="btn btn-block btn-info btn-lg" @click="showClientPanel">
-               <i class="fas fa-arrow-right"></i> Siguiente
-            </button>
-        </div>
     </div>
 </template>
 

@@ -1,5 +1,0 @@
-const professions = []
-
-export default{
-
-}

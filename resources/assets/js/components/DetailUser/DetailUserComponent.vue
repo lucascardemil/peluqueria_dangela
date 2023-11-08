@@ -1,15 +1,15 @@
 <template>
-    <div class="">
+    <div>
         <div class="mb-3">
-            <p class="mb-0">Nombre: <b>{{ getUser.name }}</b></p>
-            <p class="mb-0">Rut: <b>{{ getUser.rut }}</b></p>
-            <p class="mb-0">Correo: <b>{{ getUser.email }}</b></p>
-            <p class="mb-0">Dirección: <b>{{ getUser.address }}</b></p>
-            <p class="mb-0">Teléfono: <b>{{ getUser.phone }}</b></p>
-            <p class="mb-0">Profesión: <b>{{ getUser.profession.name }}</b></p>
+            <p class="mb-0">Nombre: <b>{{ users.name }}</b></p>
+            <p class="mb-0">Rut: <b>{{ users.rut }}</b></p>
+            <p class="mb-0">Correo: <b>{{ users.email }}</b></p>
+            <p class="mb-0">Dirección: <b>{{ users.city }}</b></p>
+            <p class="mb-0">Teléfono: <b>{{ users.phone }}</b></p>
+            <p class="mb-0">Profesión: <b>{{ users.profession.name }}</b></p>
         </div>
 
-        <div class="">
+        <div>
             <table class="table table-hover table-striped mt-3 table-sm">
                 <thead>
                     <tr>
@@ -35,19 +35,17 @@ import { loadProgressBar } from 'axios-progress-bar'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
-    computed:{
-        //...mapState(['user']),
-        ...mapGetters(['getUser', 'getUserService'])
+    computed: {
+        ...mapState(['users']),
+        ...mapGetters(['getUserService'])
     },
-    methods:{
+    methods: {
         //...mapActions(['showUser'])
     },
-    created(){
+    created() {
         loadProgressBar()
     }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

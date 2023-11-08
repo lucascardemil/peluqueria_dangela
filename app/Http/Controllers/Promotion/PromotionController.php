@@ -11,15 +11,6 @@ use App\Servicepromotion;
 
 class PromotionController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('permission:promotions.index')->only('index');
-        $this->middleware('permission:promotions.store')->only('store');
-        $this->middleware('permission:promotions.update')->only('update');
-        $this->middleware('permission:promotions.destroy')->only('destroy');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -75,21 +66,18 @@ class PromotionController extends Controller
     public function show($id)
     {
         $promotion = Promotion::findOrFail($id);
-
         $services = $promotion->servicepromotions;
 
         $arrayService = array();
-        $total_normal = 0;
 
-        foreach ($services as $value) {
-            $servicepromotions = Servicepromotion::with('service')->find($value->id);
+        foreach ($services as $service) {
+            $servicepromotions = Servicepromotion::with('service')->find($service->id);
             array_push($arrayService, $servicepromotions);
         }
 
         return [
             'servicespromotions' => $arrayService,
-            'total_promotion' => $promotion->total,
-            
+            'total_promotion' => $promotion->total  
         ];
     }
 

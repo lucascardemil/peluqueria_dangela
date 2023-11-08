@@ -17,6 +17,7 @@
                     <th>Punto de Canje</th>
                     <th>Punto que Acumula</th>
                     <th>Precio</th>
+                    <th>Servicio Canjeable</th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -34,6 +35,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 <tr v-for="serviceLocal in services" :key="serviceLocal.id">
                     <td width="10px">{{ serviceLocal.id }}</td>
@@ -42,6 +44,8 @@
                     <td>{{ serviceLocal.score_exchange }}</td>
                     <td>{{ serviceLocal.score_accumulated }}</td>
                     <td>${{ serviceLocal.price }}</td>
+                    <td v-if="serviceLocal.redeemable_service === 1">Si</td>
+                    <td v-else>No</td>
                     <td width="10px">
                         <button class="btn btn-warning btn-sm" @click.prevent="editService({serviceLocal})"
                                 data-toggle="tooltip"

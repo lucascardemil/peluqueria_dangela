@@ -6,8 +6,6 @@ import VeeValidate, { Validator } from 'vee-validate'
 import Vue2Filters from 'vue2-filters'
 import VueCurrencyFilter from 'vue-currency-filter'
 
-Validator.localize('es', es); // changes the locale
-
 Vue.use(Vuex)
 Vue.use(require('vue-moment'))
 Vue.use(VeeValidate)
@@ -21,6 +19,8 @@ Vue.use(VueCurrencyFilter,
       symbolPosition: 'front',
       symbolSpacing: true
 })
+
+Validator.localize('es', es); 
 
 import state from './state';
 import getters from './getters';

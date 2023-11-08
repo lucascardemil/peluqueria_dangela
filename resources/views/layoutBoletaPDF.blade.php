@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style>
-            @page { margin: 10px 10px 10px 10px;  }
+            @page { margin: 5px 5px 5px 5px;  }
             table{
                 width: 100%;
                 font-size: 9px;

@@ -8,45 +8,47 @@
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 var $ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
 $(document).ready(function () {
-  'use strict'; // ------------------------------------------------------- //
+  'use strict';
+
+  // ------------------------------------------------------- //
   // Search Box
   // ------------------------------------------------------ //
-
   $('#search').on('click', function (e) {
     e.preventDefault();
     $('.search-box').fadeIn();
   });
   $('.dismiss').on('click', function () {
     $('.search-box').fadeOut();
-  }); // ------------------------------------------------------- //
+  });
+
+  // ------------------------------------------------------- //
   // Card Close
   // ------------------------------------------------------ //
-
   $('.card-close a.remove').on('click', function (e) {
     e.preventDefault();
     $(this).parents('.card').fadeOut();
-  }); // ------------------------------------------------------- //
+  });
+
+  // ------------------------------------------------------- //
   // Adding fade effect to dropdowns
   // ------------------------------------------------------ //
-
   $('.dropdown').on('show.bs.dropdown', function () {
     $(this).find('.dropdown-menu').first().stop(true, true).fadeIn();
   });
   $('.dropdown').on('hide.bs.dropdown', function () {
     $(this).find('.dropdown-menu').first().stop(true, true).fadeOut();
-  }); // ------------------------------------------------------- //
+  });
+
+  // ------------------------------------------------------- //
   // Sidebar Functionality
   // ------------------------------------------------------ //
-
   $('#toggle-btn').on('click', function (e) {
     e.preventDefault();
     $(this).toggleClass('active');
     $('.side-navbar').toggleClass('shrinked');
     $('.content-inner').toggleClass('active');
     $(document).trigger('sidebarChanged');
-
     if ($(window).outerWidth() > 1183) {
       if ($('#toggle-btn').hasClass('active')) {
         $('.navbar-header .brand-small').hide();
@@ -56,36 +58,42 @@ $(document).ready(function () {
         $('.navbar-header .brand-big').hide();
       }
     }
-
     if ($(window).outerWidth() < 1183) {
       $('.navbar-header .brand-small').show();
     }
-  }); // ------------------------------------------------------- //
+  });
+
+  // ------------------------------------------------------- //
   // Universal Form Validation
   // ------------------------------------------------------ //
+
   // ------------------------------------------------------- //
   // Material Inputs
   // ------------------------------------------------------ //
 
-  var materialInputs = $('input.input-material'); // activate labels for prefilled values
+  var materialInputs = $('input.input-material');
 
+  // activate labels for prefilled values
   materialInputs.filter(function () {
     return $(this).val() !== "";
-  }).siblings('.label-material').addClass('active'); // move label on focus
+  }).siblings('.label-material').addClass('active');
 
+  // move label on focus
   materialInputs.on('focus', function () {
     $(this).siblings('.label-material').addClass('active');
-  }); // remove/keep label on blur
+  });
 
+  // remove/keep label on blur
   materialInputs.on('blur', function () {
     $(this).siblings('.label-material').removeClass('active');
-
     if ($(this).val() !== '') {
       $(this).siblings('.label-material').addClass('active');
     } else {
       $(this).siblings('.label-material').removeClass('active');
     }
-  }); // ------------------------------------------------------- //
+  });
+
+  // ------------------------------------------------------- //
   // Footer
   // ------------------------------------------------------ //
 
@@ -96,19 +104,20 @@ $(document).ready(function () {
   $(window).on('resize', function () {
     adjustFooter();
   });
-
   function adjustFooter() {
     var footerBlockHeight = $('.main-footer').outerHeight();
     contentInner.css('padding-bottom', footerBlockHeight + 'px');
-  } // ------------------------------------------------------- //
+  }
+
+  // ------------------------------------------------------- //
   // External links to new window
   // ------------------------------------------------------ //
-
-
   $('.external').on('click', function (e) {
     e.preventDefault();
     window.open($(this).attr("href"));
-  }); // ------------------------------------------------------ //
+  });
+
+  // ------------------------------------------------------ //
   // For demo purposes, can be deleted
   // ------------------------------------------------------ //
 
@@ -11078,7 +11087,8 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 				}
 /******/ 				if(fulfilled) {
 /******/ 					deferred.splice(i--, 1)
-/******/ 					result = fn();
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
@@ -11131,19 +11141,21 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
 /******/ 			var moduleId, chunkId, i = 0;
-/******/ 			for(moduleId in moreModules) {
-/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
-/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
 /******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
 /******/ 			}
-/******/ 			if(runtime) var result = runtime(__webpack_require__);
 /******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
 /******/ 			for(;i < chunkIds.length; i++) {
 /******/ 				chunkId = chunkIds[i];
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 				installedChunks[chunkId] = 0;
 /******/ 			}
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}

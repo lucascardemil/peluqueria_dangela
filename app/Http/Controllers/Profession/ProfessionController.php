@@ -10,15 +10,6 @@ use App\Profession;
 
 class ProfessionController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('permission:professions.index')->only('index');
-        $this->middleware('permission:professions.store')->only('store');
-        $this->middleware('permission:professions.update')->only('update');
-        $this->middleware('permission:professions.destroy')->only('destroy');
-    }
-
     /**
      * Display a listing of the resource.
      *

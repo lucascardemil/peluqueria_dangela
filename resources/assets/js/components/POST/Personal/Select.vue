@@ -1,19 +1,9 @@
 <template>
     <div>
-            <v-select v-validate="'required|min:4'"
-                        :class="{'input': true, 'is-invalid': errors.has('personal') }"
-                        name="personal"
-                        @input="setPersonalpost"
-                        :options="personalposts"
-                        :value="selectedPersonalposts"
-                        multiple></v-select>
-            <p v-show="errors.has('personal')" class="text-danger">{{ errors.first('personal') }}</p>
-        
-        <!--<div class="col-lg-3 col-md-12 col-sm-12 pr-0">
-            <button class="btn btn-block btn-primary btn-lg boton-grande">
-                ASOCIAR
-            </button>
-        </div>-->
+        <v-select v-validate="'required|min:4'" :class="{ 'input': true, 'is-invalid': errors.has('personal') }"
+            name="personal" @input="setPersonalpost" :options="personalposts" :value="selectedPersonalposts"
+            multiple></v-select>
+        <p v-show="errors.has('personal')" class="text-danger">{{ errors.first('personal') }}</p>
     </div>
 </template>
 
@@ -22,19 +12,17 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
-    computed:{
+    computed: {
         ...mapState(['personalposts', 'selectedPersonalposts']),
         ...mapGetters(['getPersonalpost'])
     },
-    methods:{
+    methods: {
         ...mapActions(['setPersonalpost'])
     },
-    created(){
+    created() {
         this.$store.dispatch('allPersonalposts')
     }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

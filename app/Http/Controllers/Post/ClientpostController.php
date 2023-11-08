@@ -8,13 +8,6 @@ use App\Http\Controllers\Controller;
 
 class ClientpostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:clientposts.index')->only('index');
-        $this->middleware('permission:clientposts.store')->only('store');
-        $this->middleware('permission:clientposts.update')->only('update');
-        $this->middleware('permission:clientposts.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *

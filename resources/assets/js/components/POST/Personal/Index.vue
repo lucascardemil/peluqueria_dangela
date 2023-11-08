@@ -7,22 +7,7 @@
             <button :disabled="selectedPersonalposts == null" class="btn btn-block btn-primary mt-3" @click="addService">
                 AGREGAR SERVICIO Y PERSONAL(ES)
             </button>
-
-
-            <div class="row mt-2">
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                        <button class="btn btn-block btn-info" @click="showTypeServicePanel">
-                        <i class="fas fa-arrow-left"></i> Atras
-                        </button>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-sm-12 offset-lg-6">
-                    <button class="btn btn-block btn-info" @click="showFinalPanel">
-                    <i class="fas fa-arrow-right"></i> Siguiente
-                    </button>
-                </div>
-            </div>  
-
+            
         </div>
     </div>
 </template>

@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
-    //use SoftDeletes;
-
-    //protected $dates = ['deleted_at'];
-
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     public function users()

@@ -23,13 +23,6 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class VoucherController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:vouchers.index')->only('index');
-        $this->middleware('permission:vouchers.store')->only('store');
-        $this->middleware('permission:vouchers.update')->only('update');
-        $this->middleware('permission:vouchers.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -384,6 +377,7 @@ class VoucherController extends Controller
         return view('boleta.boleta', compact(['voucher', 'services', 'discount']) );
     }
 
+
     public function pdf($id)
     {
         $voucher = Voucher::with('sucursal')->findOrFail($id);
@@ -424,6 +418,7 @@ class VoucherController extends Controller
 
         return $pdf->download('Voucher N° '.$id.'.pdf');
     }
+
 
     public function filtroVoucher(){
 

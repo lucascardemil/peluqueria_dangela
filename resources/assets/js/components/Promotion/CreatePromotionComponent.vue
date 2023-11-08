@@ -1,5 +1,4 @@
 <template>
-
     <form action="POST" v-on:submit.prevent="createPromotion">
         <div id="create" class="modal fade ">
             <div class="modal-dialog modal-lg">
@@ -15,12 +14,15 @@
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
                                 <input v-validate="'required|min:4|max:190'"
-                                        :class="{'input': true, 'is-invalid': errors.has('nombre') }"
-                                        type="text"
-                                        name="nombre"
-                                        class="form-control" v-model="newPromotion.name">
+                                    :class="{ 'input': true, 'is-invalid': errors.has('nombre') }" type="text" name="nombre"
+                                    class="form-control" v-model="newPromotion.name">
                                 <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
                             </div>
+                            <div class="form-group">
+                                <label for="categoria">Seleccionar categoria en promocion</label>
+                                <SelectCategory></SelectCategory>
+                            </div>
+
                             <div class="form-group">
                                 <label for="servicio">Seleccionar servicio en promocion</label>
                                 <ServicePromotionSelect></ServicePromotionSelect>
@@ -28,16 +30,18 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <button  :disabled="!newPromotion.name" type="submit" class="btn btn-block btn-primary btn-lg">Agregar servicio en promoción</button>
+                                    <button :disabled="!completePromotionaAdd" type="submit"
+                                        class="btn btn-block btn-primary btn-lg">Agregar servicio en promoción</button>
                                 </div>
                                 <div class="col-3">
-                                    <button class="btn btn-danger btn-block btn-lg" type="button" @click="deleteServicePromotion">
+                                    <button class="btn btn-danger btn-block btn-lg" type="button"
+                                        @click="deleteServicePromotion">
                                         <i class="far fa-trash-alt"></i> Eliminar
                                     </button>
                                 </div>
                             </div>
                         </form>
-                        <table  class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
+                        <table class="table table-hover table-striped mt-3 table-sm bg-primary text-white">
                             <thead>
                                 <tr>
                                     <th>
@@ -50,31 +54,36 @@
                             </thead>
                             <tbody>
                                 <tr v-for="servicepromotionLocal in listServicepromotions" :key="servicepromotionLocal.id">
-                                    <td><h5>{{ servicepromotionLocal.nombre }}</h5></td>
-                                    <td><h5>$ {{ servicepromotionLocal.precio }}</h5></td>
+                                    <td>
+                                        <h5>{{ servicepromotionLocal.nombre }}</h5>
+                                    </td>
+                                    <td>
+                                        <h5>$ {{ servicepromotionLocal.precio }}</h5>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-right"><h5>Total:</h5></td>
-                                    <td><h5>$ {{ totalPromotion }}</h5></td>
+                                    <td class="text-right">
+                                        <h5>Total:</h5>
+                                    </td>
+                                    <td>
+                                        <h5>$ {{ totalPromotion }}</h5>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                         <!-- <h2>Valor de Promoción:$ {{ totalPromotion }} </h2> -->
-                        
+
                         <hr>
                         <h4>Valor de Promoción</h4>
                         <div class="mt-2">
-                            <input v-validate="'required'"
-                                :class="{'input': true, 'is-invalid': errors.has('total') }"
-                                type="text"
-                                name="total"
-                                class="form-control" v-model="newPromotion.total" >
+                            <input v-validate="'required'" :class="{ 'input': true, 'is-invalid': errors.has('total') }"
+                                type="text" name="total" class="form-control" v-model="newPromotion.total">
                             <p v-show="errors.has('total')" class="text-danger">{{ errors.first('total') }}</p>
                         </div>
-                        
-                                
-            
-                            
+
+
+
+
                         <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
                             <p>{{ error.name }}</p>
                             <p>{{ error.total }}</p>
@@ -91,7 +100,6 @@
             </div>
         </div>
     </form>
-
 </template>
 
 <script>
@@ -103,12 +111,12 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
     components: { ServicePromotionSelect, SelectCategory },
-    computed:{
-        ...mapState(['newPromotion','selectedServicepromotions','listServicepromotions','totalPromotion', 'errorsLaravel']),
-        ...mapGetters(['completePromotionCreate'])
+    computed: {
+        ...mapState(['newPromotion', 'selectedServicepromotions', 'listServicepromotions', 'totalPromotion', 'errorsLaravel']),
+        ...mapGetters(['completePromotionCreate', 'completePromotionaAdd'])
     },
-    methods:{
-        ...mapActions(['createPromotion','addServicePromotion','totalServicePromotion','deleteServicePromotion'])
+    methods: {
+        ...mapActions(['createPromotion', 'addServicePromotion', 'totalServicePromotion', 'deleteServicePromotion'])
     },
 }
 </script>

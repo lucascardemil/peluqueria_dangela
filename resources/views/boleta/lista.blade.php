@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layoutBoletaPDF')
 
 @section('content')
 

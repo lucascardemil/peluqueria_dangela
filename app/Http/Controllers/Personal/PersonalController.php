@@ -9,14 +9,6 @@ use App\Personal;
 
 class PersonalController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('permission:personals.index')->only('index');
-        $this->middleware('permission:personals.store')->only('store');
-        $this->middleware('permission:personals.update')->only('update');
-        $this->middleware('permission:personals.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -116,7 +108,6 @@ class PersonalController extends Controller
     public function all()
     {
         $personals = Personal::orderBy('id', 'DESC')->get();
-
         return $personals;
     }
 }

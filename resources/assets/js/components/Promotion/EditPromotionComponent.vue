@@ -44,6 +44,11 @@
                         <hr>
                         <form action="POST" v-on:submit.prevent="addServicePromotion">
                             <div class="form-group">
+                                <label for="categoria">Seleccionar categoria en promocion</label>
+                                <SelectCategory></SelectCategory>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="servicio">Seleccionar servicio en promocion</label>
                                 <ServicePromotionSelect></ServicePromotionSelect>
                             </div>
@@ -107,11 +112,11 @@
 
 
 <script>
-
+import SelectCategory from '../Category/SelectCategoryPos'
 import ServicePromotionSelect from '../Service/SelectServicePromotion'
 import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
-    components: {ServicePromotionSelect },
+    components: {ServicePromotionSelect, SelectCategory },
     computed:{
         ...mapState(['fillPromotion','servicespromotions','listServicepromotions','totalPromotion', 'errorsLaravel']),
     },

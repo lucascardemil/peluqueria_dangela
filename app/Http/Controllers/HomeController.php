@@ -26,10 +26,11 @@ class HomeController extends Controller
     public function index()
     {
         if(Auth::user()->roles->first() != null){
-            if(Auth::user()->roles->first()->name == 'Admin' || Auth::user()->roles->first()->name == 'Secretaria(o)')
+            if(Auth::user()->roles->first()->name == 'admin' || Auth::user()->roles->first()->name == 'sucursal'){
                 return view('admin.home');
+            }else{
+                return view('clients.mis-puntos');
+            }
         }
-        else
-            return view('role.users');
     }
 }

@@ -20,15 +20,6 @@
                                 class="form-control" v-model="fillRole.name">
                         <p v-show="errors.has('nombre')" class="text-danger">{{ errors.first('nombre') }}</p>
 
-                        <label for="nombre">Slug</label>
-                        <input  type="text"
-                                class="form-control" v-model="fillRole.slug">
-
-                        <label for="nombre">Descripción</label>
-                        <input  type="text"
-                                class="form-control" v-model="fillRole.description">
-
-
                         <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
                             <p>{{ error.name }}</p>
                             <p>{{ error.date }}</p>

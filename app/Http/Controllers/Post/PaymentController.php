@@ -8,13 +8,6 @@ use App\Http\Controllers\Controller;
 
 class PaymentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:payments.index')->only('index');
-        $this->middleware('permission:payments.store')->only('store');
-        $this->middleware('permission:payments.update')->only('update');
-        $this->middleware('permission:payments.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *

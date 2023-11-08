@@ -24,6 +24,7 @@ export default {
         ...mapActions(['setSucursal'])
     },
     created(){
+        this.$store.dispatch('allSucursals')
     }
 }
 </script>

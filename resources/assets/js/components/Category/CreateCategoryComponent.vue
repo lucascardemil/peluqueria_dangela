@@ -32,7 +32,7 @@
                                 <input class="form-check-input"  
                                         type="checkbox" 
                                         v-model="newCategory.isSession">
-                                <label class="form-check-label">Agregar</label>
+                                <label class="form-check-label">Asignar Plan Sesión</label>
                             </div>
                         </div>
 

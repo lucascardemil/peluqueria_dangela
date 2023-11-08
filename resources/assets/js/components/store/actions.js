@@ -2,399 +2,399 @@ import state from "./state"
 
 export default { //methods
     /******************************* */
-    countUser(context){
+    countUser(context) {
         context.commit('countUser')
     },
-    countUserService(context){
+    countUserService(context) {
         context.commit('countUserService')
     },
-    showServicesByMonth(context){
+    showServicesByMonth(context) {
         context.commit('showServicesByMonth')
     },
-    showUsersByServices(context){
+    showUsersByServices(context) {
         context.commit('showUsersByServices')
     },
     /*************seccion de categorias***************** */
-    getCategories(context, data){
+    getCategories(context, data) {
         context.commit('getCategories', data.page)
     },
-    createCategory(context){
+    createCategory(context) {
         context.commit('createCategory')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCategories', 1)
         }, 1000)
 
     },
-    editCategory(context, data){
+    editCategory(context, data) {
         context.commit('editCategory', data.categoryLocal)
     },
-    updateCategory(context, data){
+    updateCategory(context, data) {
         context.commit('updateCategory', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCategories', 1)
         }, 1000)
     },
-    deleteCategory(context, data){
+    deleteCategory(context, data) {
         context.commit('deleteCategory', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCategories', 1)
         }, 1000)
     },
-    changePageCategory(context, data){
+    changePageCategory(context, data) {
         context.commit('paginate', data.page)
         context.commit('getCategories', data.page)
     },
     /*************seccion de promociones***************** */
-    getPromotions(context, data){
+    getPromotions(context, data) {
         context.commit('getPromotions', data.page)
     },
-    createPromotion(context){
+    createPromotion(context) {
         context.commit('createPromotion')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getPromotions', 1)
         }, 1000)
 
     },
-    editPromotion(context, data){
+    editPromotion(context, data) {
         context.commit('editPromotion', data.promotionLocal)
     },
-    updatePromotion(context, data){
+    updatePromotion(context, data) {
         context.commit('updatePromotion', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getPromotions', 1)
         }, 1000)
     },
-    deletePromotion(context, data){
+    deletePromotion(context, data) {
         context.commit('deletePromotion', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getPromotions', 1)
         }, 1000)
     },
-    deletePromotionEdit(context, data){
+    deletePromotionEdit(context, data) {
         context.commit('deletePromotionEdit', data.id)
         context.commit('editPromotion', data.id_promo)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getPromotions', 1)
         }, 1000)
     },
-    changePagePromotion(context, data){
+    changePagePromotion(context, data) {
         context.commit('paginate', data.page)
         context.commit('getPromotions', data.page)
     },
     /*************seccion de personales***************** */
-    getPersonals(context, data){
+    getPersonals(context, data) {
         context.commit('getPersonals', data.page)
     },
-    createPersonal(context){
+    createPersonal(context) {
         context.commit('createPersonal')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getPersonals', 1)
         }, 1000)
     },
-    editPersonal(context, data){
+    editPersonal(context, data) {
         context.commit('editPersonal', data.personalLocal)
     },
-    updatePersonal(context, data){
+    updatePersonal(context, data) {
         context.commit('updatePersonal', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getPersonals', 1)
         }, 1000)
     },
-    deletePersonal(context, data){
+    deletePersonal(context, data) {
         context.commit('deletePersonal', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getPersonals', 1)
         }, 1000)
     },
-    changePagePersonal(context, data){
+    changePagePersonal(context, data) {
         context.commit('paginate', data.page)
         context.commit('getPersonals', data.page)
     },
     /******************************** */
-    allCategories(context){
+    allCategories(context) {
         context.commit('allCategories')
     },
-    allIsSession(context){
+    allIsSession(context) {
         context.commit('allIsSession')
     },
-    setCategory(context, data){
+    setCategory(context, data) {
         context.commit('setCategory', data)
     },
-    setCategoryPos(context, data){
+    setCategoryPos(context, data) {
         context.commit('setCategoryPos', data)
     },
-    allCompanies(context){
+    allCompanies(context) {
         context.commit('allCompanies')
     },
-    setCompany(context, data){
+    setCompany(context, data) {
         context.commit('setCompany', data)
     },
-    allProfessions(context){
+    allProfessions(context) {
         context.commit('allProfessions')
     },
-    setProfession(context, data){
+    setProfession(context, data) {
         context.commit('setProfession', data)
     },
-    allServices(context){
+    allServices(context) {
         context.commit('allServices')
     },
-    setService(context, data){
+    setService(context, data) {
         context.commit('setService', data)
     },
-    allPromotions(context){
+    allPromotions(context) {
         context.commit('allPromotions')
     },
-    setPromotion(context, data){
+    setPromotion(context, data) {
         context.commit('setPromotion', data)
     },
-    setPromotionPos(context, data){
+    setPromotionPos(context, data) {
         context.commit('setPromotionPos', data)
     },
-    allServicesPromotion(context){
-        context.commit('allServicesPromotion')
-    },
-    allPersonals(context){
+    allPersonals(context) {
         context.commit('allPersonals')
     },
-    setPersonal(context, data){
+    setPersonal(context, data) {
         context.commit('setPersonal', data)
     },
-    allBrands(context){
+    allBrands(context) {
         context.commit('allBrands')
     },
-    setBrand(context, data){
+    setBrand(context, data) {
         context.commit('setBrand', data)
     },
-    allLaboratories(context){
+    allLaboratories(context) {
         context.commit('allLaboratories')
     },
-    setLaboratory(context, data){
+    setLaboratory(context, data) {
         context.commit('setLaboratory', data)
     },
-    allUnits(context){
+    allUnits(context) {
         context.commit('allUnits')
     },
-    setUnit(context, data){
+    setUnit(context, data) {
         context.commit('setUnit', data)
     },
-    allProducts(context){
+    allProducts(context) {
         context.commit('allProducts')
     },
-    setProduct(context, data){
+    setProduct(context, data) {
         context.commit('setProduct', data)
     },
-    allCodes(context){
+    allCodes(context) {
         context.commit('allCodes')
     },
-    setCode(context, data){
+    setCode(context, data) {
         context.commit('setCode', data)
     },
-    allTemplates(context){
+    allTemplates(context) {
         context.commit('allTemplates')
     },
-    setTemplate(context, data){
+    setTemplate(context, data) {
         context.commit('setTemplate', data)
     },
     /************************************* */
-    getCompanies(context, data){
+    getCompanies(context, data) {
         context.commit('getCompanies', data.page)
     },
-    createCompany(context){
+    createCompany(context) {
         context.commit('createCompany')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCompanies', 1)
         }, 1000)
     },
-    editCompany(context, data){
+    editCompany(context, data) {
         context.commit('editCompany', data.companyLocal)
     },
-    updateCompany(context, data){
+    updateCompany(context, data) {
         context.commit('updateCompany', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCompanies', 1)
         }, 1000)
     },
-    deleteCompany(context, data){
+    deleteCompany(context, data) {
         context.commit('deleteCompany', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCompanies', 1)
         }, 1000)
     },
-    changePageCompany(context, data){
+    changePageCompany(context, data) {
         context.commit('paginate', data.page)
         context.commit('getCompanies', data.page)
     },
-    
+
     /************************************* */
-    getProfessions(context, data){
+    getProfessions(context, data) {
         context.commit('getProfessions', data.page)
     },
-    createProfession(context){
+    createProfession(context) {
         context.commit('createProfession')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getProfessions', 1)
         }, 1000)
     },
-    editProfession(context, data){
+    editProfession(context, data) {
         context.commit('editProfession', data.professionLocal)
     },
-    updateProfession(context, data){
+    updateProfession(context, data) {
         context.commit('updateProfession', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getProfessions', 1)
         }, 1000)
     },
-    deleteProfession(context, data){
+    deleteProfession(context, data) {
         context.commit('deleteProfession', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getProfessions', 1)
         }, 1000)
     },
-    changePageProfession(context, data){
+    changePageProfession(context, data) {
         context.commit('paginate', data.page)
         context.commit('getProfessions', data.page)
     },
     /******************************************** */
-    getClients(context, data){
+    getClients(context, data) {
         context.commit('getClients', data.page)
     },
-    showClient(context, data){
+    showClient(context, data) {
         context.commit('showClient', data.id)
     },
-    createClient(context){
+    createClient(context) {
         context.commit('createClient')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getClients', 1)
         }, 1000)
     },
-    editClient(context, data){
+    editClient(context, data) {
         context.commit('editClient', data.clientLocal)
     },
-    updateClient(context, data){
+    updateClient(context, data) {
         context.commit('updateClient', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getClients', 1)
         }, 1000)
     },
-    deleteClient(context, data){
+    deleteClient(context, data) {
         context.commit('deleteClient', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getClients', 1)
         }, 1000)
     },
-    
-    
-    getUsers(context, data){
+
+
+    getUsers(context, data) {
         context.commit('getUsers', data.page)
     },
-    showUser(context, data){
+    getSearchUsers(context) {
+        context.commit('getSearchUsers')
+    },
+    showUser(context, data) {
         context.commit('showUser', data.id)
     },
-    createUser(context){
+    createUser(context) {
         context.commit('createUser')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUsers', 1)
         }, 1000)
     },
-    editUser(context, data){
+    editUser(context, data) {
         context.commit('editUser', data.userLocal)
     },
-    updateUser(context, data){
+    updateUser(context, data) {
         context.commit('updateUser', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUsers', 1)
         }, 1000)
     },
-    updateScoreExchange(context){
+    updateScoreExchange(context) {
         context.commit('updateScoreExchange')
     },
-    updateScoreAccumulated(context, data){
+    updateScoreAccumulated(context, data) {
         context.commit('createUserService')
         context.commit('updateScoreAccumulated')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUserServices', data.id)
         }, 1000)
     },
-    deleteUser(context, data){
+    deleteUser(context, data) {
         context.commit('deleteUser', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUsers', 1)
         }, 1000)
     },
-    changePageUser(context, data){
+    changePageUser(context, data) {
         context.commit('paginate', data.page)
         context.commit('getUsers', data.page)
     },
     /***************************************** */
-    getServices(context, data){
+    getServices(context, data) {
         context.commit('getServices', data.page)
     },
-    showService(context, data){
+    showService(context, data) {
         context.commit('showService', data.id)
     },
-    createService(context){
+    createService(context) {
         context.commit('createService')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getServices', 1)
         }, 1000)
     },
-    editService(context, data){
+    editService(context, data) {
         context.commit('editService', data.serviceLocal)
     },
-    updateService(context, data){
+    updateService(context, data) {
         context.commit('updateService', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getServices', 1)
         }, 1000)
     },
-    deleteService(context, data){
+    deleteService(context, data) {
         context.commit('deleteService', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getServices', 1)
         }, 1000)
     },
-    changePageService(context, data){
+    changePageService(context, data) {
         context.commit('paginate', data.page)
         context.commit('getServices', data.page)
     },
     /********************************************* */
-    getUserServices(context, data){
+    getUserServices(context, data) {
         context.commit('getUserServices', data.id)
         context.commit('getUsersAvaibleServices', data.id)
     },
     /**************seccion de asignación de roles a usuarios */
-    getRoles(context, data){
+    getRoles(context, data) {
         context.commit('getRoles', data.page)
     },
-    createRole(context){
+    createRole(context) {
         context.commit('createRole')
         context.commit('getRoles', 1)
     },
-    editRole(context, data){
+    editRole(context, data) {
         context.commit('editRole', data.roleLocal)
         context.commit('getAllPermissions')
     },
-    updateRole(context, data){
+    updateRole(context, data) {
         context.commit('updateRole', data.id)
         context.commit('getRoles', 1)
     },
-    deleteRole(context, data){
+    deleteRole(context, data) {
         context.commit('deleteRole', data.id)
         context.commit('getRoles', 1)
     },
-    getAllRoles(context){
+    getAllRoles(context) {
         context.commit('getAllRoles')
     },
-    getAllPermissions(context){
+    getAllPermissions(context) {
         context.commit('getAllPermissions')
     },
-    getUserRoles(context, data){
+    getUserRoles(context, data) {
         context.commit('getUserRoles', data.id)
     },
-    editUserRoles(context, data){
+    editUserRoles(context, data) {
         context.commit('editUserRoles', data.userLocal)
     },
-    updateUserRoles(context, data){
+    updateUserRoles(context, data) {
         context.commit('updateUserRoles', data.id)
     },
     /**************************************** */
@@ -408,151 +408,151 @@ export default { //methods
     /**************************************/
 
     /********* seccion de paneles *****/
-    showSucursalPanel(context){
+    showSucursalPanel(context) {
         context.commit('showSucursalPanel')
     },
-    showClientPanel(context){
+    showClientPanel(context) {
         context.commit('showClientPanel')
     },
-    showTypeServicePanel(context){
+    showTypeServicePanel(context) {
         context.commit('showTypeServicePanel')
     },
-    showPromotionPanel(context){
+    showPromotionPanel(context) {
         context.commit('showPromotionPanel')
     },
-    showServicePanel(context){
+    showServicePanel(context) {
         context.commit('showServicePanel')
     },
-    showFinalPanel(context){
+    showFinalPanel(context) {
         context.commit('showFinalPanel')
     },
     /********************************** */
-    addSucursal(context, data){
+    addSucursal(context, data) {
         context.commit('addSucursal', data.sucursal)
         context.commit('showClientPanel')
     },
-    allSucursals(context){
+    allSucursals(context) {
         context.commit('allSucursals')
     },
-    setSucursal(context, data){
+    setSucursal(context, data) {
         context.commit('setSucursal', data)
     },
-    allPayments(context){
+    allPayments(context) {
         context.commit('allPayments')
     },
-    setPayment(context, data){
+    setPayment(context, data) {
         context.commit('setPayment', data)
     },
-    allClients(context){
+    allClients(context) {
         context.commit('allClients')
     },
-    setClient(context, data){
+    setClient(context, data) {
         context.commit('setClient', data)
     },
-    allServiceposts(context){
+    allServiceposts(context) {
         context.commit('allServiceposts')
     },
-    setServicepost(context, data){
+    setServicepost(context, data) {
         context.commit('setServicepost', data)
     },
-    setServicepromotion(context, data){
+    setServicepromotion(context, data) {
         context.commit('setServicepromotion', data)
     },
-    allPersonalposts(context){
+    allPersonalposts(context) {
         context.commit('allPersonalposts')
     },
-    setPersonalpost(context, data){
+    setPersonalpost(context, data) {
         context.commit('setPersonalpost', data)
     },
-    addService(context){
+    addService(context) {
         context.commit('addService')
         context.commit('totalServicePost')
     },
-    deleteServicepost(context){
+    deleteServicepost(context) {
         context.commit('deleteServicepost')
     },
-    totalServicePost(context){
+    totalServicePost(context) {
         context.commit('totalServicePost')
     },
-    addServicePromotion(context){
+    addServicePromotion(context) {
         context.commit('addServicePromotion')
         context.commit('totalServicePromotion')
     },
-    addServicePersonalPromotion(context, service){
+    addServicePersonalPromotion(context, service) {
         context.commit('addServicePersonalPromotion', service)
         context.commit('totalServicePost')
     },
-    deleteServicePromotion(context){
+    deleteServicePromotion(context) {
         context.commit('deleteServicePromotion')
     },
-    totalServicePromotion(context){
+    totalServicePromotion(context) {
         context.commit('totalServicePromotion')
     },
     /************************** */
-    showModalConfirm(context){
+    showModalConfirm(context) {
         context.commit('showModalConfirm')
     },
-    resetVoucher(context){
+    resetVoucher(context) {
         context.commit('resetVoucher')
     },
     /*************************************** */
-    getVouchers(context, data){
+    getVouchers(context, data) {
         context.commit('getVouchers', data.page)
     },
-    createVoucherService(context){
+    createVoucherService(context) {
         context.commit('createVoucherService')
     },
-    createVoucherPromotion(context){
+    createVoucherPromotion(context) {
         context.commit('createVoucherPromotion')
     },
-    showModalDeleteVoucher(context, data){
+    showModalDeleteVoucher(context, data) {
         context.commit('showModalDeleteVoucher', data.id)
     },
-    deleteVoucher(context){
+    deleteVoucher(context) {
         context.commit('deleteVoucher')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getVouchers', 1)
         }, 1000)
     },
-    showVoucherButton(context){
+    showVoucherButton(context) {
         context.commit('showVoucherButton')
     },
-    boleta(context, data){
+    boleta(context, data) {
         context.commit('boleta', data.id)
     },
-    boletaPdf(context, data){
+    boletaPdf(context, data) {
         context.commit('boletaPdf', data.id)
     },
-    cajaZ(context, data){
+    cajaZ(context, data) {
         context.commit('cajaZ', data.id)
         context.commit('totalVoucherPersonal', data.id)
     },
-    listaVoucher(context, data){
+    listaVoucher(context, data) {
         context.commit('listaVoucher', data.id)
     },
-    totalVoucherPersonal(context){
+    totalVoucherPersonal(context) {
         context.commit('totalVoucherPersonal')
     },
-    detailPersonalVoucher(context, data){
+    detailPersonalVoucher(context, data) {
         context.commit('detailPersonalVoucher', data)
     },
-    editVoucher(context, data){
+    editVoucher(context, data) {
         context.commit('editVoucher', data.voucherLocal)
     },
-    updateVoucher(context, data){
+    updateVoucher(context, data) {
         context.commit('updateVoucher', data.id)
-        setTimeout(function(){
-            context.commit('getVouchersImpagos',data)
+        setTimeout(function () {
+            context.commit('getVouchersImpagos', data)
         }, 1000)
     },
-    getVouchersImpagos(context,data){
-        context.commit('getVouchersImpagos',data)
+    getVouchersImpagos(context, data) {
+        context.commit('getVouchersImpagos', data)
     },
     /***********************************************/
-    selectedDate(context, data){
+    selectedDate(context, data) {
         context.commit('selectedDate', data)
     },
-    createVoucherSession(context, data){
+    createVoucherSession(context, data) {
         // context.commit('addService')
         context.commit('createVoucherSession', data)
     },
@@ -566,270 +566,291 @@ export default { //methods
     removeFromPost(context, data) {
         context.commit('removeFromPost', data)
     },
-    createMail(context){
+    createMail(context) {
         context.commit('createMail')
     },
-    canSendMail(context, data){
+    canSendMail(context, data) {
         context.commit('canSendMail', data)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUsers', 1)
         }, 1000)
     },
     /*************seccion de marcas***************** */
-    getBrands(context, data){
+    getBrands(context, data) {
         context.commit('getBrands', data.page)
     },
-    createBrand(context){
+    createBrand(context) {
         context.commit('createBrand')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getBrands', 1)
             context.commit('allBrands')
         }, 1000)
     },
-    editBrand(context, data){
+    editBrand(context, data) {
         context.commit('editBrand', data.brandLocal)
     },
-    updateBrand(context, data){
+    updateBrand(context, data) {
         context.commit('updateBrand', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getBrands', 1)
         }, 1000)
     },
-    deleteBrand(context, data){
+    deleteBrand(context, data) {
         context.commit('deleteBrand', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getBrands', 1)
         }, 1000)
     },
-    changePageBrand(context, data){
+    changePageBrand(context, data) {
         context.commit('paginate', data.page)
         context.commit('getBrands', data.page)
     },
     /*************seccion de laboratorios***************** */
-    getLaboratories(context, data){
+    getLaboratories(context, data) {
         context.commit('getLaboratories', data.page)
     },
-    createLaboratory(context){
+    createLaboratory(context) {
         context.commit('createLaboratory')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getLaboratories', 1)
             context.commit('allLaboratories')
         }, 1000)
     },
-    editLaboratory(context, data){
+    editLaboratory(context, data) {
         context.commit('editLaboratory', data.laboratoryLocal)
     },
-    updateLaboratory(context, data){
+    updateLaboratory(context, data) {
         context.commit('updateLaboratory', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getLaboratories', 1)
         }, 1000)
     },
-    deleteLaboratory(context, data){
+    deleteLaboratory(context, data) {
         context.commit('deleteLaboratory', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getLaboratories', 1)
         }, 1000)
     },
-    changePageLaboratory(context, data){
+    changePageLaboratory(context, data) {
         context.commit('paginate', data.page)
         context.commit('getLaboratories', data.page)
     },
     /*************seccion de unidad de medida***************** */
-    getUnits(context, data){
+    getUnits(context, data) {
         context.commit('getUnits', data.page)
     },
-    createUnit(context){
+    createUnit(context) {
         context.commit('createUnit')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUnits', 1)
             context.commit('allUnits')
         }, 1000)
     },
-    editUnit(context, data){
+    editUnit(context, data) {
         context.commit('editUnit', data.unitLocal)
     },
-    updateUnit(context, data){
+    updateUnit(context, data) {
         context.commit('updateUnit', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUnits', 1)
         }, 1000)
     },
-    deleteUnit(context, data){
+    deleteUnit(context, data) {
         context.commit('deleteUnit', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getUnits', 1)
         }, 1000)
     },
-    changePageUnit(context, data){
+    changePageUnit(context, data) {
         context.commit('paginate', data.page)
         context.commit('getUnits', data.page)
     },
     /*************seccion de productos***************** */
-    getProducts(context, data){
+    getProducts(context, data) {
         context.commit('getProducts', data.page)
     },
-    createProduct(context){
+    createProduct(context) {
         context.commit('createProduct')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getProducts', 1)
             context.commit('allProducts')
         }, 1000)
     },
-    editProduct(context, data){
+    editProduct(context, data) {
         context.commit('editProduct', data.productLocal)
     },
-    updateProduct(context, data){
+    updateProduct(context, data) {
         context.commit('updateProduct', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getProducts', 1)
         }, 1000)
     },
-    deleteProduct(context, data){
+    deleteProduct(context, data) {
         context.commit('deleteProduct', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getProducts', 1)
         }, 1000)
     },
-    changePageProduct(context, data){
+    changePageProduct(context, data) {
         context.commit('paginate', data.page)
         context.commit('getProducts', data.page)
     },
     /*************seccion de codigos***************** */
-    getCodes(context, data){
+    getCodes(context, data) {
         context.commit('getCodes', data.page)
     },
-    getAllCodes(context, data){
+    getAllCodes(context, data) {
         context.commit('getAllCodes')
     },
-    createCode(context){
+    createCode(context) {
         context.commit('createCode')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCodes', 1)
             context.commit('allCodes')
         }, 1000)
     },
-    editCode(context, data){
+    editCode(context, data) {
         context.commit('editCode', data.codeLocal)
     },
-    updateCode(context, data){
+    updateCode(context, data) {
         context.commit('updateCode', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCodes', 1)
         }, 1000)
     },
-    deleteCode(context, data){
+    deleteCode(context, data) {
         context.commit('deleteCode', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getCodes', 1)
         }, 1000)
     },
-    changePageCode(context, data){
+    changePageCode(context, data) {
         context.commit('paginate', data.page)
         context.commit('getCodes', data.page)
     },
     /*************seccion de plantillas de inventario***************** */
-    getTemplates(context, data){
+    getTemplates(context, data) {
         context.commit('getTemplates', data.page)
     },
-    chargeTemplate(context, data){
+    chargeTemplate(context, data) {
         context.commit('chargeTemplate')
     },
-    createTemplate(context){
+    createTemplate(context) {
         context.commit('createTemplate')
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getTemplates', 1)
             context.commit('allTemplates')
         }, 1000)
     },
-    editTemplate(context, data){
+    editTemplate(context, data) {
         context.commit('editTemplate', data.templateLocal)
     },
-    updateTemplate(context, data){
+    updateTemplate(context, data) {
         context.commit('updateTemplate', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getTemplates', 1)
         }, 1000)
     },
-    deleteTemplate(context, data){
+    deleteTemplate(context, data) {
         context.commit('deleteTemplate', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getTemplates', 1)
         }, 1000)
     },
-    changePageCode(context, data){
+    changePageCode(context, data) {
         context.commit('paginate', data.page)
         context.commit('getTemplates', data.page)
     },
     /********************************* */
-    addCodeTemplate(context, data){
+    addCodeTemplate(context, data) {
         context.commit('addCodeTemplate', data.codeLocal)
     },
-    deleteCodeTemplate(context, data){
+    deleteCodeTemplate(context, data) {
         context.commit('deleteCodeTemplate', data.id)
     },
-    confirmReduction(context){
+    confirmReduction(context) {
         context.commit('confirmReduction')
     },
     /*************seccion de inventarios***************** */
-    getInventories(context, data){
+    getInventories(context, data) {
         context.commit('getInventories', data)
     },
-    getInventories2(context, data){
+    getInventories2(context, data) {
         context.commit('getInventories2', data.page)
     },
-    createInventory(context){
+    createInventory(context) {
         context.commit('createInventory')
         /*setTimeout(function(){
             context.commit('getInventories2', 1)
         }, 1000)*/
     },
-    editInventory(context, data){
+    editInventory(context, data) {
         context.commit('editInventory', data.inventoryLocal)
     },
-    updateInventory(context, data){
+    updateInventory(context, data) {
         context.commit('updateInventory', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getInventories2', 1)
         }, 1000)
     },
-    deleteInventory(context, data){
+    deleteInventory(context, data) {
         context.commit('deleteInventory', data.id)
-        setTimeout(function(){
+        setTimeout(function () {
             context.commit('getInventories2', 1)
         }, 1000)
     },
-    detailInventory(context, data){
+    detailInventory(context, data) {
         context.commit('detailInventory', data.inventoryLocal)
     },
-    changePageInventory(context, data){
+    changePageInventory(context, data) {
         context.commit('paginate', data.page)
         context.commit('getInventories2', data.page)
     },
     /********************************* */
-    addConsumeProduct(context, data){
+    addConsumeProduct(context, data) {
         context.commit('addConsumeProduct', data.inventoryLocal)
-        setTimeout(function(){
+        setTimeout(function () {
             //context.commit('getInventories', data)
         }, 1000)
     },
-    deleteConsumeProduct(context, data){
+    deleteConsumeProduct(context, data) {
         context.commit('deleteConsumeProduct', data.id)
     },
-    confirmReduction(context){
+    confirmReduction(context) {
         context.commit('confirmReduction')
     },
-    createReduction(context){
+    createReduction(context) {
         context.commit('createReduction')
     },
     /***************************** */
-    fileChange(context, data){
+    fileChange(context, data) {
         context.commit('fileChange', data.evt)
     },
-    uploadPhoto(context){
+    uploadPhoto(context) {
         context.commit('uploadPhoto')
-        setTimeout(function(){
+        setTimeout(function () {
             //context.commit('getPhotos', null )
         }, 5000)
+    },
+    generateKey(context, data) {
+        context.commit('generateKey', data.id)
+    },
+    resetIp(context, data) {
+        context.commit('resetIp', data.id)
+    },
+    canBlockIp(context, data) {
+        context.commit('canBlockIp', data)
+        setTimeout(function () {
+            context.commit('getUsers', 1)
+        }, 1000)
+    },
+    setSelectedImage(context, value) {
+        context.commit('setSelectedImage', value)
+    },
+    deleteImage(context, data) {
+        context.commit('deleteImage', data)
+        setTimeout(function () {
+            context.commit('getClients', 1)
+        }, 1000)
     },
 }

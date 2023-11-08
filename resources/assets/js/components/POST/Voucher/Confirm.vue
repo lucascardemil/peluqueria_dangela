@@ -1,5 +1,4 @@
 <template>
-
     <form action="POST" v-on:submit.prevent="createVoucher">
         <div id="confirmVoucher" class="modal fade">
             <div class="modal-dialog">
@@ -28,7 +27,6 @@
             </div>
         </div>
     </form>
-
 </template>
 
 <script>
@@ -36,11 +34,11 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
-    computed:{
+    computed: {
         ...mapState(['totalPost']),
         ...mapGetters([])
     },
-    methods:{
+    methods: {
         ...mapActions(['createVoucher'])
     },
 }

@@ -8,13 +8,6 @@ use App\Category;
 
 class CategoryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:categories.index')->only('index');
-        $this->middleware('permission:categories.store')->only('store');
-        $this->middleware('permission:categories.update')->only('update');
-        $this->middleware('permission:categories.destroy')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      *
