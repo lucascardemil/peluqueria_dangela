@@ -17,7 +17,7 @@
                     <th>Rut</th>
                     <th>Nombre</th>
                     <th>Email</th>
-                    <th>Dirección</th>
+                    <th>Ciudad</th>
                     <th>Teléfono</th>
                     <th>Puntaje</th>
                     <th>Enviar Correo</th>

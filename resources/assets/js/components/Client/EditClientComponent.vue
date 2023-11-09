@@ -4,17 +4,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6>Editar Usuario</h6>
+                        <h6>Editar Cliente</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span>&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-
-                        <div class="form-group" v-show="selectCompany">
-                            <label for="empresa">Empresa*</label>
-                            <select-company></select-company>
-                        </div>
 
                         <div class="form-group">
                             <label for="profesión">Profesión*</label>
@@ -43,7 +38,7 @@
                             <p v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</p>
                         </div>
                         <div class="form-group">
-                            <label for="city">Dirección*</label>
+                            <label for="city">Ciudad*</label>
                             <input v-validate="'min:6|max:300|'"
                                 :class="{ 'input': true, 'is-invalid': errors.has('city') }" type="text" name="city"
                                 class="form-control form-control-sm" v-model="fillClient.city">
@@ -105,6 +100,11 @@
                                     v-model="fillClient.is_convenio">
                                 <label class="form-check-label" for="is_convenio">Convenio con Empresa</label>
                             </div>
+                        </div>
+
+                        <div class="form-group" v-show="selectCompany">
+                            <label for="empresa">Empresa*</label>
+                            <select-company></select-company>
                         </div>
 
                         <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">

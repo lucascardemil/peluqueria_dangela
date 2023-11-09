@@ -30,7 +30,7 @@
                                         {{ getUser.email }}
                                     </li>
                                     <li class="list-group-item">
-                                        <h5 class="card-title">Dirección</h5>
+                                        <h5 class="card-title">Ciudad</h5>
                                         {{ getUser.city }}
                                     </li>
                                     <li class="list-group-item" v-if="userSucursal === false">

@@ -4,7 +4,7 @@
             <p class="mb-0">Nombre: <b>{{ users.name }}</b></p>
             <p class="mb-0">Rut: <b>{{ users.rut }}</b></p>
             <p class="mb-0">Correo: <b>{{ users.email }}</b></p>
-            <p class="mb-0">Dirección: <b>{{ users.city }}</b></p>
+            <p class="mb-0">Ciudad: <b>{{ users.city }}</b></p>
             <p class="mb-0">Teléfono: <b>{{ users.phone }}</b></p>
             <p class="mb-0">Profesión: <b>{{ users.profession.name }}</b></p>
         </div>

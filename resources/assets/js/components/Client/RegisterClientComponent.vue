@@ -25,7 +25,7 @@
             <p v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</p>
         </div>
         <div class="form-group">
-            <label for="city">Dirección*</label>
+            <label for="city">Ciudad*</label>
             <input v-validate="'required|min:6|max:300|'" :class="{ 'input': true, 'is-invalid': errors.has('city') }"
                 type="text" name="city" class="form-control form-control-sm" v-model="newClient.city">
             <p v-show="errors.has('city')" class="text-danger">{{ errors.first('city') }}</p>
