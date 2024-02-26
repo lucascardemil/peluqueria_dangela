@@ -8,13 +8,8 @@ class Inventory extends Model
 {
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function code()
+    public function product()
     {
-        return $this->belongsTo('App\Code');
-    }
-
-    public function sucursal()
-    {
-        return $this->belongsTo('App\Sucursal');
+        return $this->hasMany('App\Product');
     }
 }

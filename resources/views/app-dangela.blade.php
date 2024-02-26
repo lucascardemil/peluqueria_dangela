@@ -50,10 +50,11 @@
                         </li>
                     @endcan
 
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Inventario</a>
-                    </li>
+                    @can('inventario')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('inventario') }}">Inventario</a>
+                        </li>
+                    @endcan
 
                 </ul>
 
@@ -173,6 +174,41 @@
                     <li>
                         <a href="{{ route('canje-puntos') }}">
                             <i class="far fa-credit-card"></i> Canje de puntos
+                        </a>
+                    </li>
+                @endcan
+                @can('productos')
+                    <li>
+                        <a href="{{ route('productos') }}">
+                            <i class="fas fa-dolly-flatbed"></i> Productos
+                        </a>
+                    </li>
+                @endcan
+                @can('lista-precios')
+                    <li>
+                        <a href="{{ route('lista-precios') }}">
+                            <i class="fas fa-dolly-flatbed"></i> Lista de Precios
+                        </a>
+                    </li>
+                @endcan
+                @can('proveedores')
+                    <li>
+                        <a href="{{ route('proveedores') }}">
+                            <i class="fas fa-building"></i> Proveedores
+                        </a>
+                    </li>
+                @endcan
+                @can('ventas')
+                    <li>
+                        <a href="{{ route('ventas') }}">
+                            <i class="fas fa-shopping-cart"></i> Ventas
+                        </a>
+                    </li>
+                @endcan
+                @can('formas-pagos')
+                    <li>
+                        <a href="{{ route('formas-pagos') }}">
+                            <i class="fas fa-money-bill-wave"></i> Formas de Pagos
                         </a>
                     </li>
                 @endcan

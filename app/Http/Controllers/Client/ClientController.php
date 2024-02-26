@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Freshwork\ChileanBundle\Rut;
+use App\Rules\RutValidationRule;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -23,14 +23,14 @@ class ClientController extends Controller
         $this->validate($request, [
             'company_id' => 'required',
             'profession_id' => 'required',
-            'rut' => 'required|unique:users|min:7',
+            'rut' => ['required', 'unique:users', 'min:7', new RutValidationRule],
             'name' => 'required|min:6|max:190',
             'email' => 'required|email|unique:users|min:6|max:150',
             'city' => 'required|min:6|max:300',
             'phone' => 'required|min:8',
             'birthdate' => 'required',
             'sex' => 'required',
-            'image' => 'required|mimes:jpeg,jpg,png|max:2048',
+            'image' => 'required|mimes:jpeg,jpg,png|max:4096',
         ]);
 
         $data = $request->all();
@@ -61,7 +61,7 @@ class ClientController extends Controller
             'company_id' => 'required',
             'profession_id' => 'required',
             'rut' => ['required', 'min:7',
-            \Illuminate\Validation\Rule::unique('users')->ignore(User::find($id))],
+            \Illuminate\Validation\Rule::unique('users')->ignore(User::find($id)), new RutValidationRule],
             'name' => 'required|min:6|max:190',
             'email' => ['required', 'email', 'min:6', 'max:150',
             \Illuminate\Validation\Rule::unique('users')->ignore(User::find($id))],
@@ -69,7 +69,7 @@ class ClientController extends Controller
             'phone' => 'required|min:8',
             'birthdate' => 'required',
             'sex' => 'required',
-            'image' => 'required|mimes:jpeg,jpg,png|max:2048',
+            'image' => 'required|mimes:jpeg,jpg,png|max:4096',
         ]);
 
 

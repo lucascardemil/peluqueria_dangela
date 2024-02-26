@@ -49,8 +49,6 @@ var urlUpdateClient = 'update-client'
 var urlAllSucursals = 'sucursals-all'
 var urlAllClientposts = 'clientposts-all'
 
-var urlAllPayment = 'payments-all'
-
 var urlVoucher = 'vouchers'
 var urlVoucherPOST = 'vouchers-post'
 var urlVoucherImpagos = 'vouchersimpagos'
@@ -72,26 +70,27 @@ var urlUpload = 'imagenes-mail'
 var includeVoucherFiltro = '&include=serviceposts.service,serviceposts.personalposts.personal'
 
 /***********Inventario** ****/
-var urlBrand = 'brands'
-var urlAllBrands = 'brands-all'
-var urlLaboratory = 'laboratories'
-var urlAllLaboratories = 'laboratories-all'
-var urlUnit = 'units'
-var urlUnits = 'units-all'
 var urlProduct = 'products'
 var urlAllProducts = 'products-all'
-var urlCode = 'codes'
-var urlAllCodes = 'codes-all'
-var urlTemplate = 'inventories-template'
-var urlAllTemplates = 'inventories-template-all'
 var urlInventory = 'inventories'
+var urlSupplier = 'suppliers'
+var urlUtility = 'utilities'
+var urlFlete = 'fletes'
+var urlPaymentMethod = 'payments'
+var urlAllPayments = 'payments-all'
+var urlDiscount = 'discount'
+var urlBill = 'bills'
 
 /******consumo inventario***** */
-var urlConsumeProduct = 'consumeProduct'
 var urlGenerateKey = 'generate-key'
 var urlResetIp = 'reset-ip'
 var urlBlockIp = 'block-ip'
 var urlDeleteImage = 'delete-image'
+
+/******Sales***** */
+var urlSale = 'sales'
+var urlGenerateReceipt = 'generate-receipt'
+var urlGenerateBoxClosureZ = 'generate-box-closure-z'
 
 export default { //used for changing the state
     /****** sección select **** */
@@ -172,73 +171,57 @@ export default { //used for changing the state
             });
         });
     },
-    allBrands(state) {
-        var url = urlAllBrands
-        axios.get(url).then(response => {
-            state.optionsBrand = []
-            response.data.forEach((brand) => {
-                state.optionsBrand.push({ label: brand.name, value: brand.id })
-            });
-        });
-    },
-    allLaboratories(state) {
-        var url = urlAllLaboratories
-        axios.get(url).then(response => {
-            state.optionsLaboratory = []
-            response.data.forEach((laboratory) => {
-                state.optionsLaboratory.push({ label: laboratory.name, value: laboratory.id })
-            });
-        });
-    },
-    allUnits(state) {
-        var url = urlUnits
-        axios.get(url).then(response => {
-            state.optionsUnit = []
-            response.data.forEach((unit) => {
-                state.optionsUnit.push({ label: unit.name, value: unit.id })
-            });
-        });
-    },
     allProducts(state) {
         var url = urlAllProducts
         axios.get(url).then(response => {
             state.optionsProduct = []
             response.data.forEach((product) => {
-                state.optionsProduct.push({ label: product.name + ' - ' + product.detail, value: product.id })
-            });
-        });
-    },
-    allCodes(state) {
-        var url = urlAllCodes + '?include=product,brand,laboratory'
-        axios.get(url).then(response => {
-            state.optionsCode = []
-            response.data.forEach((code) => {
-                state.optionsCode.push({
-                    label: code.product.name + ' - ' + code.laboratory.name + ' - ' +
-                        '(' + code.product.name + ')' + ' - ' + code.name + ' - ' + code.detail,
-                    value: code.id
+                state.optionsProduct.push({
+                    label: product.name,
+                    value: product.id,
+                    inventories: product.inventories,
+                    utility: product.utility,
+                    flete: product.flete,
+                    code: product.code,
                 })
             });
         });
     },
-    allTemplates(state) {
-        var url = urlAllTemplates + '?include=sucursal&filter[sucursal_id]='
-        axios.get(url).then(response => {
-            state.optionsTemplate = []
+    setProduct(state, product) {
+        state.selectedProduct = product
+        state.newSale.totalSumPrice = 0;
+        state.newSale.totalSumQuantity = 0;
 
-            state.optionsTemplate.push({
-                label: 'Todo el inventario',
-                value: 0
+        if (state.selectedProduct != null) {
+            state.newSale.priceMax = Math.max(...product.inventories.map(inventario => inventario.price));
+            state.newSale.utility = parseFloat((product.utility / 100) + 1)
+            state.newSale.flete = product.flete
+            state.newSale.product = product.label
+            state.newSale.code = product.code
+            state.newSale.id = product.value
+
+            product.inventories.forEach((inventory) => {
+                state.newSale.totalSumPrice += inventory.price * inventory.quantity;
+                state.newSale.totalSumQuantity += inventory.quantity;
+                state.newSale.price = inventory.price
             })
 
-            response.data.forEach((template) => {
-                state.optionsTemplate.push({
-                    label: template.sucursal.name + ' - ' + template.name,
-                    value: template.id
-                })
-            });
-        });
+            state.newSale.totalNeto = Math.round(((state.newSale.priceMax * parseInt(state.newSale.quantity)) * (state.newSale.utility - 1)) + (state.newSale.priceMax * state.newSale.quantity))
+
+            state.newSale.average_price = ((((state.newSale.totalSumPrice / state.newSale.totalSumQuantity) * 1.19) * state.newSale.utility) + state.newSale.flete)
+            const high_price = (((state.newSale.priceMax * 1.19) * state.newSale.utility) + state.newSale.flete)
+            const average_price_rounded = Math.ceil(state.newSale.average_price / 10) * 10;
+            const high_price_rounded = Math.ceil(high_price / 10) * 10;
+
+            if (high_price_rounded !== average_price_rounded) {
+                state.newSale.price_sale = high_price_rounded * state.newSale.quantity
+            } else {
+                state.newSale.price_sale = average_price_rounded * state.newSale.quantity
+            }
+        }
+
     },
+
     setCategory(state, category) {
         state.selectedCategory = category
         if (category != null)
@@ -246,7 +229,8 @@ export default { //used for changing the state
     },
     setCategoryPos(state, category) {
         state.serviceposts = []
-
+        state.optionsService = []
+        state.selectedServicepromotions = []
         state.selectedCategory = category
 
         if (category != null) {
@@ -254,7 +238,7 @@ export default { //used for changing the state
             var url = urlCategory + '/' + category.value
 
             axios.get(url).then(response => {
-                state.optionsService = []
+
                 response.data.services.forEach((service) => {
                     var name = response.data.name + ' - ' + service.name
                     state.serviceposts.push({ label: name, value: service.id, precio: service.price })
@@ -324,37 +308,12 @@ export default { //used for changing the state
                 state.total_promotion = response.data.total_promotion
 
             }).catch(error => {
-                //state.errorsLaravel = error.response.data
+                state.errorsLaravel = error.response.data
             })
-
-            // var url = urlPromotion + '/' + promotion.value
-            // axios.get(url).then(response => {
-            //     state.servicespromotions = response.data.servicespromotions
-            // });
-
-
         }
     },
     setUser(state, client) {
         state.selectedUser = client
-    },
-    setBrand(state, brand) {
-        state.selectedBrand = brand
-    },
-    setLaboratory(state, laboratory) {
-        state.selectedLaboratory = laboratory
-    },
-    setUnit(state, unit) {
-        state.selectedUnit = unit
-    },
-    setProduct(state, product) {
-        state.selectedProduct = product
-    },
-    setCode(state, code) {
-        state.selectedCode = code
-    },
-    setTemplate(state, template) {
-        state.selectedTemplate = template
     },
     /****** seccion index con estadisticas **** */
     countUser(state) {
@@ -445,7 +404,7 @@ export default { //used for changing the state
             total: state.newPromotion.total,
         }).then(response => {
             state.idPromotion = response.data
-            state.listServicepromotions.forEach(service => {
+            state.listServiceCreatepromotions.forEach(service => {
                 axios.post(urlServicepromotion, {
                     promotion_id: state.idPromotion,
                     service_id: service.service,
@@ -456,8 +415,8 @@ export default { //used for changing the state
                     state.errorsLaravel = error.response.data
                 })
             })
-            state.listServicepromotions = []
-            state.totalPromotion = 0
+            state.listServiceCreatepromotions = []
+            state.totalCreatePromotion = 0
             state.newPromotion.name = ''
             state.newPromotion.total = 0
             state.errorsLaravel = []
@@ -467,10 +426,12 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    showPromotion(state, promotion) {
-
-    },
     editPromotion(state, promotion) {
+        state.listServicepromotions = []
+        state.totalPromotion = 0
+        state.selectedCategory = null
+        state.selectedServicepromotions = []
+
         var url = urlPromotion + '/' + promotion.id
         state.fillPromotion.id = promotion.id
         state.fillPromotion.total = promotion.total
@@ -1314,7 +1275,7 @@ export default { //used for changing the state
     },
     /***** métodos de pago *********/
     allPayments(state) {
-        var url = urlAllPayment
+        var url = urlAllPayments
         axios.get(url).then(response => {
             state.payments = []
             response.data.forEach((payment) => {
@@ -1462,6 +1423,18 @@ export default { //used for changing the state
         state.totalPromotion = 0
     },
 
+    addServiceCreatePromotion(state) {
+        state.listServiceCreatepromotions.push({
+            service: state.selectedServicepromotions.value,
+            nombre: state.selectedServicepromotions.label,
+            precio: state.selectedServicepromotions.precio
+        })
+    },
+    deleteServiceCreatePromotion(state) {
+        state.listServiceCreatepromotions.pop()
+        state.totalCreatePromotion = 0
+    },
+
 
     /****** suma total */
     totalServicePromotion(state) {
@@ -1475,8 +1448,21 @@ export default { //used for changing the state
         state.listServicepromotions.forEach(service2 => {
             totalnew += parseInt(service2.precio)
         })
-        //state.newPromotion.total = total
         state.totalPromotion = totalnew + totalold
+    },
+
+    totalServiceCreatePromotion(state) {
+        var totalnew = 0
+        var totalold = 0
+        state.totalCreatePromotion = 0
+
+        state.servicespromotions.forEach(service1 => {
+            totalold += parseInt(service1.price)
+        })
+        state.listServiceCreatepromotions.forEach(service2 => {
+            totalnew += parseInt(service2.precio)
+        })
+        state.totalCreatePromotion = totalnew + totalold
     },
 
 
@@ -1987,64 +1973,7 @@ export default { //used for changing the state
 
         state.listServiceposts.splice(state.listServiceposts.indexOf(data.id))
     },
-
-    // createVoucherSession(state){
-    //     var url = urlVoucher
-    //     state.idVoucher = 0
-    //     var total =  state.newVoucherSession.price
-    //     var cantidad = state.newVoucherSession.quantity
-
-    //     for (let index = 0; index < cantidad; index++) {
-
-    //         axios.post(url, {
-    //             sucursal_id: state.selectedSucursal.value,
-    //             user_id: state.selectedClient.value,
-    //             name: 'Voucher ' + state.selectedClient.nombre,
-    //             is_paid: 0,
-    //             total: total,
-    //         }).then(response => {
-    //             var idVoucher = response.data
-    //             state.idVoucher = idVoucher
-
-    //             toastr.success('Voucher generado con éxito')
-
-    //             var url = urlClientpost
-    //             axios.post(url, {
-    //                 voucher_id: idVoucher,
-    //                 user_id: state.selectedClient.value,
-    //             }).then(response => {
-    //                 //toastr.success('Cliente agregado al voucher con éxito')
-    //                 var url = urlServicepost
-
-    //                 state.listServiceposts.forEach(service => {
-    //                     axios.post(url, {
-    //                         voucher_id: idVoucher,
-    //                         service_id: service.id,
-    //                         price: total,
-    //                     }).then(response => {
-    //                         //toastr.success('Servicio agregado con éxito')
-
-    //                         var url = urlPersonalpost
-    //                         axios.post(url, {
-    //                             servicepost_id: response.data,
-    //                             personal_id: service.personal.value,
-    //                         })
-    //                     }).catch(error => {
-    //                         //state.errorsLaravel = error.response.data
-    //                     })
-    //                 })
-    //             })
-    //             .catch(error => {
-    //                 //state.errorsLaravel = error.response.data
-    //             })
-
-    //         }).catch(error => {
-    //             //state.errorsLaravel = error.response.data
-    //         })
-    //     }
-    //     state.newVoucherSession= { quantity: 1, price: 0}
-    // },
-
+    
     createVoucherSession(state) {
         var url = urlVoucher
 
@@ -2114,147 +2043,10 @@ export default { //used for changing the state
             state.errorsLaravel = error.response.data
         })
     },
-    /***************************************** */
-    /****************************************** */
-    /***********INVENTARIO******** */
-    /***************************************** */
-    /***************************************** */
-    /*****************Marca***************** */
-    /******************************* */
-    getBrands(state, page) {
-        var url = urlBrand + '?page=' + page + '&name=' + state.searchBrand.name
-        axios.get(url).then(response => {
-            state.brands = response.data.brands.data
-            state.pagination = response.data.pagination
-        });
-    },
-    createBrand(state) {
-        var url = urlBrand
-        axios.post(url, {
-            name: state.newBrand.name,
-        }).then(response => {
-            state.newBrand.name = ''
-            state.errorsLaravel = []
-            $('#create').modal('hide')
-            toastr.success('Marca generada con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editBrand(state, brand) {
-        state.fillBrand.id = brand.id
-        state.fillBrand.name = brand.name
-        $("#edit").modal('show')
-    },
-    updateBrand(state, id) {
-        var url = urlBrand + '/' + id
-        axios.put(url, state.fillBrand).then(response => {
-            state.fillBrand = { 'id': '', 'name': '' }
-            state.errorsLaravel = [];
-            $('#edit').modal('hide')
-            toastr.success('Marca actualizada con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    deleteBrand(state, id) {
-        var url = urlBrand + '/' + id
-        axios.delete(url).then(response => {
-            toastr.success('Marca eliminada con éxito')
-        })
-    },
-    /*****************Laboratorio***************** */
-    /******************************* */
-    getLaboratories(state, page) {
-        var url = urlLaboratory + '?page=' + page + '&name=' + state.searchLaboratory.name
-        axios.get(url).then(response => {
-            state.laboratories = response.data.laboratories.data
-            state.pagination = response.data.pagination
-        });
-    },
-    createLaboratory(state) {
-        var url = urlLaboratory
-        axios.post(url, {
-            name: state.newLaboratory.name,
-        }).then(response => {
-            state.newLaboratory.name = ''
-            state.errorsLaravel = []
-            $('#create').modal('hide')
-            toastr.success('Laboratorio generado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editLaboratory(state, laboratory) {
-        state.fillLaboratory.id = laboratory.id
-        state.fillLaboratory.name = laboratory.name
-        $("#edit").modal('show')
-    },
-    updateLaboratory(state, id) {
-        var url = urlLaboratory + '/' + id
-        axios.put(url, state.fillLaboratory).then(response => {
-            state.fillLaboratory = { 'id': '', 'name': '' }
-            state.errorsLaravel = []
-            $('#edit').modal('hide')
-            toastr.success('Laboratorio actualizado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    deleteLaboratory(state, id) {
-        var url = urlLaboratory + '/' + id
-        axios.delete(url).then(response => {
-            toastr.success('Laboratorio eliminado con éxito')
-        })
-    },
-    /*****************Unidad de Medida***************** */
-    /******************************* */
-    getUnits(state, page) {
-        var url = urlUnit + '?page=' + page + '&name=' + state.searchUnit.name
-        axios.get(url).then(response => {
-            state.units = response.data.units.data
-            state.pagination = response.data.pagination
-        });
-    },
-    createUnit(state) {
-        var url = urlUnit
-        axios.post(url, {
-            name: state.newUnit.name,
-        }).then(response => {
-            state.newUnit.name = ''
-            state.errorsLaravel = []
-            $('#create').modal('hide')
-            toastr.success('Unidad de Medida generada con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editUnit(state, unit) {
-        state.fillUnit.id = unit.id
-        state.fillUnit.name = unit.name
-        $("#edit").modal('show')
-    },
-    updateUnit(state, id) {
-        var url = urlUnit + '/' + id
-        axios.put(url, state.fillUnit).then(response => {
-            state.fillUnit = { 'id': '', 'name': '' }
-            state.errorsLaravel = []
-            $('#edit').modal('hide')
-            toastr.success('Unidad de Medida actualizada con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    deleteUnit(state, id) {
-        var url = urlUnit + '/' + id
-        axios.delete(url).then(response => {
-            toastr.success('Unidad de Medida eliminada con éxito')
-        })
-    },
     /*****************Producto***************** */
     /*********************************************** */
     getProducts(state, page) {
-        var url = urlProduct + '?page=' + page + '&include=unit_of_mesaurent'
+        var url = urlProduct + '?page=' + page + '&name=' + state.searchProduct.name
         axios.get(url).then(response => {
             state.products = response.data.products.data
             state.pagination = response.data.pagination
@@ -2262,530 +2054,112 @@ export default { //used for changing the state
     },
     createProduct(state) {
         var url = urlProduct
-        axios.post(url, {
-            unit_of_mesaurent_id: state.selectedUnit.value,
-            name: state.newProduct.name,
-            detail: state.newProduct.detail,
-        }).then(response => {
-            state.newProduct.brand_id = ''
-            //state.newProduct.brand_id = null
-            //state.newProduct.laboratory_id = null
-            state.newProduct.name = ''
-            state.newProduct.detail = ''
-            state.errorsLaravel = []
-            $('#create').modal('hide')
-            toastr.success('Producto generado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editProduct(state, product) {
-        state.fillProduct.id = product.id
-        state.fillProduct.unit_of_mesaurent_id = product.unit_of_mesaurent_id
-        state.selectedUnit = { label: product.unit_of_mesaurent.name, value: product.unit_of_mesaurent.id }
-        state.fillProduct.name = product.name
-        state.fillProduct.detail = product.detail
-        $("#edit").modal('show')
-    },
-    updateProduct(state, id) {
-        var url = urlProduct + '/' + id
-        axios.put(url, state.fillProduct).then(response => {
-            state.fillProduct = {
-                id: '',
-                name: '',
-                detail: '',
+        state.newProduct.flete = state.newFlete.flete
+        state.newProduct.utility = state.newUtility.utility
+        axios.post(url, state.newProduct).then(response => {
+            if (response.data > 0) {
+                state.newProduct = { name: '', code: '', supplier: '', detail: '' }
+                state.errorsLaravel = []
+                $('#create').modal('hide')
+                toastr.success('Producto generado con éxito')
             }
-            state.errorsLaravel = []
-            $('#edit').modal('hide')
-            toastr.success('Producto actualizado con éxito')
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
     },
+    editProduct(state, data) {
+        state.fillProduct.id = data.product.id
+        state.fillProduct.code = data.product.code
+        state.fillProduct.name = data.product.name
+        state.fillProduct.supplier = data.product.supplier
+        state.fillProduct.utility = data.product.utility
+        state.fillProduct.flete = data.product.flete
+        state.fillProduct.detail = data.product.detail
+        state.current_page = data.page
+        $("#edit_product").modal('show')
+    },
+    updateProduct(state) {
+        var url = urlProduct + '/' + state.fillProduct.id
+        axios.put(url, state.fillProduct).then(response => {
+            if (response) {
+                state.errorsLaravel = []
+                $('#edit_product').modal('hide')
+                toastr.success('Producto actualizado con éxito')
+            }
+        }).catch(error => {
+            console.log(error)
+            state.errorsLaravel = error.response.data
+        })
+    },
+    modalDeleteProduct(state, id) {
+        state.deleteProductId = id
+    },
+
     deleteProduct(state, id) {
         var url = urlProduct + '/' + id
         axios.delete(url).then(response => {
-            toastr.success('Producto eliminado con éxito')
-        })
-    },
-    /*****************codigo***************** */
-    /*********************************************** */
-    getCodes(state, page) {
-        var url = urlCode + '?page=' + page + '&include=product,brand,laboratory,inventories'
-        axios.get(url).then(response => {
-            state.codes = response.data.codes.data
-            state.pagination = response.data.pagination
-        });
-    },
-    getAllCodes(state) {
-
-        state.codesEdit = []
-        state.codes = []
-
-        var url = urlAllCodes + '?include=product,brand,laboratory,inventories'
-        axios.get(url).then(response => {
-
-            var respuesta = response.data
-            var contador = 1
-
-            respuesta.forEach(code => {
-
-                var total = 0
-
-                code.inventories.forEach(inventory => {
-                    if (inventory.sucursal_id == state.idSucursal)
-                        total += parseInt(inventory.quantity)
-                })
-
-                state.codes.push({
-                    isActivate: false,
-                    cont: contador,
-                    id: code.id,
-                    brandName: code.brand.name,
-                    laboratoryName: code.laboratory.name,
-                    productName: code.product.name,
-                    productDetail: code.product.detail,
-                    codeName: code.name,
-                    quantity: total,
-                    created_at: code.created_at,
-                    brand: code.brand,
-                    laboratory: code.laboratory,
-                    product: code.product,
-                    code: code,
-                    inventories: code.inventories,
-                })
-
-                contador = contador + 1
-
-            })
-
-            state.codesEdit = state.codes
-
-        });
-    },
-    createCode(state) {
-        var url = urlCode
-        axios.post(url, {
-            brand_id: state.selectedBrand.value,
-            laboratory_id: state.selectedLaboratory.value,
-            product_id: state.selectedProduct.value,
-            name: state.newCode.name,
-            detail: state.newCode.detail,
-            price_cost: state.newCode.price_cost,
-            price_sale: state.newCode.price_sale,
-        }).then(response => {
-            state.newCode.brand_id = ''
-            state.newCode.name = ''
-            state.newCode.detail = ''
-            state.errorsLaravel = []
-            $('#create').modal('hide')
-            toastr.success('Código generado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editCode(state, code) {
-        state.fillCode.id = code.id
-        state.fillCode.brand_id = code.brand_id
-        state.fillCode.laboratory_id = code.laboratory_id
-        state.fillCode.product_id = code.product_id
-        state.selectedBrand = { label: code.brand.name, value: code.brand.id }
-        state.selectedLaboratory = { label: code.laboratory.name, value: code.laboratory.id }
-        state.selectedProduct = { label: code.product.name, value: code.product.id }
-        state.fillCode.detail = code.detail
-        state.fillCode.name = code.name
-        $("#edit").modal('show')
-    },
-    updateCode(state, id) {
-        var url = urlCode + '/' + id
-        axios.put(url, state.fillCode).then(response => {
-            state.fillCode = {
-                id: '',
-                name: '',
+            if (response.data) {
+                state.products = state.products.filter(product => product.id !== response.data.id)
+                $('#delete_product').modal('hide')
+                toastr.success('Producto eliminado con éxito')
             }
-            state.errorsLaravel = []
-            $('#edit').modal('hide')
-            toastr.success('Código actualizado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
         })
-    },
-    deleteCode(state, id) {
-        var url = urlCode + '/' + id
-        axios.delete(url).then(response => {
-            toastr.success('Código eliminado con éxito')
-        })
-    },
-    /*****************plantillas de inventario***************** */
-    /*********************************************** */
-    getTemplates(state, page) {
-        var url = urlTemplate + '?page=' + page + '&include=sucursal,codes.brand,codes.laboratory,codes.product'
-        axios.get(url).then(response => {
-            state.templates = response.data.templates.data
-            state.pagination = response.data.pagination
-
-        });
-    },
-    chargeTemplate(state) {
-
-        state.codesEdit = []
-        state.codes = []
-
-        var url = urlTemplate + '/' + state.selectedTemplate.value
-            + '?include=sucursal,codes.brand,codes.laboratory,codes.product,codes.inventories'
-        //+ '&filter[sucursal_id]=' + state.selectedSucursal.value
-        axios.get(url).then(response => {
-
-
-            var respuesta = response.data.codes
-            var contador = 1
-
-            respuesta.forEach(code => {
-
-                var total = 0
-
-                code.inventories.forEach(inventory => {
-                    if (inventory.sucursal_id == state.idSucursal)
-                        total += parseInt(inventory.quantity)
-                })
-
-                state.codes.push({
-                    isActivate: false,
-                    cont: contador,
-                    id: code.id,
-                    brandName: code.brand.name,
-                    laboratoryName: code.laboratory.name,
-                    productName: code.product.name,
-                    productDetail: code.product.detail,
-                    codeName: code.name,
-                    quantity: total,
-                    created_at: code.created_at,
-                    brand: code.brand,
-                    laboratory: code.laboratory,
-                    product: code.product,
-                    code: code,
-                    inventories: code.inventories,
-                    price_cost: code.price_cost,
-                    price_sale: code.price_sale,
-                    iva: 19,
-                    utility: 0,
-                    newQuantity: 1,
-                })
-
-                contador = contador + 1
-
-            })
-
-            state.codesEdit = state.codes
-
-        });
-    },
-    createTemplate(state) {
-        var url = urlTemplate
-        state.codesTemplate = []
-
-        state.codes.forEach(code => {
-            if (code.isActivate)
-                state.codesTemplate.push(code.id)
-        })
-
-        axios.post(url, {
-            sucursal_id: state.selectedSucursal.value,
-            name: state.newTemplate.name,
-            codes: state.codesTemplate,
-        }).then(response => {
-            state.newTemplate.sucursal_id = ''
-            state.newTemplate.name = ''
-            state.errorsLaravel = []
-            $('#create').modal('hide')
-            toastr.success('Plantilla de inventario generada con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editTemplate(state, template) {
-        state.fillTemplate.id = template.id
-        state.fillTemplate.sucursal_id = template.sucursal_id
-        state.selectedSucursal = { label: template.sucursal.name, value: template.sucursal.id }
-        state.fillTemplate.name = template.name
-        state.fillTemplate.codes = template.codes
-
-        var respuesta = state.fillTemplate.codes
-
-        state.codesEdit.forEach(codeEdit => {
-            codeEdit.isActivate = false
-            respuesta.forEach(code => {
-                if (code.id == codeEdit.id)
-                    codeEdit.isActivate = true
-            })
-
-        })
-
-        $("#edit").modal('show')
-    },
-    updateTemplate(state, id) {
-        var url = urlTemplate + '/' + id
-
-
-        state.codesTemplate = []
-
-        state.codesEdit.forEach(code => {
-            if (code.isActivate)
-                state.codesTemplate.push(code.id)
-        })
-
-        axios.put(url, {
-            sucursal_id: state.selectedSucursal.value,
-            name: state.fillTemplate.name,
-            codes: state.codesTemplate,
-        }).then(response => {
-            state.fillTemplate = {
-                id: '',
-                sucursal_id: '',
-                name: '',
-            }
-            state.errorsLaravel = []
-            $('#edit').modal('hide')
-            toastr.success('Plantilla de inventario generada con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    deleteTemplate(state, id) {
-        var url = urlTemplate + '/' + id
-        axios.delete(url).then(response => {
-            toastr.success('Plantilla de inventario eliminada con éxito')
-        })
-    },
-    /******************************************** */
-    /******************************************** */
-    addCodeTemplate(state, code) {
-        state.codesTemplate.push(code)
-    },
-    deleteCodeTemplate(state, id) {
-        var temporal = []
-        state.codesTemplate.forEach(code => {
-            if (code.id != id)
-                temporal.push(code)
-        })
-        state.codesTemplate = temporal
     },
     /*****************inventario***************** */
     /*********************************************** */
-    getInventories(state, data) {
-        //var url = urlInventory + '?page=' + page + '&include=code,code.product,code.product.brand,code.product.laboratory'
-        var url = urlCode + '?page=' + data.page + '&include=product,brand,laboratory,inventories'
-            + '&code=' + state.searchReduction.code
-            + '&product=' + state.searchReduction.product
-            + '&laboratory=' + state.searchReduction.laboratory
-            + '&brand=' + state.searchReduction.brand
-
-        state.idSucursal = null
-        state.idSucursal = data.sucursal_id
-        state.inventories = []
+    getInventories(state, page) {
+        var url = urlInventory + '?page=' + page + '&name=' + state.searchInventory.name
         axios.get(url).then(response => {
-
-            state.inventories = []
-
-            var respuesta = response.data.codes.data
-            var contador = 1
-
-            respuesta.forEach(code => {
-
-                var total = 0
-
-                code.inventories.forEach(inventory => {
-                    if (inventory.sucursal_id == data.sucursal_id)
-                        total += parseInt(inventory.quantity)
-                })
-
-                state.inventories.push({
-                    id: contador,
-                    brandName: code.brand.name,
-                    laboratoryName: code.laboratory.name,
-                    productName: code.product.name,
-                    productDetail: code.product.detail,
-                    codeName: code.name,
-                    quantity: total,
-                    newQuantity: 1,
-                    created_at: code.created_at,
-                    brand: code.brand,
-                    laboratory: code.laboratory,
-                    product: code.product,
-                    code: code,
-                    inventories: code.inventories,
-                })
-
-                contador = contador + 1
-
-            })
-
-            state.pagination = response.data.pagination
-        });
-    },
-    getInventories2(state, page) {
-        //var url = urlInventory + '?page=' + page + '&include=code,code.product,code.product.brand,code.product.laboratory'
-        var url = urlCode + '?page=' + page + '&include=product,brand,laboratory,inventories'
-            + '&code=' + state.searchReduction.code
-            + '&product=' + state.searchReduction.product
-            + '&laboratory=' + state.searchReduction.laboratory
-            + '&brand=' + state.searchReduction.brand
-
-        state.inventories = []
-        axios.get(url).then(response => {
-
-            state.inventories = []
-            var respuesta = response.data.codes.data
-            var contador = 1
-
-            respuesta.forEach(code => {
-
-                var total = 0
-
-                code.inventories.forEach(inventory => {
-                    if (inventory.sucursal_id == state.idSucursal)
-                        total += parseInt(inventory.quantity)
-                })
-
-                state.inventories.push({
-                    id: contador,
-                    brandName: code.brand.name,
-                    laboratoryName: code.laboratory.name,
-                    productName: code.product.name,
-                    productDetail: code.product.detail,
-                    codeName: code.name,
-                    quantity: total,
-                    newQuantity: 1,
-                    created_at: code.created_at,
-                    brand: code.brand,
-                    laboratory: code.laboratory,
-                    product: code.product,
-                    code: code,
-                    inventories: code.inventories,
-                })
-
-                contador = contador + 1
-
-            })
-
+            state.inventories = response.data.inventories.data
             state.pagination = response.data.pagination
         });
     },
     createInventory(state) {
         var url = urlInventory
-
-        var codesArray = []
-
-        state.codes.forEach(code => {
-
-            var utilidad = parseInt(code.price_sale) * 1.19 - parseInt(code.price_cost) * 1.19
-
-            codesArray.push({
-                code_id: code.id,
-                sucursal_id: state.selectedSucursal.value,
-                price_cost: code.price_cost,
-                price_sale: code.price_sale,
-                iva: code.iva,
-                utility: utilidad,
-                quantity: code.newQuantity,
-            })
-
-
-        })
-
-        axios.post(url, {
-            codes: codesArray
-        }).then(response => {
-            /*state.newInventory.price_cost = 0
-            state.newInventory.price_sale = 0
-            state.newInventory.price_utility = 0
-            state.newInventory.quantity = 1*/
-            state.errorsLaravel = []
-            $('#create').modal('hide')
-            toastr.success('Inventario generado con éxito')
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-    },
-    editInventory(state, inventory) {
-        state.fillInventory.id = inventory.id
-        state.fillInventory.code_id = inventory.code_id
-        state.fillInventory.price = inventory.price
-        state.fillInventory.quantity = inventory.quantity
-        $("#edit").modal('show')
-    },
-    updateInventory(state, id) {
-        var url = urlInventory + '/' + id
-        axios.put(url, state.fillInventory).then(response => {
-            state.fillCode = {
-                id: '',
-                price: 0,
-                quantity: 1,
+        axios.post(url, state.newInventory).then(response => {
+            if (response.data) {
+                state.inventories.push(response.data)
+                state.newInventory = { product_id: state.newInventory.product_id, quantity: 1, price: 0, discount: 0 }
+                state.errorsLaravel = []
+                toastr.success('Inventario actualizado con éxito')
             }
-            state.errorsLaravel = []
-            $('#edit').modal('hide')
-            toastr.success('Inventario actualizado con éxito')
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
+    },
+    editInventory(state, data) {
+        state.newInventory.product_id = data.id
+        state.inventories = data.inventories
     },
     deleteInventory(state, id) {
         var url = urlInventory + '/' + id
         axios.delete(url).then(response => {
-            toastr.success('Inventario eliminado con éxito')
+            if (response.data) {
+                state.inventories = state.inventories.filter(inventory => inventory.id !== response.data.id)
+                toastr.success('Inventario eliminado con éxito')
+            }
         })
     },
-    detailInventory(state, inventory) {
-        state.detailInventory = null
-        state.detailInventory = inventory
-        $("#detail").modal('show')
-    },
-    /******************************************** */
-    /******************************************** */
-    addConsumeProduct(state, inventory) {
-        state.consumeProducts.push(inventory)
-    },
-    deleteConsumeProduct(state, id) {
-        var temporal = []
-        state.consumeProducts.forEach(consume => {
-            if (consume.id != id)
-                temporal.push(consume)
-        })
-        state.consumeProducts = temporal
-    },
-    /******************************************* */
-    /******************************************** */
-    confirmReduction(state) {
-        $('#confirm').modal('show')
-    },
-    createReduction(state) {
+    async uploadInvoice(state) {
+        let formData = new FormData()
+        var url = urlBill
+        formData.append('file', state.fileInvoice)
+        formData.append('utility', state.newUtility.utility)
+        formData.append('flete', state.newFlete.flete)
 
-        var productos = []
-
-        state.consumeProducts.forEach(consume => {
-            productos.push({
-                code_id: consume.code.id,
-                sucursal_id: state.idSucursal,
-                quantity: consume.newQuantity,
-                type: state.tipoConsumo.value,
-            })
-        })
-
-        var url = urlConsumeProduct
-        axios.post(url, {
-            products: productos,
-        }).then(response => {
-            //state.newReduction.code_id = 1
-            //state.newReduction.sucursal_id = 1
-            state.newReduction.quantity = 10
-            state.consumeProducts = []
-            state.inventories = []
-            state.errorsLaravel = []
-            toastr.success(response.data.resultado)
-        }).catch(error => {
-            state.errorsLaravel = error.response.data
-        })
-
+        try {
+            const response = await axios.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            if (response.data.message === "Factura ingresada correctamente") {
+                $('#upload_invoice').modal('hide')
+                toastr.success('Factura ingresada con éxito!')
+                // Ejecutar la mutación getInventories
+                this.commit('getInventories', 1);
+            }
+        } catch (error) {
+            $('#upload_invoice').modal('hide')
+            toastr.error("Error subiendo la factura, quizás ya la ingreso previamente o no se pudo leer el formato")
+            throw error; // Rechazar la promesa si hay un error
+        }
     },
     /****************************************** */
     /************************************ */
@@ -2923,5 +2297,284 @@ export default { //used for changing the state
         }).catch(error => {
             state.errorsLaravel = error.response.data
         })
-    }
+    },
+
+    /*****************Proveedor***************** */
+    /*********************************************** */
+    getSuppliers(state, page) {
+        var url = urlSupplier + '?page=' + page
+        axios.get(url).then(response => {
+            state.suppliers = response.data.suppliers.data
+            state.pagination = response.data.pagination
+        });
+    },
+    createSupplier(state) {
+        var url = urlSupplier
+        axios.post(url, state.newSupplier).then(response => {
+            if (response.status === 200 && response.data > 0) {
+                state.newSupplier = { name: '', rut: '', phone: '', address: '', commercial_business: '' }
+                state.errorsLaravel = []
+                $('#create').modal('hide')
+                toastr.success('Proveedor creado con éxito')
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+
+    createUtility(state) {
+        var url = urlUtility
+        axios.post(url, state.newUtility).then(response => {
+            if (response.status === 200 && response.data > 0) {
+                state.newUtility.utility = response.data
+                state.errorsLaravel = []
+                $('#create_utility').modal('hide')
+                toastr.success('La utilidad se actualizo éxito')
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+    getUtilities(state) {
+        var url = urlUtility
+        axios.get(url).then(response => {
+            state.newUtility.utility = response.data.utility
+        });
+    },
+
+    createFlete(state) {
+        var url = urlFlete
+        axios.post(url, state.newFlete).then(response => {
+            if (response.status === 200 && response.data > 0) {
+                state.newFlete.flete = response.data
+                state.errorsLaravel = []
+                $('#create_flete').modal('hide')
+                toastr.success('El flete se actualizo éxito')
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+    getFletes(state) {
+        var url = urlFlete
+        axios.get(url).then(response => {
+            state.newFlete.flete = response.data.flete
+        });
+    },
+
+    createPaymentMethods(state) {
+        var url = urlPaymentMethod
+        axios.post(url, state.newPaymentMethod).then(response => {
+            if (response.status === 201) {
+                state.payments.push(response.data)
+                state.errorsLaravel = []
+                $('#create_payment_methods').modal('hide')
+                toastr.success('La Forma de Pago se creo éxito')
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+
+    updatePaymentMethods(state) {
+        var url = urlPaymentMethod + '/' + state.fillPaymentMethod.id
+        axios.put(url, state.fillPaymentMethod).then(response => {
+            if (response) {
+                state.errorsLaravel = []
+                $('#edit_payment').modal('hide')
+                toastr.success('La forma de pago fue actualizado con éxito')
+            }
+        }).catch(error => {
+            console.log(error)
+            state.errorsLaravel = error.response.data
+        })
+    },
+
+    editPayment(state, data) {
+        state.fillPaymentMethod.id = data.payment.id
+        state.fillPaymentMethod.name = data.payment.name
+        state.fillPaymentMethod.utility = data.payment.utility
+        state.current_page = data.page
+    },
+
+    getPayments(state, page) {
+        var url = urlPaymentMethod + '?page=' + page
+        axios.get(url).then(response => {
+            state.payments = response.data.payments.data
+            state.pagination = response.data.pagination
+        });
+    },
+
+
+    createDiscounts(state) {
+        var url = urlDiscount
+        axios.post(url, state.newDiscount).then(response => {
+            if (response.status === 200 && response.data > 0) {
+                state.newDiscount.discount = response.data
+                state.errorsLaravel = []
+                $('#create_discount').modal('hide')
+                toastr.success('El Descuento se actualizo éxito')
+            }
+        }).catch(error => {
+            state.errorsLaravel = error.response.data
+        })
+    },
+
+    //Sales
+    sumQuantity(state) {
+        state.newSale.totalNeto = Math.round(((state.newSale.priceMax * parseInt(state.newSale.quantity)) * (state.newSale.utility - 1)) + (state.newSale.priceMax * parseInt(state.newSale.quantity)))
+
+        const high_price = (((state.newSale.priceMax * 1.19) * state.newSale.utility) + state.newSale.flete)
+        const average_price_rounded = Math.ceil(state.newSale.average_price / 10) * 10;
+        const high_price_rounded = Math.ceil(high_price / 10) * 10;
+
+        if (high_price_rounded !== average_price_rounded) {
+            state.newSale.price_sale = high_price_rounded * parseInt(state.newSale.quantity)
+        } else {
+            state.newSale.price_sale = average_price_rounded * parseInt(state.newSale.quantity)
+        }
+    },
+    addCart(state) {
+        const newSale = state.newSale;
+        const cart = state.cart;
+
+        if (newSale.quantity > newSale.totalSumQuantity) {
+            toastr.error('¡Error, Supera la cantidad disponibles!');
+            return;
+        }
+
+        const existingCartItem = cart.find(cartItem => cartItem.id === newSale.id);
+
+        if (existingCartItem) {
+            existingCartItem.quantity += parseInt(newSale.quantity);
+            existingCartItem.totalNeto += newSale.totalNeto;
+            existingCartItem.total += newSale.price_sale;
+        } else {
+            cart.push({
+                id: newSale.id,
+                name: newSale.product,
+                price: newSale.price,
+                utility: newSale.utility,
+                quantity: parseInt(newSale.quantity),
+                neto: newSale.price_sale,
+                totalNeto: newSale.totalNeto,
+                total: newSale.price_sale
+            });
+        }
+
+        state.cartNeto += newSale.totalNeto;
+        state.cartTotal += newSale.price_sale;
+        newSale.totalSumQuantity -= parseInt(newSale.quantity);
+    },
+    removeCart(state, data) {
+        let product = state.cart.find(p => p.id == data.id)
+        state.newSale.totalSumQuantity += product.quantity
+        state.cartNeto -= product.neto
+        state.cartTotal -= product.total
+        state.cart.splice(state.cart.indexOf(data.id))
+    },
+    createSale(state) {
+        if (state.selectedPayment === null) {
+            toastr.error('¡Error, Selecione la forma de pago!')
+        } else {
+
+            let sale = {
+                total: state.cartTotal,
+                payment: state.selectedPayment.value,
+                cart: state.cart
+            }
+
+            if (state.cartTotal > 0) {
+                axios.post(urlSale, sale)
+                    .then(response => {
+                        state.cart = []
+                        state.cartTotal = 0
+                        state.cartNeto = 0
+                        state.selectedProduct = null
+                        state.selectedPayment = null
+
+                        state.newSale = {
+                            id: 0,
+                            product: '',
+                            code: '',
+                            quantity: 1,
+                            price: 0,
+                            price_sale: 0,
+                            utility: 0,
+                            flete: 0,
+                            priceMax: 0,
+                            average_price: 0,
+                            totalSumPrice: 0,
+                            totalSumQuantity: 0,
+                            neto: 0
+                        }
+
+                        toastr.success('Venta generada con exito!')
+                        $('#generate_sales').modal('hide')
+                        this.commit('allSales', { page: 1 })
+                    })
+                    .catch(error => {
+                        toastr.error(error.response.data)
+                    })
+            }
+        }
+    },
+    allSales(state, data) {
+        axios.get(urlSale + '?page=' + data.page + '&calendar=' + data.calendar)
+            .then(response => {
+                state.sales = response.data.sales.data
+                state.pagination = response.data.pagination
+            })
+            .catch(error => {
+                toastr.error(error.response.data)
+            })
+
+    },
+
+    generateReceipt(state, id) {
+        var url = urlGenerateReceipt + '/' + id
+        window.location.href = url;
+    },
+
+    modalDeleteSale(state, id) {
+        state.sale_id = id
+    },
+
+    async deleteSale(state, id) {
+        var url = urlSale + '/' + id
+
+        try {
+            const response = await axios.delete(url);
+            if (response.data.status === true) {
+                toastr.success('La Venta se anulo correctamente');
+                $('#delete_sale').modal('hide')
+                this.commit('allSales', { page: 1 })
+            }
+        } catch (error) {
+            toastr.error("La venta no se anulo")
+            throw error; // Rechazar la promesa si hay un error
+        }
+    },
+
+    boxClosureZ(state) {
+        if (state.calendar.search) {
+            var url = urlGenerateBoxClosureZ + '/' + state.calendar.search
+            axios.get(url)
+                .then(response => {
+                    if (response.data.error !== 0) {
+                        window.location.href = url;
+                    } else {
+                        toastr.error('No hay ventas en esta fecha')
+                    }
+                }).catch(error => {
+                    toastr.error(error.response.data)
+                })
+
+        } else {
+            toastr.warning('Seleccione un fecha')
+        }
+    },
+
+
+
 }

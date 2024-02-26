@@ -13,7 +13,7 @@ export default { //computed propeties
     },
     completePromotionaAdd(state, getters) {
         return state.selectedCategory
-            && state.selectedServicepromotions 
+            && state.selectedServicepromotions
             && state.newPromotion.name.length >= 4
     },
     completePromotionCreate(state, getters) {
@@ -101,9 +101,6 @@ export default { //computed propeties
     completeUnitEdit(state, getters) {
         return state.fillUnit.id && state.fillUnit.name.length >= 4
     },
-    completeProductCreate(state, getters) {
-        return state.newProduct.name.length >= 4
-    },
     completeProductEdit(state, getters) {
         return state.fillProduct.id && state.fillProduct.name.length >= 4
     },
@@ -172,6 +169,9 @@ export default { //computed propeties
     getItemPersonal(state, getters) {
         return state.selectedPersonal
     },
+    getItemProduct(state, getters) {
+        return state.selectedProduct
+    },
     /**************************************** */
     /**************************************** */
     /*********** sección post ************** */
@@ -194,5 +194,35 @@ export default { //computed propeties
     completeMail(state) {
         return state.newMail.subject
             && state.newMail.message
-    }
+    },
+    completeProductCreate(state, getters) {
+        return state.newProduct.name.length >= 4
+            && state.newProduct.code.length >= 4
+            && state.newProduct.supplier.length >= 4
+    },
+    completeProductEdit(state, getters) {
+        return state.fillProduct.name.length >= 4
+            && state.fillProduct.code.length >= 4
+    },
+
+    completeSupplierCreate(state, getters) {
+        return state.newSupplier.name.length >= 4
+            && state.newSupplier.rut.length >= 4
+    },
+
+    completeUtilityCreate(state, getters) {
+        return state.newUtility.utility > 0
+    },
+
+    completeFleteCreate(state, getters) {
+        return state.newFlete.flete > 0
+    },
+
+    completePaymentMethodCreate(state, getters) {
+        return state.newPaymentMethod.name !== '' && state.newPaymentMethod.utility > 0
+    },
+
+    completePaymentMethodEdit(state, getters) {
+        return state.fillPaymentMethod.name !== '' && state.fillPaymentMethod.utility > 0
+    },
 }

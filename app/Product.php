@@ -8,27 +8,19 @@ class Product extends Model
 {
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function unitOfMesaurent()
-    {
-        return $this->belongsTo('App\UnitOfMesaurent');
+    public function inventories() {
+        return $this->hasMany('App\Inventory');
     }
 
-    public function codes()
-    {
-        return $this->hasMany('App\Code');
+    public function productSales() {
+        return $this->hasMany('App\ProductSale');
     }
 
-    /**
-     * Filter user data based on query
-     *
-     * @params $query
-     * @return Eloquent
-     */
     public function scopeName($query)
     {
         $keyword = request('name');
         if ($query) {
-            $query->where('name', 'LIKE', '%'. $keyword . '%');
+            $query->where('name', 'LIKE', '%' . $keyword . '%');
         }
 
         return $query;

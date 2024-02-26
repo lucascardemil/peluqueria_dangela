@@ -1,7 +1,5 @@
 <template>
-
     <div>
-
         <h5>
             Nuevo Personal
             <a href="#" class="btn btn-success pull-right btn-sm" data-toggle="modal" data-target="#create"
@@ -95,7 +93,6 @@
         <CreatePersonalComponent></CreatePersonalComponent>
         <EditPersonalComponent></EditPersonalComponent>
     </div>
-
 </template>
 
 

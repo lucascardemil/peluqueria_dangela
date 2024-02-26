@@ -97,4 +97,8 @@ class User extends Authenticatable
         return $this->roles->contains('name', 'sucursal');
     }
 
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
 }

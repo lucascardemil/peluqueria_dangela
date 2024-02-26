@@ -18,48 +18,69 @@
 
                         <div class="form-group">
                             <label for="rut">Rut*</label>
-                            <input v-validate="'required|min:7|max:25'"
-                                :class="{ 'input': true, 'is-invalid': errors.has('rut') }" type="text" name="rut"
-                                class="form-control form-control-sm" v-model="fillClient.rut">
+                            <input v-validate="'required|min:7'"
+                                :class="{ 'input': true, 'is-invalid': errors.has('rut') || errorsLaravel.errors?.rut }"
+                                type="text" name="rut" class="form-control form-control-sm" v-model="fillClient.rut">
                             <p v-show="errors.has('rut')" class="text-danger">{{ errors.first('rut') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.rut" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="name">Nombre*</label>
                             <input v-validate="'required|min:6|max:190'"
-                                :class="{ 'input': true, 'is-invalid': errors.has('name') }" type="text" name="name"
-                                class="form-control form-control-sm" v-model="fillClient.name">
+                                :class="{ 'input': true, 'is-invalid': errors.has('name') || errorsLaravel.errors?.name }"
+                                type="text" name="name" class="form-control form-control-sm" v-model="fillClient.name">
                             <p v-show="errors.has('name')" class="text-danger">{{ errors.first('name') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.name" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="email">Email*</label>
                             <input v-validate="'required|min:6|max:150|email'"
-                                :class="{ 'input': true, 'is-invalid': errors.has('email') }" type="text" name="email"
-                                class="form-control form-control-sm" v-model="fillClient.email">
+                                :class="{ 'input': true, 'is-invalid': errors.has('email') || errorsLaravel.errors?.email }"
+                                type="text" name="email" class="form-control form-control-sm" v-model="fillClient.email">
                             <p v-show="errors.has('email')" class="text-danger">{{ errors.first('email') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.email" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="city">Ciudad*</label>
                             <input v-validate="'min:6|max:300|'"
-                                :class="{ 'input': true, 'is-invalid': errors.has('city') }" type="text" name="city"
-                                class="form-control form-control-sm" v-model="fillClient.city">
+                                :class="{ 'input': true, 'is-invalid': errors.has('city') || errorsLaravel.errors?.city }"
+                                type="text" name="city" class="form-control form-control-sm" v-model="fillClient.city">
                             <p v-show="errors.has('city')" class="text-danger">{{ errors.first('city') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.city" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="phone">Teléfono (+569)</label>
-                            <input v-validate="'min:8'" :class="{ 'input': true, 'is-invalid': errors.has('phone') }"
-                                type="number" name="phone" class="form-control form-control-sm" v-model="fillClient.phone">
+                            <input v-validate="'min:8|max:8'" maxlength="8"
+                                :class="{ 'input': true, 'is-invalid': errors.has('phone') || errorsLaravel.errors?.phone }"
+                                type="text" name="phone" class="form-control form-control-sm" v-model="fillClient.phone">
                             <p v-show="errors.has('phone')" class="text-danger">{{ errors.first('phone') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.phone" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="birthdate">Fecha de Nacimiento*</label>
-                            <input v-validate="'required'" :class="{ 'input': true, 'is-invalid': errors.has('birthdate') }"
+                            <input v-validate="'required'"
+                                :class="{ 'input': true, 'is-invalid': errors.has('birthdate') || errorsLaravel.errors?.birthdate }"
                                 type="birthdate" name="birthdate" class="form-control form-control-sm"
                                 v-model="fillClient.birthdate">
                             <p v-show="errors.has('birthdate')" class="text-danger">{{ errors.first('birthdate') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.birthdate" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="sex">Sexo*</label>
-                            <select v-validate="'required'" :class="{ 'input': true, 'is-invalid': errors.has('sex') }"
+                            <select v-validate="'required'"
+                                :class="{ 'input': true, 'is-invalid': errors.has('sex') || errorsLaravel.errors?.sex }"
                                 name="sex" class="form-control form-control-sm" v-model="fillClient.sex">
                                 <option value="1">Masculino</option>
                                 <option value="2">Femenino</option>
@@ -68,20 +89,31 @@
                             <input v-show="inputOther" :class="{ 'input': true, 'is-invalid': errors.has('otro') }"
                                 type="text" name="otro" class="form-control form-control-sm" v-model="fillClient.other_sex">
                             <p v-show="errors.has('sex')" class="text-danger">{{ errors.first('sex') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.other_sex" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="score">Puntaje</label>
-                            <input :class="{ 'input': true, 'is-invalid': errors.has('score') }" type="number" name="score"
-                                class="form-control form-control-sm" v-model="fillClient.score">
+                            <input
+                                :class="{ 'input': true, 'is-invalid': errors.has('score') || errorsLaravel.errors?.score }"
+                                type="number" name="score" class="form-control form-control-sm" v-model="fillClient.score">
                             <p v-show="errors.has('score')" class="text-danger">{{ errors.first('score') }}</p>
+                            <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                <p v-for="error in errors.score" :key="error">{{ error }}</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div v-if="fillClient.image === null">
                                 <label for="image">Imagen</label>
-                                <input v-validate="'required|mimes:jpeg,jpg,png|max:2048'"
-                                    :class="{ 'input': true, 'is-invalid': errors.has('image') }" type="file" name="image"
-                                    id="image" class="form-control form-control-sm" @change="handleFileUpload">
+                                <input v-validate="'required|mimes:jpeg,jpg,png|max:4096'"
+                                    :class="{ 'input': true, 'is-invalid': errors.has('image') || errorsLaravel.errors?.image }"
+                                    type="file" name="image" id="image" class="form-control form-control-sm"
+                                    @change="handleFileUpload">
                                 <p v-show="errors.has('image')" class="text-danger">{{ errors.first('image') }}</p>
+                                <div v-for="(errors, index) in errorsLaravel" class="text-danger" :key="index">
+                                    <p v-for="error in errors.image" :key="error">{{ error }}</p>
+                                </div>
                             </div>
                             <div class="w-50" v-if="fillClient.image !== null">
                                 <div class="image-container-delete">
@@ -106,20 +138,6 @@
                             <label for="empresa">Empresa*</label>
                             <select-company></select-company>
                         </div>
-
-                        <div v-for="(error, index) in errorsLaravel" class="text-danger" :key="index">
-                            <p v-if="error.company_id">{{ error.company_id[0] }}</p>
-                            <p v-if="error.profession_id">{{ error.profession_id[0] }}</p>
-                            <p v-if="error.rut">{{ error.rut[0] }}</p>
-                            <p v-if="error.name">{{ error.name[0] }}</p>
-                            <p v-if="error.email">{{ error.email[0] }}</p>
-                            <p v-if="error.city">{{ error.city[0] }}</p>
-                            <p v-if="error.phone">{{ error.phone[0] }}</p>
-                            <p v-if="error.birthdate">{{ error.birthdate[0] }}</p>
-                            <p v-if="error.sex">{{ error.sex[0] }}</p>
-                            <p v-if="error.image">{{ error.image[0] }}</p>
-                        </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-warning" :disabled="!completeClientUpdate">
@@ -145,6 +163,7 @@ export default {
     watch: {
         'fillClient.rut': function (newValue) {
             this.fillClient.rut = this.cleanRut(newValue);
+            delete this.$store.state.errorsLaravel.errors?.name
         },
         'fillClient.sex': function (newValue) {
             this.inputOther = this.showInputOther(newValue);

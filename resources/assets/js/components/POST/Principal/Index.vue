@@ -18,18 +18,8 @@
     <div v-show="personalShow">
         <PersonalComponent></PersonalComponent>
     </div>
-    <!--<div v-show="personalServicesShow">
-        <PersonalServicesComponent></PersonalServicesComponent>
-    </div>
-    -->
+
     <div v-show="finalShow">
-        <!-- <div class="row">
-            <div class="col-6">
-                <button class="btn btn-danger btn-block btn-lg pt-3 pb-3" @click="deleteServicepost">
-                    <i class="far fa-trash-alt"></i> Eliminar
-                </button>
-            </div>
-        </div> -->
         <div class="row">
             <div class="col-12 mt-4 mb-4">
                 <table  class="table table-hover table-striped table-sm bg-primary text-white">

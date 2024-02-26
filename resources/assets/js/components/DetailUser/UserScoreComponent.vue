@@ -5,13 +5,11 @@
                 <h4 class="text-left text-primary">Buscar Usuario</h4>
                 <form class="form-inline my-3">
                     <div class="form-group">
-                        <label class="sr-only" for="inlineFormInput">Rut</label>
                         <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 mb-sm-0" placeholder="Rut"
                             v-model="searchUser.rut" @keyup="getSearchUsers">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="inlineFormInput">Nombre</label>
-                        <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 mb-sm-0" placeholder="Nombre"
+                        <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 mb-sm-0" placeholder="Nombre Completo"
                             v-model="searchUser.name" @keyup="getSearchUsers">
                     </div>
                 </form>

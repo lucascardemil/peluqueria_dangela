@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
 
 Route::get('login/{key?}', 'Auth\LoginController@index')->name('login');
 Route::post('login/{key}', 'Auth\LoginController@login')->middleware('checkUserIp');
@@ -126,29 +127,17 @@ Route::get('vouchersimpagos/{id}', 'Post\VoucherController@vouchersImpagos');
 /********************* Inventario **************** */
 /**************************************************** */
 /**************************************************** */
-Route::ApiResource('brands', 'BrandController');
-Route::get('brands-all', 'BrandController@all');
+Route::ApiResource('products', 'Product\ProductController');
+Route::get('products-all', 'Product\ProductController@productsAll');
 
-Route::ApiResource('laboratories', 'LaboratoryController');
-Route::get('laboratories-all', 'LaboratoryController@all');
-
-Route::ApiResource('units', 'UnitOfMesaurentController');
-Route::get('units-all', 'UnitOfMesaurentController@all');
-
-Route::ApiResource('products', 'ProductController');
-Route::get('products-all', 'ProductController@all');
-
-Route::ApiResource('codes', 'CodeController');
-Route::get('codes-all', 'CodeController@all');
-
-Route::ApiResource('inventories-template', 'InventorytemplateController');
-Route::get('inventories-template-all', 'InventorytemplateController@all');
-
-Route::ApiResource('inventories', 'InventoryController');
-Route::get('totalInventory/{idSucursal}', 'InventoryController@totalInventory');
-Route::post('consumeProduct', 'InventoryController@consumeProduct');
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::ApiResource('suppliers', 'Supplier\SupplierController');
+Route::ApiResource('utilities', 'Utility\UtilityController');
+Route::ApiResource('fletes', 'Flete\FleteController');
+Route::ApiResource('inventories', 'Inventory\InventoryController');
+Route::ApiResource('bills', 'Bill\BillController');
+Route::ApiResource('discount', 'Discount\DiscountController');
 
 //Seccion de correo
 Route::post('enviar-correo-masivo', 'MailController@masiveMail');
@@ -156,6 +145,13 @@ Route::post('enviar-correo-masivo', 'MailController@masiveMail');
 Route::get('filtro-voucher', 'Post\VoucherController@filtroVoucher');
 
 Route::ApiResource('imagenes-mail', 'ImagenmailController');
+
+
+//Sales
+Route::ApiResource('sales', 'Sale\SaleController');
+Route::get('generate-receipt/{id}', 'Sale\SaleController@generateReceipt');
+Route::get('generate-box-closure-z/{fecha}', 'Sale\SaleController@generateBoxClosureZ');
+
 
 Route::middleware(['auth', 'checkSessionKey'])->group( function(){
 
@@ -201,6 +197,36 @@ Route::middleware(['auth', 'checkSessionKey'])->group( function(){
     Route::get('detail-user', function () {
             return view('admin.detail-user');
     })->name('detail-user');
+
+    //Inventario
+    Route::get('inventario', function () {
+        return view('admin.inventory');
+    })->name('inventario');
+
+    //Productos
+    Route::get('productos', function () {
+        return view('admin.product');
+    })->name('productos');
+
+    //Lista Precios
+    Route::get('lista-precios', function () {
+        return view('admin.price-list');
+    })->name('lista-precios');
+
+    //Proveedor
+    Route::get('proveedores', function () {
+        return view('admin.supplier');
+    })->name('proveedores');
+
+    //Ventas
+    Route::get('ventas', function () {
+        return view('admin.sales');
+    })->name('ventas');
+
+    //Formas de pagos
+    Route::get('formas-pagos', function () {
+        return view('admin.payment-methods');
+    })->name('formas-pagos');
 
 
     /******************** SISTEMA POS **********************/

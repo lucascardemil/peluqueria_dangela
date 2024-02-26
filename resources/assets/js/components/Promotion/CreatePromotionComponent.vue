@@ -10,7 +10,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="POST" v-on:submit.prevent="addServicePromotion">
+                        <form action="POST" v-on:submit.prevent="addServiceCreatePromotion">
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
                                 <input v-validate="'required|min:4|max:190'"
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-3">
                                     <button class="btn btn-danger btn-block btn-lg" type="button"
-                                        @click="deleteServicePromotion">
+                                        @click="deleteServiceCreatePromotion">
                                         <i class="far fa-trash-alt"></i> Eliminar
                                     </button>
                                 </div>
@@ -53,7 +53,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="servicepromotionLocal in listServicepromotions" :key="servicepromotionLocal.id">
+                                <tr v-for="servicepromotionLocal in listServiceCreatepromotions" :key="servicepromotionLocal.id">
                                     <td>
                                         <h5>{{ servicepromotionLocal.nombre }}</h5>
                                     </td>
@@ -66,13 +66,11 @@
                                         <h5>Total:</h5>
                                     </td>
                                     <td>
-                                        <h5>$ {{ totalPromotion }}</h5>
+                                        <h5>$ {{ totalCreatePromotion }}</h5>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <h2>Valor de Promoción:$ {{ totalPromotion }} </h2> -->
-
                         <hr>
                         <h4>Valor de Promoción</h4>
                         <div class="mt-2">
@@ -112,11 +110,11 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
     components: { ServicePromotionSelect, SelectCategory },
     computed: {
-        ...mapState(['newPromotion', 'selectedServicepromotions', 'listServicepromotions', 'totalPromotion', 'errorsLaravel']),
+        ...mapState(['newPromotion', 'listServiceCreatepromotions', 'totalCreatePromotion', 'errorsLaravel']),
         ...mapGetters(['completePromotionCreate', 'completePromotionaAdd'])
     },
     methods: {
-        ...mapActions(['createPromotion', 'addServicePromotion', 'totalServicePromotion', 'deleteServicePromotion'])
-    },
+        ...mapActions(['createPromotion', 'addServiceCreatePromotion', 'totalServiceCreatePromotion', 'deleteServiceCreatePromotion'])
+    }
 }
 </script>

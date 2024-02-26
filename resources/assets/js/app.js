@@ -24,13 +24,6 @@ Vue.component('select-service', require('./components/Service/SelectServiceCompo
 Vue.component('select-category', require('./components/Category/SelectCategory.vue').default)
 Vue.component('select-personal', require('./components/Personal/SelectPersonal.vue').default)
 Vue.component('select-user', require('./components/Client/SelectSimple.vue').default)
-Vue.component('select-brand', require('./components/Inventory/Brand/Select.vue').default)
-Vue.component('select-laboratory', require('./components/Inventory/Laboratory/Select.vue').default)
-Vue.component('select-unit', require('./components/Inventory/UnitOfMesaurent/Select.vue').default)
-Vue.component('select-product', require('./components/Inventory/Product/Select.vue').default)
-Vue.component('select-code', require('./components/Inventory/Code/Select.vue').default)
-Vue.component('select-inventory-template', require('./components/Inventory/InventoryTemplate/Select.vue').default)
-Vue.component('select-sucursal-inventory', require('./components/POST/Sucursal/Select.vue').default)
 
 Vue.component('exchange-service', require('./components/DetailUser/ExchangeServiceComponent.vue').default)
 
@@ -75,18 +68,16 @@ Vue.component('filter-session-component', require('./components/Voucher/FilterSe
 /******************************************************************** */
 /******************************************************************** */
 /******************************************************************** */
-Vue.component('brand-component', require('./components/Inventory/Brand/Index.vue').default)
-Vue.component('laboratory-component', require('./components/Inventory/Laboratory/Index.vue').default)
-Vue.component('unit-component', require('./components/Inventory/UnitOfMesaurent/Index.vue').default)
-Vue.component('product-component', require('./components/Inventory/Product/Index.vue').default)
-Vue.component('code-component', require('./components/Inventory/Code/Index.vue').default)
-Vue.component('inventory-template-component', require('./components/Inventory/InventoryTemplate/Index.vue').default)
-Vue.component('inventory-component', require('./components/Inventory/Inventory/Index.vue').default)
-Vue.component('reduction-component', require('./components/Inventory/Reduction/Index.vue').default)
+Vue.component('inventory-component', require('./components/Inventory/InventoriesComponent.vue').default)
+Vue.component('product-component', require('./components/Product/ProductsComponent.vue').default)
 
 Vue.component('email-masive-component', require('./components/Mail/Index.vue').default)
 
 Vue.component('register-client-component', require('./components/Client/RegisterClientComponent.vue').default)
+Vue.component('supplier-component', require('./components/Supplier/SuppliersComponent.vue').default)
+Vue.component('price-list-component', require('./components/PriceList/PriceListComponent.vue').default)
+Vue.component('sales-component', require('./components/Sales/SalesComponent.vue').default)
+Vue.component('payment-methods-component', require('./components/PaymentMethods/PaymentMethodsComponent.vue').default)
 
 
 new Vue({

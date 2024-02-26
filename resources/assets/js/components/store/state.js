@@ -13,6 +13,7 @@ export default { //data
     optionsCode: [] ,
     optionsTemplate: [] ,
     optionsService: [],
+    optionsProduct: [],
     selectedCategory: null,
     selectedIsSession: null,
     selectedPromotion: null,
@@ -24,6 +25,7 @@ export default { //data
     selectedProduct: null,
     selectedCode: null,
     selectedTemplate: null,
+    selectedProduct: null,
     /*** sección componentes de categorias */
     categories: [],
     newCategory : { name : '', isSession: '' },
@@ -83,8 +85,8 @@ export default { //data
     servicespromotions: [],
     services:[],
     service: { name: '', score_exchange: '', score_accumulated: '' },
-    newService : { category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '', redeemable_service: '' },
-    fillService: { id: '', category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '', redeemable_service: '' },
+    newService : { category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '', redeemable_service: 0 },
+    fillService: { id: '', category_id: '', name : '', score_exchange: '', score_accumulated: '', price: '', redeemable_service: 0 },
     searchService: {  name: '' },
     /************************************* */
     /*****sección de usuarios y servicios asociados */
@@ -140,6 +142,7 @@ export default { //data
     servicepromotions: [],
     selectedServicepromotions: [],
     listServicepromotions: [],
+    listServiceCreatepromotions: [],
 
     selectedTypeService: {id: null, name: null},
 
@@ -155,6 +158,7 @@ export default { //data
     totalPost: 0,
     descuento: 0,
     totalPromotion: 0,
+    totalCreatePromotion: 0,
 
     /********sección de lista de vouchers ******/
     idVoucher: 0,
@@ -190,57 +194,16 @@ export default { //data
     /*************************************** */
     /*************************************** */
 
-    /*** sección componentes de marcas */
-    brands: [],
-    newBrand: { name : '' },
-    fillBrand: { id: '', name: '' },
-    searchBrand: {  name: '' },
+    //Productos
+    newProduct:{ name: '', code: '', supplier: '', detail: '', attribute: 0, utility: 0, flete: 0, invoice: 0 },
+    fillProduct:{ id: 0, name: '', code: '', supplier: '', detail: '', attribute: 0, utility: 0, flete: 0, invoice: 0 },
+    products:[],
+    deleteProductId: 0,
+    searchProduct: { name: ''}, 
 
-    /*** sección componentes de laboratorios */
-    laboratories: [],
-    newLaboratory: { name : '' },
-    fillLaboratory: { id: '', name: '' },
-    searchLaboratory: {  name: '' },
-
-    /*** sección componentes de unidades de medida */
-    units: [],
-    newUnit: { name : '' },
-    fillUnit: { id: '', name: '' },
-    searchUnit: {  name: '' },
-
-    /*** sección componentes de productos */
-    products: [],
-    newProduct: { unit_of_measurent_id: 0, name : '', detail: '' },
-    fillProduct: { id: '', brand_id: 0, laboratory_id: 0, name : '', detail: '' },
-    searchProduct: {  name: '' },
-
-    /*** sección componentes de codigos */
-    codes: [],
-    codesEdit: [],
-    newCode: { brand_id: 0, laboratory_id: 0, product_id: 0, name : '', detail: '', price_cost: 0, price_sale: 0 },
-    fillCode: { id: '', product_id: 0, name : '', detail: '' },
-    searchCode: {  name: '' },
-
-    /*** sección componentes de plantilla de inventarios */
-    templates: [],
-    codesTemplate: [],
-    newTemplate: { sucursal_id: 0, name : '' },
-    fillTemplate: { id: '', sucursal_id: 0, name : '', codes: [] },
-    searchTemplate: { sucursal: '', name: '' },
-
-    /*** sección componentes de inventarios */
-    inventories: [],
-    newInventory: { code_id: 0, price_cost : 0, price_sale : 0, utility : 0, iva: 19, quantity: 1 },
-    fillInventory: { id: '', code_id: 0, price_cost : 0, price_sale : 0, utility : 0, quantity: 1 },
-    detailInventory: null,
-    idSucursal: null,
-
-    /*** sección componentes de reducción de inventario */
-    tipoConsumo: { value: 0 },
-    consumeProducts: [],
-    reductions: [],
-    newReduction: { code_id: 1, sucursal_id: 1, quantity: 10 },
-    searchReduction: { code: '', product: '', laboratory: '', brand: '' },
+    //Proveedor
+    newSupplier:{ name: '', rut: '', phone: '', address: '', commercial_business: ''},
+    suppliers: [],
 
     //Sección de filtros
     sucursalsSelect: [],
@@ -251,7 +214,8 @@ export default { //data
     filtroVoucher: { total: 0, totalNeto: 0, iva: 0 },
     fecha: { diaSeleccionado: null, mesSeleccionado: null, anioSeleccionado: null, formato: 'yyyy' },
     newMail: { subject: '', message: '' },
-    /****seccion de fotos */
+
+    //seccion de fotos
     attachment: [],
     documents: [],
     images: [],
@@ -260,5 +224,50 @@ export default { //data
     inputOther: false,
     selectedImage: '',
     userSucursal: false,
-    selectCompany: false
+    selectCompany: false,
+
+    //Utilidad
+    newUtility: { utility: 0 },
+    utilityDefect: 0,
+
+    //Utilidad
+    newFlete: { flete: 0 },
+    fleteDefect: 0,
+    current_page: 0,
+
+    //Inventory
+    newInventory: {product_id: 0, quantity: 1, price: 0, discount: 0},
+    inventories: [],
+    fileInvoice: null,
+    searchInventory: { name: ''},
+
+    //Sale
+    newSale: {
+        id: 0, 
+        product:'', 
+        code: '', 
+        quantity: 1, 
+        price: 0, 
+        price_sale: 0, 
+        utility: 0, 
+        flete: 0, 
+        priceMax: 0, 
+        average_price: 0, 
+        totalSumPrice: 0,
+        totalSumQuantity: 0,
+        totalNeto: 0
+    },
+    cart: [],
+    cartNeto: 0,
+    cartTotal: 0,
+    calendar: { search: ''},
+    sales: [],
+    sale_id: 0,
+
+    //PaymentMethods
+    newPaymentMethod: { name: '', utility: 1},
+    fillPaymentMethod: { id: 0, name: '', utility: 1},
+
+    //Discount
+    newDiscount: { discount: ''}
 }

@@ -156,41 +156,11 @@ export default { //methods
     setPersonal(context, data) {
         context.commit('setPersonal', data)
     },
-    allBrands(context) {
-        context.commit('allBrands')
-    },
-    setBrand(context, data) {
-        context.commit('setBrand', data)
-    },
-    allLaboratories(context) {
-        context.commit('allLaboratories')
-    },
-    setLaboratory(context, data) {
-        context.commit('setLaboratory', data)
-    },
-    allUnits(context) {
-        context.commit('allUnits')
-    },
-    setUnit(context, data) {
-        context.commit('setUnit', data)
-    },
     allProducts(context) {
         context.commit('allProducts')
     },
     setProduct(context, data) {
         context.commit('setProduct', data)
-    },
-    allCodes(context) {
-        context.commit('allCodes')
-    },
-    setCode(context, data) {
-        context.commit('setCode', data)
-    },
-    allTemplates(context) {
-        context.commit('allTemplates')
-    },
-    setTemplate(context, data) {
-        context.commit('setTemplate', data)
     },
     /************************************* */
     getCompanies(context, data) {
@@ -488,6 +458,18 @@ export default { //methods
     totalServicePromotion(context) {
         context.commit('totalServicePromotion')
     },
+
+
+    addServiceCreatePromotion(context) {
+        context.commit('addServiceCreatePromotion')
+        context.commit('totalServiceCreatePromotion')
+    },
+    deleteServiceCreatePromotion(context) {
+        context.commit('deleteServiceCreatePromotion')
+    },
+    totalServiceCreatePromotion(context) {
+        context.commit('totalServiceCreatePromotion')
+    },
     /************************** */
     showModalConfirm(context) {
         context.commit('showModalConfirm')
@@ -575,96 +557,6 @@ export default { //methods
             context.commit('getUsers', 1)
         }, 1000)
     },
-    /*************seccion de marcas***************** */
-    getBrands(context, data) {
-        context.commit('getBrands', data.page)
-    },
-    createBrand(context) {
-        context.commit('createBrand')
-        setTimeout(function () {
-            context.commit('getBrands', 1)
-            context.commit('allBrands')
-        }, 1000)
-    },
-    editBrand(context, data) {
-        context.commit('editBrand', data.brandLocal)
-    },
-    updateBrand(context, data) {
-        context.commit('updateBrand', data.id)
-        setTimeout(function () {
-            context.commit('getBrands', 1)
-        }, 1000)
-    },
-    deleteBrand(context, data) {
-        context.commit('deleteBrand', data.id)
-        setTimeout(function () {
-            context.commit('getBrands', 1)
-        }, 1000)
-    },
-    changePageBrand(context, data) {
-        context.commit('paginate', data.page)
-        context.commit('getBrands', data.page)
-    },
-    /*************seccion de laboratorios***************** */
-    getLaboratories(context, data) {
-        context.commit('getLaboratories', data.page)
-    },
-    createLaboratory(context) {
-        context.commit('createLaboratory')
-        setTimeout(function () {
-            context.commit('getLaboratories', 1)
-            context.commit('allLaboratories')
-        }, 1000)
-    },
-    editLaboratory(context, data) {
-        context.commit('editLaboratory', data.laboratoryLocal)
-    },
-    updateLaboratory(context, data) {
-        context.commit('updateLaboratory', data.id)
-        setTimeout(function () {
-            context.commit('getLaboratories', 1)
-        }, 1000)
-    },
-    deleteLaboratory(context, data) {
-        context.commit('deleteLaboratory', data.id)
-        setTimeout(function () {
-            context.commit('getLaboratories', 1)
-        }, 1000)
-    },
-    changePageLaboratory(context, data) {
-        context.commit('paginate', data.page)
-        context.commit('getLaboratories', data.page)
-    },
-    /*************seccion de unidad de medida***************** */
-    getUnits(context, data) {
-        context.commit('getUnits', data.page)
-    },
-    createUnit(context) {
-        context.commit('createUnit')
-        setTimeout(function () {
-            context.commit('getUnits', 1)
-            context.commit('allUnits')
-        }, 1000)
-    },
-    editUnit(context, data) {
-        context.commit('editUnit', data.unitLocal)
-    },
-    updateUnit(context, data) {
-        context.commit('updateUnit', data.id)
-        setTimeout(function () {
-            context.commit('getUnits', 1)
-        }, 1000)
-    },
-    deleteUnit(context, data) {
-        context.commit('deleteUnit', data.id)
-        setTimeout(function () {
-            context.commit('getUnits', 1)
-        }, 1000)
-    },
-    changePageUnit(context, data) {
-        context.commit('paginate', data.page)
-        context.commit('getUnits', data.page)
-    },
     /*************seccion de productos***************** */
     getProducts(context, data) {
         context.commit('getProducts', data.page)
@@ -673,154 +565,46 @@ export default { //methods
         context.commit('createProduct')
         setTimeout(function () {
             context.commit('getProducts', 1)
-            context.commit('allProducts')
         }, 1000)
     },
     editProduct(context, data) {
-        context.commit('editProduct', data.productLocal)
+        context.commit('editProduct', data)
+    },
+    editInventory(context, data) {
+        context.commit('editInventory', data)
     },
     updateProduct(context, data) {
-        context.commit('updateProduct', data.id)
+        context.commit('updateProduct')
         setTimeout(function () {
-            context.commit('getProducts', 1)
+            context.commit('getProducts', data.page)
         }, 1000)
+    },
+    modalDeleteProduct(context, data) {
+        context.commit('modalDeleteProduct', data.id)
     },
     deleteProduct(context, data) {
         context.commit('deleteProduct', data.id)
-        setTimeout(function () {
-            context.commit('getProducts', 1)
-        }, 1000)
     },
     changePageProduct(context, data) {
         context.commit('paginate', data.page)
         context.commit('getProducts', data.page)
     },
-    /*************seccion de codigos***************** */
-    getCodes(context, data) {
-        context.commit('getCodes', data.page)
-    },
-    getAllCodes(context, data) {
-        context.commit('getAllCodes')
-    },
-    createCode(context) {
-        context.commit('createCode')
-        setTimeout(function () {
-            context.commit('getCodes', 1)
-            context.commit('allCodes')
-        }, 1000)
-    },
-    editCode(context, data) {
-        context.commit('editCode', data.codeLocal)
-    },
-    updateCode(context, data) {
-        context.commit('updateCode', data.id)
-        setTimeout(function () {
-            context.commit('getCodes', 1)
-        }, 1000)
-    },
-    deleteCode(context, data) {
-        context.commit('deleteCode', data.id)
-        setTimeout(function () {
-            context.commit('getCodes', 1)
-        }, 1000)
-    },
-    changePageCode(context, data) {
-        context.commit('paginate', data.page)
-        context.commit('getCodes', data.page)
-    },
-    /*************seccion de plantillas de inventario***************** */
-    getTemplates(context, data) {
-        context.commit('getTemplates', data.page)
-    },
-    chargeTemplate(context, data) {
-        context.commit('chargeTemplate')
-    },
-    createTemplate(context) {
-        context.commit('createTemplate')
-        setTimeout(function () {
-            context.commit('getTemplates', 1)
-            context.commit('allTemplates')
-        }, 1000)
-    },
-    editTemplate(context, data) {
-        context.commit('editTemplate', data.templateLocal)
-    },
-    updateTemplate(context, data) {
-        context.commit('updateTemplate', data.id)
-        setTimeout(function () {
-            context.commit('getTemplates', 1)
-        }, 1000)
-    },
-    deleteTemplate(context, data) {
-        context.commit('deleteTemplate', data.id)
-        setTimeout(function () {
-            context.commit('getTemplates', 1)
-        }, 1000)
-    },
-    changePageCode(context, data) {
-        context.commit('paginate', data.page)
-        context.commit('getTemplates', data.page)
-    },
-    /********************************* */
-    addCodeTemplate(context, data) {
-        context.commit('addCodeTemplate', data.codeLocal)
-    },
-    deleteCodeTemplate(context, data) {
-        context.commit('deleteCodeTemplate', data.id)
-    },
-    confirmReduction(context) {
-        context.commit('confirmReduction')
-    },
     /*************seccion de inventarios***************** */
     getInventories(context, data) {
-        context.commit('getInventories', data)
-    },
-    getInventories2(context, data) {
-        context.commit('getInventories2', data.page)
+        context.commit('getInventories', data.page)
     },
     createInventory(context) {
         context.commit('createInventory')
-        /*setTimeout(function(){
-            context.commit('getInventories2', 1)
-        }, 1000)*/
-    },
-    editInventory(context, data) {
-        context.commit('editInventory', data.inventoryLocal)
-    },
-    updateInventory(context, data) {
-        context.commit('updateInventory', data.id)
-        setTimeout(function () {
-            context.commit('getInventories2', 1)
-        }, 1000)
     },
     deleteInventory(context, data) {
         context.commit('deleteInventory', data.id)
-        setTimeout(function () {
-            context.commit('getInventories2', 1)
-        }, 1000)
-    },
-    detailInventory(context, data) {
-        context.commit('detailInventory', data.inventoryLocal)
     },
     changePageInventory(context, data) {
         context.commit('paginate', data.page)
-        context.commit('getInventories2', data.page)
+        context.commit('getInventories', data.page)
     },
-    /********************************* */
-    addConsumeProduct(context, data) {
-        context.commit('addConsumeProduct', data.inventoryLocal)
-        setTimeout(function () {
-            //context.commit('getInventories', data)
-        }, 1000)
-    },
-    deleteConsumeProduct(context, data) {
-        context.commit('deleteConsumeProduct', data.id)
-    },
-    confirmReduction(context) {
-        context.commit('confirmReduction')
-    },
-    createReduction(context) {
-        context.commit('createReduction')
+    async uploadInvoice(context) {
+        await context.commit('uploadInvoice')
     },
     /***************************** */
     fileChange(context, data) {
@@ -852,5 +636,97 @@ export default { //methods
         setTimeout(function () {
             context.commit('getClients', 1)
         }, 1000)
+    },
+
+    createSupplier(context) {
+        context.commit('createSupplier')
+        setTimeout(function () {
+            context.commit('getSuppliers', 1)
+        }, 1000)
+    },
+    getSuppliers(context, data) {
+        context.commit('getSuppliers', data.page)
+    },
+    changePageSupplier(context, data) {
+        context.commit('paginate', data.page)
+        context.commit('getSuppliers', data.page)
+    },
+
+    createUtility(context) {
+        context.commit('createUtility')
+        setTimeout(function () {
+            context.commit('getProducts', 1)
+        }, 1000)
+    },
+    getUtilities(context, data) {
+        context.commit('getUtilities', data)
+    },
+
+    createFlete(context) {
+        context.commit('createFlete')
+        setTimeout(function () {
+            context.commit('getProducts', 1)
+        }, 1000)
+    },
+    getFletes(context, data) {
+        context.commit('getFletes', data)
+    },
+
+    createPaymentMethods(context) {
+        context.commit('createPaymentMethods')
+    },
+    updatePaymentMethods(context, data) {
+        context.commit('updatePaymentMethods')
+        setTimeout(function () {
+            context.commit('getPayments', data.page)
+        }, 1000)
+    },
+    editPayment(context, data) {
+        context.commit('editPayment', data)
+    },
+    getPayments(context, data) {
+        context.commit('getPayments', data.page)
+    },
+    changePagePayment(context, data) {
+        context.commit('paginate', data.page)
+        context.commit('getPayments', data.page)
+    },
+
+    createDiscounts(context) {
+        context.commit('createDiscounts')
+    },
+
+    //Sales
+    sumQuantity(context) {
+        context.commit('sumQuantity')
+    },
+    addCart(context){
+        context.commit('addCart')
+    },
+    removeCart(context, data) {
+        context.commit('removeCart', data)
+    },
+    createSale(context, data) {
+        context.commit('createSale', data)
+    },
+    allSales(context, data) {
+        context.commit('allSales', data)
+    },
+    changePageSales(context, data) {
+        context.commit('paginate', data.page)
+        context.commit('allSales', data.page)
+    },
+    generateReceipt(context, data) {
+        context.commit('generateReceipt', data.id)
+    },
+    modalDeleteSale(context, data) {
+        context.commit('modalDeleteSale', data.id)
+    },
+
+    deleteSale(context, data) {
+        context.commit('deleteSale', data.id)
+    },
+    boxClosureZ(context) {
+        context.commit('boxClosureZ')
     },
 }
