@@ -30,7 +30,7 @@
                         calcularPrecioCompraMasAlto(product) }}</td>
                     <td v-else></td>
                 </tr>
-                <tr v-for="inventory in product.inventory" :key="inventory.id" :id="'product' + inventory.product_id" class="accordian-body collapse">
+                <tr v-for="inventory in product.inventories" :key="inventory.id" :id="'product' + inventory.product_id" class="accordian-body collapse">
                     <td></td>
                     <td></td>
                     <td></td>
@@ -97,9 +97,9 @@ export default {
         ...mapActions(['getInventories', 'getUtilities', 'getFletes', 'changePageinventory']),
         totalUnidades(item) {
             let total = 0;
-            for (let i = 0; i < item.inventory.length; i++) {
-                if (item.inventory[i].product_id == item.id) {
-                    total += parseInt(item.inventory[i].quantity);
+            for (let i = 0; i < item.inventories.length; i++) {
+                if (item.inventories[i].product_id == item.id) {
+                    total += parseInt(item.inventories[i].quantity);
                 }
             }
             return total;
@@ -108,11 +108,11 @@ export default {
             let sumatoriaPrecios = 0;
             let cantidadProductos = 0;
 
-            if (item.inventory.length > 0) {
-                for (let i = 0; i < item.inventory.length; i++) {
-                    if (item.inventory[i].product_id === item.id && item.inventory[i].quantity > 0) {
-                        sumatoriaPrecios += parseInt(item.inventory[i].price * item.inventory[i].quantity);
-                        cantidadProductos += item.inventory[i].quantity;
+            if (item.inventories.length > 0) {
+                for (let i = 0; i < item.inventories.length; i++) {
+                    if (item.inventories[i].product_id === item.id && item.inventories[i].quantity > 0) {
+                        sumatoriaPrecios += parseInt(item.inventories[i].price * item.inventories[i].quantity);
+                        cantidadProductos += item.inventories[i].quantity;
                     }
                 }
             }
@@ -136,10 +136,10 @@ export default {
             let flete = parseInt(item.flete);
             let utilidad = (parseInt(item.utility) / 100) + 1;
 
-            if (item.inventory.length > 0) {
-                for (let i = 0; i < item.inventory.length; i++) {
-                    if (item.inventory[i].product_id == item.id && item.inventory[i].quantity > 0) {
-                        uniquePrices.add(item.inventory[i].price);
+            if (item.inventories.length > 0) {
+                for (let i = 0; i < item.inventories.length; i++) {
+                    if (item.inventories[i].product_id == item.id && item.inventories[i].quantity > 0) {
+                        uniquePrices.add(item.inventories[i].price);
                     }
                 }
             }
